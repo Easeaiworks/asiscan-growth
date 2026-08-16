@@ -1,0 +1,56 @@
+name: Rescan research corpus
+
+# Monthly re-scan of the open-source agent corpus. This is what keeps the
+# statistics in the content fresh and, more importantly, what keeps them real.
+# Every number the content engine is allowed to publish comes from this job.
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"   # 1st of the month, 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Scan only the first N repositories"
+        required: false
+
+concurrency:
+  group: corpus
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Scan
+        env:
+          SCANNER_CMD: ${{ vars.SCANNER_CMD || 'npx --yes asiscan@latest' }}
+        run: node scripts/scan-corpus.mjs ${{ inputs.limit && format('--limit {0}', inputs.limit) || '' }}
+
+      - name: Commit findings
+        run: |
+          git config user.name  "asiscan-bot"
+          git config user.email "bot@users.noreply.github.com"
+          if ! git diff --quiet -- data/; then
+            git add data/
+            git commit -m "data: refresh corpus scan"
+            git push
+          else
+            echo "No change in findings."
+          fi
+
+      - name: Summarise
+        run: node scripts/corpus-summary.mjs >> "$GITHUB_STEP_SUMMARY"

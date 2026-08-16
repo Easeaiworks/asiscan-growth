@@ -1,0 +1,36 @@
+name: Fact guard
+
+# Runs on every push and pull request. A hand-edited post is held to exactly the
+# same standard as a generated one — that is the point of the guard living in
+# CI rather than inside the generator.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm run guard
+      - run: npm run build
+      - name: Fail if the build produced uncommitted changes
+        run: |
+          if ! git diff --quiet -- site/; then
+            echo "::error::site/ is out of date with content/. Run 'npm run build' and commit."
+            git --no-pager diff --stat -- site/
+            exit 1
+          fi

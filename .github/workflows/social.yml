@@ -1,0 +1,71 @@
+name: Publish to LinkedIn
+
+# Drains one item from the social queue. Runs twice a week so a post and its
+# follow-up land on different days rather than in a burst.
+
+on:
+  schedule:
+    - cron: "30 13 * * 2"   # Tue 09:30 ET — half an hour after the blog post
+    - cron: "0 14 * * 4"    # Thu 10:00 ET
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Print what would be posted without posting it"
+        type: boolean
+        default: true
+
+concurrency:
+  group: social
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check kill switch
+        run: |
+          if [ -f PAUSE ] || [ "${{ vars.PAUSE_PUBLISHING }}" = "true" ]; then
+            echo "::warning::Publishing is paused."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Publish
+        env:
+          SOCIAL_TRANSPORT: ${{ vars.SOCIAL_TRANSPORT }}
+          BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
+          BUFFER_LINKEDIN_CHANNEL_ID: ${{ secrets.BUFFER_LINKEDIN_CHANNEL_ID }}
+          BUFFER_MODE: ${{ vars.BUFFER_MODE }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_ORGANIZATION_URN: ${{ secrets.LINKEDIN_ORGANIZATION_URN }}
+          SOCIAL_WEBHOOK_URL: ${{ secrets.SOCIAL_WEBHOOK_URL }}
+        run: |
+          set +e
+          node scripts/publish-social.mjs ${{ inputs.dry_run && '--dry-run' || '' }}
+          code=$?
+          set -e
+          [ $code -eq 78 ] && exit 0
+          exit $code
+
+      - name: Record the result
+        if: ${{ !inputs.dry_run }}
+        run: |
+          if ! git diff --quiet -- data/social-queue.json; then
+            git config user.name  "asiscan-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add data/social-queue.json
+            git commit -m "social: record publication"
+            git push
+          fi

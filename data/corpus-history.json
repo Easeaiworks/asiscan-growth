@@ -1,0 +1,30 @@
+[
+  {
+    "date": "2026-08-14",
+    "reposScanned": 50,
+    "filesScanned": 115262,
+    "totalFindings": 4881,
+    "top": [
+      {
+        "ruleId": "ASI07",
+        "reposAffected": 37
+      },
+      {
+        "ruleId": "ASI03",
+        "reposAffected": 37
+      },
+      {
+        "ruleId": "ASI05",
+        "reposAffected": 27
+      },
+      {
+        "ruleId": "ASI09",
+        "reposAffected": 22
+      },
+      {
+        "ruleId": "LLM02",
+        "reposAffected": 22
+      }
+    ]
+  }
+]

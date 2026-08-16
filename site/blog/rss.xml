@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ASIScan — notes on agent security</title>
+    <link>https://asiscan.dev/blog/</link>
+    <atom:link href="https://asiscan.dev/blog/rss.xml" rel="self" type="application/rss+xml"/>
+    <description>Static analysis for AI agent codebases, mapped to the OWASP Top 10 for Agentic Applications, the OWASP LLM Top 10, and EU AI Act Article 50.</description>
+    <language>en</language>
+    <item>
+      <title>ASI09: the approval dialog your agent wrote for itself</title>
+      <link>https://asiscan.dev/blog/asi09-human-agent-trust-exploitation</link>
+      <guid isPermaLink="true">https://asiscan.dev/blog/asi09-human-agent-trust-exploitation</guid>
+      <description>If a model composes the text of your confirmation prompt, the human is approving a description, not an action. How that gap opens and how to close it.</description>
+      <pubDate>Fri, 14 Aug 2026 13:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

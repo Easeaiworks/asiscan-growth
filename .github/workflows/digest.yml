@@ -1,0 +1,33 @@
+name: Weekly digest
+
+# Sunday morning summary of everything the system did. One issue, readable on a
+# phone. This is the only thing that asks for your attention.
+
+on:
+  schedule:
+    - cron: "0 13 * * 0"   # Sundays 09:00 America/Toronto
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build digest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ vars.VERCEL_TEAM_ID }}
+          LINKEDIN_REFRESH_EXPIRES_ON: ${{ vars.LINKEDIN_REFRESH_EXPIRES_ON }}
+        run: node scripts/digest.mjs

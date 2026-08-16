@@ -1,0 +1,1056 @@
+{
+  "generatedAt": "2026-08-14T14:47:56.119Z",
+  "date": "2026-08-14",
+  "summary": {
+    "reposScanned": 50,
+    "reposFailed": 0,
+    "filesScanned": 115262,
+    "totalFindings": 4881,
+    "medianFindingsPerRepo": 19,
+    "reposWithZeroFindings": 0
+  },
+  "rulePrevalence": [
+    {
+      "ruleId": "ASI07",
+      "title": "Insecure Inter-Agent Communication",
+      "severity": "high",
+      "framework": "OWASP ASI",
+      "reposAffected": 37,
+      "findings": 2788,
+      "repoTags": {
+        "framework": 13,
+        "multi-agent": 3,
+        "autonomous": 2,
+        "application": 4,
+        "code-exec": 5,
+        "computer-use": 1,
+        "gateway": 1,
+        "tooling": 1,
+        "platform": 6,
+        "governance": 1
+      }
+    },
+    {
+      "ruleId": "ASI03",
+      "title": "Identity & Privilege Abuse",
+      "severity": "critical",
+      "framework": "OWASP ASI",
+      "reposAffected": 37,
+      "findings": 843,
+      "repoTags": {
+        "framework": 9,
+        "multi-agent": 4,
+        "autonomous": 3,
+        "application": 4,
+        "code-exec": 6,
+        "computer-use": 1,
+        "gateway": 1,
+        "tooling": 1,
+        "mcp": 1,
+        "platform": 7
+      }
+    },
+    {
+      "ruleId": "ASI05",
+      "title": "Unexpected Code Execution (RCE)",
+      "severity": "critical",
+      "framework": "OWASP ASI",
+      "reposAffected": 27,
+      "findings": 200,
+      "repoTags": {
+        "framework": 9,
+        "multi-agent": 1,
+        "autonomous": 2,
+        "code-exec": 2,
+        "computer-use": 2,
+        "gateway": 1,
+        "platform": 6,
+        "application": 3,
+        "governance": 1
+      }
+    },
+    {
+      "ruleId": "ASI09",
+      "title": "Human-Agent Trust Exploitation",
+      "severity": "high",
+      "framework": "OWASP ASI",
+      "reposAffected": 22,
+      "findings": 453,
+      "repoTags": {
+        "framework": 2,
+        "multi-agent": 1,
+        "autonomous": 1,
+        "code-exec": 4,
+        "memory": 1,
+        "gateway": 1,
+        "tooling": 1,
+        "mcp": 1,
+        "platform": 7,
+        "application": 2,
+        "governance": 1
+      }
+    },
+    {
+      "ruleId": "LLM02",
+      "title": "Sensitive Information Disclosure",
+      "severity": "high",
+      "framework": "OWASP LLM",
+      "reposAffected": 22,
+      "findings": 104,
+      "repoTags": {
+        "framework": 12,
+        "multi-agent": 1,
+        "autonomous": 2,
+        "computer-use": 1,
+        "memory": 1,
+        "gateway": 1,
+        "platform": 3,
+        "code-exec": 1
+      }
+    },
+    {
+      "ruleId": "ASI04",
+      "title": "Agentic Supply Chain Vulnerabilities",
+      "severity": "high",
+      "framework": "OWASP ASI",
+      "reposAffected": 20,
+      "findings": 251,
+      "repoTags": {
+        "framework": 3,
+        "autonomous": 1,
+        "code-exec": 1,
+        "computer-use": 2,
+        "memory": 1,
+        "gateway": 1,
+        "tooling": 1,
+        "mcp": 1,
+        "platform": 5,
+        "application": 3,
+        "governance": 1
+      }
+    },
+    {
+      "ruleId": "EUAIA-52",
+      "title": "Article 50 - Disclosure that the user is interacting with an AI system",
+      "severity": "high",
+      "framework": "EU AI Act Art. 50",
+      "reposAffected": 18,
+      "findings": 18,
+      "repoTags": {
+        "framework": 6,
+        "multi-agent": 1,
+        "application": 3,
+        "code-exec": 4,
+        "memory": 1,
+        "tooling": 1,
+        "platform": 2
+      }
+    },
+    {
+      "ruleId": "ASI01",
+      "title": "Agent Goal Hijack",
+      "severity": "critical",
+      "framework": "OWASP ASI",
+      "reposAffected": 12,
+      "findings": 30,
+      "repoTags": {
+        "framework": 5,
+        "autonomous": 1,
+        "code-exec": 1,
+        "gateway": 1,
+        "mcp": 1,
+        "application": 2,
+        "platform": 1
+      }
+    },
+    {
+      "ruleId": "LLM06",
+      "title": "Excessive Agency",
+      "severity": "critical",
+      "framework": "OWASP LLM",
+      "reposAffected": 11,
+      "findings": 146,
+      "repoTags": {
+        "framework": 3,
+        "autonomous": 1,
+        "code-exec": 1,
+        "gateway": 1,
+        "tooling": 1,
+        "platform": 3,
+        "governance": 1
+      }
+    },
+    {
+      "ruleId": "LLM01",
+      "title": "Prompt Injection",
+      "severity": "critical",
+      "framework": "OWASP LLM",
+      "reposAffected": 8,
+      "findings": 8,
+      "repoTags": {
+        "framework": 1,
+        "multi-agent": 2,
+        "autonomous": 2,
+        "computer-use": 1,
+        "tooling": 1,
+        "code-exec": 1
+      }
+    },
+    {
+      "ruleId": "LLM05",
+      "title": "Improper Output Handling",
+      "severity": "high",
+      "framework": "OWASP LLM",
+      "reposAffected": 7,
+      "findings": 14,
+      "repoTags": {
+        "framework": 2,
+        "autonomous": 2,
+        "application": 1,
+        "governance": 1,
+        "code-exec": 1
+      }
+    },
+    {
+      "ruleId": "ASI02",
+      "title": "Tool Misuse & Exploitation",
+      "severity": "critical",
+      "framework": "OWASP ASI",
+      "reposAffected": 7,
+      "findings": 8,
+      "repoTags": {
+        "framework": 1,
+        "multi-agent": 2,
+        "autonomous": 2,
+        "platform": 1,
+        "code-exec": 1
+      }
+    },
+    {
+      "ruleId": "LLM10",
+      "title": "Unbounded Consumption",
+      "severity": "medium",
+      "framework": "OWASP LLM",
+      "reposAffected": 6,
+      "findings": 8,
+      "repoTags": {
+        "framework": 1,
+        "multi-agent": 1,
+        "autonomous": 1,
+        "code-exec": 2,
+        "platform": 1
+      }
+    },
+    {
+      "ruleId": "EUAIA-50",
+      "title": "Article 50 - Marking of synthetic content",
+      "severity": "medium",
+      "framework": "EU AI Act Art. 50",
+      "reposAffected": 4,
+      "findings": 4,
+      "repoTags": {
+        "framework": 1,
+        "multi-agent": 1,
+        "autonomous": 1,
+        "platform": 1
+      }
+    },
+    {
+      "ruleId": "LLM07",
+      "title": "System Prompt Leakage",
+      "severity": "medium",
+      "framework": "OWASP LLM",
+      "reposAffected": 2,
+      "findings": 2,
+      "repoTags": {
+        "framework": 1,
+        "governance": 1
+      }
+    },
+    {
+      "ruleId": "ASI10",
+      "title": "Rogue Agents",
+      "severity": "critical",
+      "framework": "OWASP ASI",
+      "reposAffected": 2,
+      "findings": 2,
+      "repoTags": {
+        "multi-agent": 2
+      }
+    },
+    {
+      "ruleId": "ASI06",
+      "title": "Memory & Context Poisoning",
+      "severity": "high",
+      "framework": "OWASP ASI",
+      "reposAffected": 1,
+      "findings": 1,
+      "repoTags": {
+        "multi-agent": 1
+      }
+    },
+    {
+      "ruleId": "ASI08",
+      "title": "Cascading Failures",
+      "severity": "high",
+      "framework": "OWASP ASI",
+      "reposAffected": 1,
+      "findings": 1,
+      "repoTags": {
+        "multi-agent": 1
+      }
+    }
+  ],
+  "byTag": {
+    "framework": {
+      "repos": 17,
+      "findings": 276
+    },
+    "multi-agent": {
+      "repos": 4,
+      "findings": 55
+    },
+    "autonomous": {
+      "repos": 4,
+      "findings": 260
+    },
+    "application": {
+      "repos": 4,
+      "findings": 1262
+    },
+    "code-exec": {
+      "repos": 7,
+      "findings": 505
+    },
+    "computer-use": {
+      "repos": 2,
+      "findings": 94
+    },
+    "memory": {
+      "repos": 1,
+      "findings": 19
+    },
+    "gateway": {
+      "repos": 1,
+      "findings": 256
+    },
+    "tooling": {
+      "repos": 1,
+      "findings": 94
+    },
+    "mcp": {
+      "repos": 1,
+      "findings": 9
+    },
+    "platform": {
+      "repos": 7,
+      "findings": 1984
+    },
+    "governance": {
+      "repos": 1,
+      "findings": 67
+    }
+  },
+  "perRepo": [
+    {
+      "slug": "langchain-ai/langgraph",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 302,
+      "findings": 6,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI07",
+        "EUAIA-52"
+      ]
+    },
+    {
+      "slug": "langchain-ai/langchain",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 1839,
+      "findings": 6,
+      "rulesTriggered": [
+        "ASI07",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "openai/openai-agents-python",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 387,
+      "findings": 4,
+      "rulesTriggered": [
+        "EUAIA-52",
+        "LLM02",
+        "LLM10"
+      ]
+    },
+    {
+      "slug": "crewAIInc/crewAI",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 964,
+      "findings": 7,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI07",
+        "LLM02",
+        "LLM05"
+      ]
+    },
+    {
+      "slug": "microsoft/autogen",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 1041,
+      "findings": 14,
+      "rulesTriggered": [
+        "ASI05",
+        "ASI07",
+        "EUAIA-50",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "microsoft/semantic-kernel",
+      "tag": "framework",
+      "lang": "csharp",
+      "filesScanned": 3704,
+      "findings": 65,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI07",
+        "LLM02",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "huggingface/smolagents",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 31,
+      "findings": 4,
+      "rulesTriggered": [
+        "ASI02",
+        "ASI03",
+        "ASI05",
+        "EUAIA-52"
+      ]
+    },
+    {
+      "slug": "pydantic/pydantic-ai",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 416,
+      "findings": 2,
+      "rulesTriggered": [
+        "ASI07",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "camel-ai/camel",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 565,
+      "findings": 24,
+      "rulesTriggered": [
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "agno-agi/agno",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 3303,
+      "findings": 44,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "LLM02",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "letta-ai/letta",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 780,
+      "findings": 10,
+      "rulesTriggered": [
+        "ASI05",
+        "ASI07",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "stanfordnlp/dspy",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 172,
+      "findings": 4,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03"
+      ]
+    },
+    {
+      "slug": "run-llama/llama_index",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 2846,
+      "findings": 26,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "deepset-ai/haystack",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 1686,
+      "findings": 3,
+      "rulesTriggered": [
+        "ASI03",
+        "LLM02",
+        "LLM05"
+      ]
+    },
+    {
+      "slug": "google/adk-python",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 1258,
+      "findings": 19,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "EUAIA-52",
+        "LLM02",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "strands-agents/sdk-python",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 870,
+      "findings": 28,
+      "rulesTriggered": [
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52",
+        "LLM07"
+      ]
+    },
+    {
+      "slug": "livekit/agents",
+      "tag": "framework",
+      "lang": "python",
+      "filesScanned": 765,
+      "findings": 10,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "EUAIA-52",
+        "LLM01"
+      ]
+    },
+    {
+      "slug": "langchain-ai/langgraph-swarm-py",
+      "tag": "multi-agent",
+      "lang": "python",
+      "filesScanned": 9,
+      "findings": 6,
+      "rulesTriggered": [
+        "ASI02",
+        "ASI03",
+        "ASI06",
+        "ASI07",
+        "ASI08",
+        "ASI10"
+      ]
+    },
+    {
+      "slug": "openai/swarm",
+      "tag": "multi-agent",
+      "lang": "python",
+      "filesScanned": 39,
+      "findings": 9,
+      "rulesTriggered": [
+        "ASI02",
+        "ASI03",
+        "ASI07",
+        "ASI09",
+        "ASI10",
+        "LLM01",
+        "LLM10"
+      ]
+    },
+    {
+      "slug": "geekan/MetaGPT",
+      "tag": "multi-agent",
+      "lang": "python",
+      "filesScanned": 585,
+      "findings": 38,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "EUAIA-50",
+        "EUAIA-52",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "OpenBMB/ChatDev",
+      "tag": "multi-agent",
+      "lang": "python",
+      "filesScanned": 256,
+      "findings": 2,
+      "rulesTriggered": [
+        "ASI03",
+        "LLM01"
+      ]
+    },
+    {
+      "slug": "TransformerOptimus/SuperAGI",
+      "tag": "autonomous",
+      "lang": "python",
+      "filesScanned": 405,
+      "findings": 18,
+      "rulesTriggered": [
+        "ASI05",
+        "LLM01",
+        "LLM02",
+        "LLM10"
+      ]
+    },
+    {
+      "slug": "Significant-Gravitas/AutoGPT",
+      "tag": "autonomous",
+      "lang": "python",
+      "filesScanned": 3450,
+      "findings": 221,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "LLM02",
+        "LLM05",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "yoheinakajima/babyagi",
+      "tag": "autonomous",
+      "lang": "python",
+      "filesScanned": 41,
+      "findings": 5,
+      "rulesTriggered": [
+        "ASI02",
+        "ASI03",
+        "LLM05"
+      ]
+    },
+    {
+      "slug": "reworkd/AgentGPT",
+      "tag": "autonomous",
+      "lang": "typescript",
+      "filesScanned": 451,
+      "findings": 16,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI02",
+        "ASI03",
+        "ASI04",
+        "ASI07",
+        "EUAIA-50",
+        "LLM01"
+      ]
+    },
+    {
+      "slug": "assafelovic/gpt-researcher",
+      "tag": "application",
+      "lang": "python",
+      "filesScanned": 336,
+      "findings": 50,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI07",
+        "EUAIA-52",
+        "LLM05"
+      ]
+    },
+    {
+      "slug": "OpenInterpreter/open-interpreter",
+      "tag": "code-exec",
+      "lang": "python",
+      "filesScanned": 3895,
+      "findings": 423,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "princeton-nlp/SWE-agent",
+      "tag": "code-exec",
+      "lang": "python",
+      "filesScanned": 139,
+      "findings": 4,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI07",
+        "EUAIA-52"
+      ]
+    },
+    {
+      "slug": "All-Hands-AI/OpenHands",
+      "tag": "code-exec",
+      "lang": "python",
+      "filesScanned": 1251,
+      "findings": 55,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52"
+      ]
+    },
+    {
+      "slug": "Aider-AI/aider",
+      "tag": "code-exec",
+      "lang": "python",
+      "filesScanned": 163,
+      "findings": 4,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI07"
+      ]
+    },
+    {
+      "slug": "e2b-dev/E2B",
+      "tag": "code-exec",
+      "lang": "typescript",
+      "filesScanned": 391,
+      "findings": 2,
+      "rulesTriggered": [
+        "ASI09"
+      ]
+    },
+    {
+      "slug": "browser-use/browser-use",
+      "tag": "computer-use",
+      "lang": "python",
+      "filesScanned": 182,
+      "findings": 4,
+      "rulesTriggered": [
+        "ASI04",
+        "ASI05",
+        "LLM01"
+      ]
+    },
+    {
+      "slug": "Skyvern-AI/skyvern",
+      "tag": "computer-use",
+      "lang": "python",
+      "filesScanned": 3337,
+      "findings": 90,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "mem0ai/mem0",
+      "tag": "memory",
+      "lang": "python",
+      "filesScanned": 693,
+      "findings": 19,
+      "rulesTriggered": [
+        "ASI04",
+        "ASI09",
+        "EUAIA-52",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "BerriAI/litellm",
+      "tag": "gateway",
+      "lang": "python",
+      "filesScanned": 4738,
+      "findings": 256,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "LLM02",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "ComposioHQ/composio",
+      "tag": "tooling",
+      "lang": "python",
+      "filesScanned": 976,
+      "findings": 94,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52",
+        "LLM01",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "modelcontextprotocol/servers",
+      "tag": "mcp",
+      "lang": "typescript",
+      "filesScanned": 80,
+      "findings": 9,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI04",
+        "ASI09"
+      ]
+    },
+    {
+      "slug": "langgenius/dify",
+      "tag": "platform",
+      "lang": "typescript",
+      "filesScanned": 8320,
+      "findings": 591,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI05",
+        "ASI07",
+        "ASI09"
+      ]
+    },
+    {
+      "slug": "FlowiseAI/Flowise",
+      "tag": "platform",
+      "lang": "typescript",
+      "filesScanned": 1923,
+      "findings": 79,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI07",
+        "ASI09",
+        "EUAIA-50"
+      ]
+    },
+    {
+      "slug": "Mintplex-Labs/anything-llm",
+      "tag": "platform",
+      "lang": "typescript",
+      "filesScanned": 1253,
+      "findings": 133,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52",
+        "LLM02",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "danny-avila/LibreChat",
+      "tag": "application",
+      "lang": "typescript",
+      "filesScanned": 3345,
+      "findings": 709,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52"
+      ]
+    },
+    {
+      "slug": "lobehub/lobe-chat",
+      "tag": "application",
+      "lang": "typescript",
+      "filesScanned": 12402,
+      "findings": 483,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09"
+      ]
+    },
+    {
+      "slug": "onyx-dot-app/onyx",
+      "tag": "platform",
+      "lang": "python",
+      "filesScanned": 4654,
+      "findings": 432,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "EUAIA-52",
+        "LLM02"
+      ]
+    },
+    {
+      "slug": "microsoft/TaskWeaver",
+      "tag": "code-exec",
+      "lang": "python",
+      "filesScanned": 226,
+      "findings": 7,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI07",
+        "EUAIA-52",
+        "LLM10"
+      ]
+    },
+    {
+      "slug": "superagent-ai/superagent",
+      "tag": "platform",
+      "lang": "typescript",
+      "filesScanned": 65,
+      "findings": 5,
+      "rulesTriggered": [
+        "ASI02",
+        "ASI03",
+        "ASI05",
+        "ASI09",
+        "LLM10"
+      ]
+    },
+    {
+      "slug": "potpie-ai/potpie",
+      "tag": "application",
+      "lang": "python",
+      "filesScanned": 620,
+      "findings": 20,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "EUAIA-52"
+      ]
+    },
+    {
+      "slug": "microsoft/agent-governance-toolkit",
+      "tag": "governance",
+      "lang": "typescript",
+      "filesScanned": 1819,
+      "findings": 67,
+      "rulesTriggered": [
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "LLM05",
+        "LLM06",
+        "LLM07"
+      ]
+    },
+    {
+      "slug": "smol-ai/developer",
+      "tag": "code-exec",
+      "lang": "python",
+      "filesScanned": 23,
+      "findings": 10,
+      "rulesTriggered": [
+        "ASI02",
+        "ASI03",
+        "ASI09",
+        "LLM01",
+        "LLM02",
+        "LLM05",
+        "LLM10"
+      ]
+    },
+    {
+      "slug": "activepieces/activepieces",
+      "tag": "platform",
+      "lang": "typescript",
+      "filesScanned": 22776,
+      "findings": 203,
+      "rulesTriggered": [
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "LLM02",
+        "LLM06"
+      ]
+    },
+    {
+      "slug": "n8n-io/n8n",
+      "tag": "platform",
+      "lang": "typescript",
+      "filesScanned": 15490,
+      "findings": 541,
+      "rulesTriggered": [
+        "ASI01",
+        "ASI03",
+        "ASI04",
+        "ASI05",
+        "ASI07",
+        "ASI09",
+        "LLM06"
+      ]
+    }
+  ],
+  "failed": [],
+  "methodology": {
+    "scanner": "local build",
+    "cloneDepth": 1,
+    "note": "Findings are static-analysis signals, not confirmed vulnerabilities. Framework repositories will legitimately show control-probe findings for application-level controls that are the caller's responsibility. Publish aggregates only; never name individual repositories as insecure."
+  }
+}

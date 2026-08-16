@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog · ASIScan</title>
+<meta name="description" content="Findings and design notes on AI agent security from ASIScan.">
+<link rel="canonical" href="https://asiscan.dev/blog/">
+<meta property="og:title" content="Blog · ASIScan">
+<meta property="og:description" content="Findings and design notes on AI agent security from ASIScan.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://asiscan.dev/blog/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="ASIScan blog" href="https://asiscan.dev/blog/rss.xml">
+<style>:root{--bg:#0a0c10;--panel:#11151c;--panel2:#161b24;--line:#232a35;--text:#e6edf3;--dim:#8b96a5;--dimmer:#5f6a78;--acc:#5eead4;--acc2:#2dd4bf;--red:#f87171;--amber:#fbbf24;--mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:720px;margin:0 auto;padding:0 24px}
+nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,12,16,.9);backdrop-filter:blur(12px);z-index:50}
+nav .wrap{max-width:940px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:-.3px;color:var(--text)}
+.logo span{color:var(--acc)}
+.navlinks{display:flex;gap:22px;align-items:center;font-size:14px}
+.navlinks a{color:var(--dim)}.navlinks a:hover{color:var(--text);text-decoration:none}
+.btn{background:var(--acc);color:#04231f;padding:8px 16px;border-radius:6px;font-weight:600;font-size:14px;display:inline-block}
+.btn:hover{background:var(--acc2);text-decoration:none}
+article{padding:56px 0 40px}
+h1{font-size:clamp(28px,4.4vw,40px);line-height:1.15;letter-spacing:-1px;font-weight:700;margin-bottom:16px}
+h2{font-size:24px;letter-spacing:-.4px;margin:44px 0 14px;padding-top:8px}
+h3{font-size:18px;margin:30px 0 10px;color:var(--text)}
+p{margin:0 0 18px}
+ul,ol{margin:0 0 18px 22px}li{margin-bottom:8px}
+blockquote{border-left:3px solid var(--line);padding-left:18px;color:var(--dim);margin:0 0 18px}
+code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1.5px 5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;overflow-x:auto;margin:0 0 22px}
+pre code{background:none;border:none;padding:0;font-size:12.5px;line-height:1.65}
+table{width:100%;border-collapse:collapse;margin:0 0 22px;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+th{background:var(--panel2);font-weight:600}
+hr{border:none;border-top:1px solid var(--line);margin:36px 0}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--dimmer);margin-bottom:34px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.tag{font-family:var(--mono);font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:100px;padding:3px 10px}
+.cta-box{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:22px;margin:44px 0 0}
+.cta-box p{margin:0 0 14px;color:var(--dim);font-size:15px}
+.cta-box code{font-size:13px}
+.notes{border-top:1px solid var(--line);margin-top:44px;padding-top:20px;font-size:13.5px;color:var(--dimmer)}
+.notes p{margin-bottom:10px}
+.post-list{list-style:none;margin:0;padding:0}
+.post-list li{border-bottom:1px solid var(--line);padding:22px 0;margin:0}
+.post-list h2{font-size:20px;margin:0 0 6px;letter-spacing:-.3px}
+.post-list h2 a{color:var(--text)}
+.post-list h2 a:hover{color:var(--acc);text-decoration:none}
+.post-list p{color:var(--dim);font-size:15px;margin:0 0 8px}
+.post-list .meta{margin:0;font-size:12px}
+footer{border-top:1px solid var(--line);padding:32px 0;margin-top:60px;font-size:13px;color:var(--dimmer)}
+footer .wrap{max-width:940px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}</style>
+
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="https://asiscan.dev/">ASIScan<span>.dev</span></a>
+  <div class="navlinks">
+    <a href="/blog/">Blog</a>
+    <a href="https://asiscan.dev/#how">How it works</a>
+    <a href="https://asiscan.dev/#pricing">Pricing</a>
+    <a class="btn" href="https://asiscan.dev/#pricing">Get ASIScan</a>
+  </div>
+</div></nav>
+<article><div class="wrap">
+<h1>Notes on agent security</h1>
+<p style="color:var(--dim);font-size:17px;margin-bottom:36px">Findings, measurements and design notes from building ASIScan. <a href="/blog/rss.xml">RSS</a>.</p>
+<ul class="post-list">
+  <li>
+    <h2><a href="/blog/asi09-human-agent-trust-exploitation">ASI09: the approval dialog your agent wrote for itself</a></h2>
+    <p>If a model composes the text of your confirmation prompt, the human is approving a description, not an action. How that gap opens and how to close it.</p>
+    <div class="meta">2026-08-14</div>
+  </li>
+</ul>
+</div></article>
+<footer><div class="wrap">
+  <div>&copy; 2026 Protocol 42 · Ontario, Canada</div>
+  <div>Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</div>
+</div></footer>
+</body>
+</html>

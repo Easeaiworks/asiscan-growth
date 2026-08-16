@@ -1,0 +1,26 @@
+{
+  "name": "asiscan-growth",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous content and distribution engine for ASIScan. Publishes measured findings, not generated opinions.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "scan": "node scripts/scan-corpus.mjs",
+    "scan:quick": "node scripts/scan-corpus.mjs --limit 5 --keep",
+    "generate": "node scripts/generate-post.mjs",
+    "generate:dry": "node scripts/generate-post.mjs --dry-run",
+    "build": "node scripts/build-site.mjs",
+    "social:compose": "node scripts/compose-social.mjs",
+    "social:publish": "node scripts/publish-social.mjs",
+    "social:dry": "node scripts/publish-social.mjs --dry-run",
+    "digest": "node scripts/digest.mjs --stdout",
+    "guard": "node scripts/guard-cli.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.7"
+  }
+}

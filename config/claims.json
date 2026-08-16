@@ -1,0 +1,171 @@
+{
+  "$comment": [
+    "THE CLAIMS LEDGER. This file is what makes fully-autonomous publishing safe.",
+    "Nothing goes live unless every factual assertion in it traces back to this file",
+    "or to machine-generated data in data/corpus-findings.json.",
+    "",
+    "Rule: if you cannot point at a source, it does not go in 'verified'.",
+    "Anything in 'unverified' is BLOCKED from publication until it is substantiated.",
+    "fact-guard.mjs enforces this. Do not weaken it to get a post out the door."
+  ],
+
+  "verified": [
+    {
+      "id": "rules-18",
+      "claim": "18 static rules",
+      "detail": "18 rules: ASI01-ASI10 (all ten OWASP Agentic categories), LLM01/02/05/06/07/10, and two EU AI Act Article 50 checks (EUAIA-52, EUAIA-50).",
+      "source": "Product source: src/rules/asi.ts and src/rules/llm.ts; asserted by test/scanner.test.js",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "control-probe",
+      "claim": "Control-probe design: detects missing mitigations, not just dangerous keywords",
+      "detail": "Most rules fire only when a risk trigger is present AND no evidence of the standard mitigation exists in the corpus. This is materially different from grepping for eval().",
+      "source": "Product source: src/scanner.ts probe evaluation",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "comments-stripped",
+      "claim": "Comments are stripped before mitigation evidence is matched",
+      "detail": "A `// TODO: add sandboxing` comment cannot satisfy a control probe and mark you as mitigated. Covered by a regression test.",
+      "source": "Product source: src/scanner.ts; test/scanner.test.js",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "offline",
+      "claim": "Runs entirely offline, no telemetry, no network calls",
+      "detail": "One runtime dependency (picocolors). No HTTP client is imported anywhere in the scanner. Source code never leaves the machine.",
+      "source": "Product source: package.json dependencies; import inspection of src/",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "formats-4",
+      "claim": "Four output formats including SARIF 2.1.0",
+      "detail": "Terminal, Markdown (evidence document), JSON, and SARIF 2.1.0 which uploads to the GitHub code-scanning tab.",
+      "source": "Product source: src/report.ts; verified against the SARIF 2.1.0 schema",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "languages",
+      "claim": "Detects patterns in TypeScript/JavaScript, Python, C# and Go",
+      "detail": "Polyglot fixtures assert that ASI01, ASI03 and ASI05 fire identically across .ts, .py, .cs and .go.",
+      "source": "Product source: test/fixtures/polyglot-agent/; test/scanner.test.js",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "speed",
+      "claim": "Scans a 387-file Python repository in under a second",
+      "detail": "Measured against openai-agents-python on a standard runner.",
+      "source": "Direct measurement, 2026-08-14",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "redteam-30",
+      "claim": "30 adversarial red-team probes shipped as JSONL",
+      "detail": "Each probe is mapped to an OWASP ASI or LLM ID with a fail_signal, and is designed to be delivered through a real ingestion channel (retrieval, tool result, memory) rather than pasted into a chat box.",
+      "source": "Product source: redteam/probes.jsonl",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "checklist-47",
+      "claim": "47-point manual review checklist",
+      "detail": "Covers the non-source factors static analysis cannot see, mapped to ASI01-ASI10.",
+      "source": "Product source: templates/manual-review-checklist.md",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "precision-55",
+      "claim": "Roughly 55% precision measured against five open-source agent frameworks (~3,100 source files)",
+      "detail": "This is the number the shipped README states and is the only precision figure currently reproducible from what ships in the product. Publish this one. Do not publish a higher figure until a methodology file with the repo list is shipped.",
+      "source": "Product source: README.md, 'Honest limitations' section",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "asi-published",
+      "claim": "The OWASP Top 10 for Agentic Applications was released by the OWASP GenAI Security Project's Agentic Security Initiative in December 2025",
+      "detail": "Announced 9 December 2025 after more than a year of research with 100+ contributors.",
+      "source": "https://genai.owasp.org/2025/12/09/owasp-genai-security-project-releases-top-10-risks-and-mitigations-for-agentic-ai-security/",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "art50-live",
+      "claim": "EU AI Act Article 50 transparency obligations took effect 2 August 2026",
+      "detail": "In force now. One narrow carve-out: generative systems already on the market before 2 August 2026 have until 2 December 2026 to implement Article 50(2) machine-readable marking. Everything else is live with no grace period.",
+      "source": "https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act",
+      "verifiedOn": "2026-08-14"
+    },
+    {
+      "id": "art50-not-delayed",
+      "claim": "The Digital Omnibus deferred Annex III high-risk obligations to December 2027, but did NOT defer Article 50",
+      "detail": "Use this to correct the widespread misreading that 'the August 2026 deadline moved.' It did not, for Article 50.",
+      "source": "https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/",
+      "verifiedOn": "2026-08-14"
+    }
+  ],
+
+  "unverified": [
+    {
+      "id": "precision-75",
+      "claim": "75-80% precision after tuning against 15 repositories / ~17,000 files",
+      "why": "Nothing in the shipped product substantiates rounds two and three of this progression. The README states 5 repos / ~3,100 files / ~55%. Until a methodology file listing the 15 repositories and the measurement procedure ships with the product, this number is unpublishable and must be removed from the website.",
+      "unblockCondition": "Ship docs/precision-methodology.md listing every repository scanned, the file counts, the triage procedure, and the raw counts. Then move this entry to verified and cite that file."
+    }
+  ],
+
+  "bannedPhrases": [
+    "OWASP-certified",
+    "OWASP certified",
+    "OWASP approved",
+    "OWASP endorsed",
+    "endorsed by OWASP",
+    "in partnership with OWASP",
+    "makes you compliant",
+    "make you compliant",
+    "get compliant",
+    "guarantees compliance",
+    "ensures compliance",
+    "fully compliant",
+    "compliance guaranteed",
+    "certified compliant",
+    "100% coverage",
+    "catches every",
+    "catch every vulnerability",
+    "finds all vulnerabilities",
+    "eliminates all",
+    "bulletproof",
+    "unhackable",
+    "military-grade",
+    "bank-grade",
+    "enterprise-grade security",
+    "AI-powered security",
+    "revolutionary",
+    "game-changing",
+    "game changing",
+    "cutting-edge",
+    "best-in-class",
+    "industry-leading",
+    "world-class",
+    "seamlessly",
+    "unlock the power",
+    "in today's fast-paced",
+    "in the ever-evolving",
+    "delve into",
+    "it's not just",
+    "isn't just",
+    "game-changer",
+    "look no further",
+    "we're excited to announce",
+    "thrilled to announce",
+    "supercharge"
+  ],
+
+  "requiredDisclaimers": {
+    "owasp": "Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.",
+    "compliance": "This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation."
+  },
+
+  "disclaimerTriggers": {
+    "owasp": ["OWASP", "ASI0", "ASI1", "LLM0", "LLM1"],
+    "compliance": ["EU AI Act", "Article 50", "compliance", "SOC 2", "audit"]
+  }
+}

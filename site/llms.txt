@@ -1,0 +1,17 @@
+# ASIScan
+
+> Static analysis for AI agent codebases, mapped to the OWASP Top 10 for Agentic Applications, the OWASP LLM Top 10, and EU AI Act Article 50.
+
+ASIScan is a command-line static analysis tool for AI agent codebases, published by Protocol 42 (Ontario, Canada). It runs entirely offline with no telemetry and produces terminal, Markdown, JSON and SARIF 2.1.0 output. Licensing is one-time and perpetual: Single Project $149, Team $349, Consultancy $899 USD.
+
+Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.
+This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation.
+
+## Articles
+
+- [ASI09: the approval dialog your agent wrote for itself](https://asiscan.dev/blog/asi09-human-agent-trust-exploitation): If a model composes the text of your confirmation prompt, the human is approving a description, not an action. How that gap opens and how to close it.
+
+## Product
+
+- [Home](https://asiscan.dev/): what it checks, pricing, FAQ
+- [Blog](https://asiscan.dev/blog/): findings and design notes

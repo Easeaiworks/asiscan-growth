@@ -1,0 +1,115 @@
+name: Publish content
+
+# Weekly: generate the next queued post, verify it, build the site, commit,
+# and queue the LinkedIn post. Vercel deploys on push.
+#
+# Exit code 78 from any script means "nothing to do" and is treated as success.
+
+on:
+  schedule:
+    - cron: "0 13 * * 2"   # Tuesdays 13:00 UTC = 09:00 America/Toronto (EDT)
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Publish a specific topic slug instead of the next pending one"
+        required: false
+      dry_run:
+        description: "Generate and verify without committing"
+        type: boolean
+        default: false
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check kill switch
+        run: |
+          if [ -f PAUSE ] || [ "${{ vars.PAUSE_PUBLISHING }}" = "true" ]; then
+            echo "::warning::Publishing is paused. Remove the PAUSE file or unset PAUSE_PUBLISHING to resume."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Generate and verify the next post
+        id: gen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+        run: |
+          set +e
+          node scripts/generate-post.mjs ${{ inputs.slug && format('--slug {0}', inputs.slug) || '' }} ${{ inputs.dry_run && '--dry-run' || '' }}
+          code=$?
+          set -e
+          if [ $code -eq 78 ]; then
+            echo "Nothing to publish."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          exit $code
+
+      - name: Build site
+        if: steps.gen.outputs.skip != 'true' && steps.gen.outputs.published == 'true'
+        run: npm run build
+
+      - name: Verify everything that is about to go live
+        if: steps.gen.outputs.skip != 'true' && steps.gen.outputs.published == 'true'
+        run: npm run guard
+
+      - name: Compose the LinkedIn post
+        if: steps.gen.outputs.skip != 'true' && steps.gen.outputs.published == 'true' && !inputs.dry_run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          SOCIAL_MODE: ${{ vars.SOCIAL_MODE || 'llm' }}
+        run: node scripts/compose-social.mjs --slug "${{ steps.gen.outputs.slug }}"
+
+      - name: Commit and push
+        if: steps.gen.outputs.skip != 'true' && steps.gen.outputs.published == 'true' && !inputs.dry_run
+        run: |
+          git config user.name  "asiscan-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add content site data
+          git commit -m "content: publish ${{ steps.gen.outputs.slug }}"
+          git push
+
+      - name: Open an issue if generation failed verification
+        if: failure() && steps.gen.conclusion == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Post generation failed verification — ${new Date().toISOString().slice(0,10)}`,
+              labels: ['fact-guard'],
+              body: [
+                'The content generator produced a draft that failed the fact-guard checks three times, so nothing was published.',
+                '',
+                'The rejected draft and the specific errors are in `content/rejected/` on the runner (not committed).',
+                `[Run log](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+                '',
+                'This usually means one of:',
+                '- the topic brief invites a statistic that is not in the claims ledger',
+                '- a required disclaimer trigger fired and the model omitted the disclaimer',
+                '- the claims ledger needs a new verified entry',
+                '',
+                'No action is urgent. The queue will try the same topic again next week.',
+              ].join('\n'),
+            })

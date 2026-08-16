@@ -1,0 +1,40 @@
+{
+  "$comment": "Single source of truth for the growth engine. Change the product name here and it propagates everywhere: site, blog, RSS, LinkedIn copy, prompts.",
+  "product": {
+    "name": "ASIScan",
+    "legalEntity": "Protocol 42",
+    "tagline": "Your SAST scanner doesn't know what a tool call is.",
+    "shortDescription": "Static analysis for AI agent codebases, mapped to the OWASP Top 10 for Agentic Applications, the OWASP LLM Top 10, and EU AI Act Article 50.",
+    "npmPackage": "asiscan",
+    "cliInvocation": "npx asiscan ."
+  },
+  "site": {
+    "origin": "https://asiscan.dev",
+    "blogPath": "/blog",
+    "author": "Adam Berube",
+    "authorTitle": "Director, Protocol 42",
+    "contactEmail": "hello@protocol42.com",
+    "locale": "en",
+    "region": "Ontario, Canada"
+  },
+  "pricing": {
+    "currency": "USD",
+    "tiers": [
+      { "id": "single", "name": "Single Project", "price": 149 },
+      { "id": "team", "name": "Team", "price": 349 },
+      { "id": "consultancy", "name": "Consultancy", "price": 899 }
+    ],
+    "model": "one-time perpetual licence, free v1.x updates, 30-day refund"
+  },
+  "social": {
+    "linkedinCompanyPageUrl": "",
+    "linkedinOrganizationUrn": "",
+    "githubOrg": ""
+  },
+  "publishing": {
+    "timezone": "America/Toronto",
+    "blogCadenceCron": "0 13 * * 2",
+    "socialCadenceCron": "0 13 * * 2,4",
+    "maxPostsPerRun": 1
+  }
+}
