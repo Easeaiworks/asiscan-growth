@@ -20,6 +20,10 @@ export async function complete({
 }) {
   const key = requireEnv('ANTHROPIC_API_KEY');
 
+  // Newer models reject sampling parameters such as `temperature` with a 400.
+  // Send it when the model accepts it; drop it and retry once when it doesn't,
+  // so switching ANTHROPIC_MODEL never needs a code change.
+  let sendTemperature = temperature !== undefined;
   let lastErr;
   for (let attempt = 0; attempt <= retries; attempt++) {
     if (attempt > 0) {
@@ -37,7 +41,7 @@ export async function complete({
         body: JSON.stringify({
           model,
           max_tokens: maxTokens,
-          temperature,
+          ...(sendTemperature ? { temperature } : {}),
           ...(system ? { system } : {}),
           messages: [{ role: 'user', content: prompt }],
         }),
@@ -48,7 +52,13 @@ export async function complete({
         continue;
       }
       if (!res.ok) {
-        throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
+        const body = await res.text();
+        if (res.status === 400 && sendTemperature && /temperature/i.test(body)) {
+          sendTemperature = false;
+          attempt--; // not a real failure: retry immediately without it
+          continue;
+        }
+        throw new Error(`Anthropic API ${res.status}: ${body}`);
       }
 
       const json = await res.json();
