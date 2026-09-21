@@ -108,6 +108,9 @@ function emptyRule(ruleId, meta = {}) {
     reposAffected: 0,
     findings: 0,
     repoTags: {},
+    // Findings per repository, used to compute concentration below and then
+    // dropped: the published file carries aggregates only.
+    _byRepo: {},
   };
 }
 
@@ -143,6 +146,7 @@ async function main() {
         if (!rules.has(id)) rules.set(id, emptyRule(id, f));
         const r = rules.get(id);
         r.findings += 1;
+        r._byRepo[repo.slug] = (r._byRepo[repo.slug] || 0) + 1;
         if (!seenHere.has(id)) {
           seenHere.add(id);
           r.reposAffected += 1;
@@ -157,6 +161,7 @@ async function main() {
         tag: repo.tag,
         lang: repo.lang,
         filesScanned: files,
+        durationMs: result.summary?.durationMs ?? null,
         findings: findings.length,
         rulesTriggered: [...seenHere].sort(),
       });
@@ -172,6 +177,16 @@ async function main() {
   }
 
   const reposScanned = perRepo.length;
+  // Concentration: the share of a rule's findings that come from its single
+  // largest contributor. A total dominated by one repository says something
+  // about that repository (or about a false-positive class), not about the
+  // ecosystem -- content must cite repository counts for such rules.
+  for (const r of rules.values()) {
+    const top = Math.max(0, ...Object.values(r._byRepo));
+    r.topRepoSharePct = r.findings ? Math.round((top / r.findings) * 100) : 0;
+    delete r._byRepo;
+  }
+
   const rulePrevalence = [...rules.values()].sort(
     (a, b) => b.reposAffected - a.reposAffected || b.findings - a.findings
   );
@@ -199,6 +214,7 @@ async function main() {
     perRepo,
     failed,
     methodology: {
+      scannerVersion: await scannerVersion(),
       scanner: process.env.SCANNER_PATH ? 'local build' : (process.env.SCANNER_CMD || 'npx --yes asiscan-cli@latest'),
       cloneDepth: 1,
       note:
@@ -230,6 +246,18 @@ async function main() {
       `${totalFindings} findings. ${failed.length} failed.\n` +
       `Wrote data/corpus-findings.json\n`
   );
+}
+
+async function scannerVersion() {
+  try {
+    const [cmd, argv] = process.env.SCANNER_PATH
+      ? ['node', [process.env.SCANNER_PATH, '--version']]
+      : (() => { const c = (process.env.SCANNER_CMD || 'npx --yes asiscan-cli@latest').split(' '); return [c[0], [...c.slice(1), '--version']]; })();
+    const { stdout } = await run(cmd, argv);
+    return stdout.trim().split(/\s+/).pop();
+  } catch {
+    return 'unknown';
+  }
 }
 
 function median(nums) {

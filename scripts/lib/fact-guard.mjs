@@ -58,6 +58,10 @@ export function buildAllowedNumbers() {
     // Every number the scanner itself produced is fair game to publish.
     for (const n of numbersIn(JSON.stringify(data))) allowed.add(n);
     // Percentages derived from those counts, rounded both ways.
+    // Durations converted to seconds, one decimal, as the brief states them.
+    for (const r of data.perRepo || []) {
+      if (r.durationMs != null) allowed.add((r.durationMs / 1000).toFixed(1));
+    }
     for (const r of data.rulePrevalence || []) {
       const pct = (r.reposAffected / data.summary.reposScanned) * 100;
       allowed.add(String(Math.round(pct)));
@@ -156,8 +160,8 @@ export function check(markdown, opts = {}) {
         }
       }
       const desc = fm[1].match(/^description:\s*["']?(.+?)["']?\s*$/m);
-      if (desc && desc[1].length > 165) {
-        warnings.push(`Meta description is ${desc[1].length} chars; target <=160.`);
+      if (desc && desc[1].length > 160) {
+        errors.push(`Meta description is ${desc[1].length} characters; maximum 160 (search engines truncate beyond that).`);
       }
     }
     const words = prose.split(/\s+/).filter(Boolean).length;

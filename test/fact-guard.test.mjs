@@ -127,3 +127,18 @@ test('the allowed-number set includes ledger figures and prices', () => {
   assert.ok(allowed.has('55'), 'measured precision');
   assert.ok(!allowed.has('87'), 'an arbitrary number must not be allowed');
 });
+
+test('a meta description over 160 characters is rejected', () => {
+  const long = 'x'.repeat(161);
+  const md = FM(`# Heading\n\n${FILLER}${DISCLAIMERS}`).replace(/^description: .*$/m, `description: ${long}`);
+  const r = check(md, { kind: 'blog' });
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.some((e) => e.includes('Meta description')));
+});
+
+test('the retired 387-file speed claim cannot be published', () => {
+  const md = FM(`# Heading\n\n${FILLER}\n\nIt scanned a 387-file repository in under a second.${DISCLAIMERS}`);
+  const r = check(md, { kind: 'blog' });
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.some((e) => e.includes('387')));
+});

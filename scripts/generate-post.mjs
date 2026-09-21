@@ -32,17 +32,37 @@ function corpusBrief(corpus) {
   }
   const s = corpus.summary;
   const lines = [
-    `Corpus scan of ${s.reposScanned} open-source AI agent repositories (${s.filesScanned} source files), run ${corpus.date}.`,
+    `Corpus scan of ${s.reposScanned} open-source AI agent repositories (${s.filesScanned} source files), run ${corpus.date} with asiscan-cli ${corpus.methodology.scannerVersion || '(version not recorded)'}.`,
     `Total findings: ${s.totalFindings}. Median per repository: ${s.medianFindingsPerRepo}. Repositories with zero findings: ${s.reposWithZeroFindings}.`,
     '',
     'Rule prevalence (repositories affected out of ' + s.reposScanned + '):',
   ];
   for (const r of corpus.rulePrevalence.slice(0, 18)) {
     const pct = Math.round((r.reposAffected / s.reposScanned) * 100);
-    lines.push(`  ${r.ruleId} ${r.title} — ${r.reposAffected}/${s.reposScanned} repositories (${pct}%), ${r.findings} findings, severity ${r.severity}`);
+    const conc = r.topRepoSharePct >= 50
+      ? ` — CONCENTRATED: ${r.topRepoSharePct}% of these findings come from a single repository. Cite the repository count only; do not cite the finding total or call this rule "most common" by findings.`
+      : '';
+    lines.push(`  ${r.ruleId} ${r.title} — ${r.reposAffected}/${s.reposScanned} repositories (${pct}%), ${r.findings} findings, severity ${r.severity}${conc}`);
+  }
+  lines.push('', 'Rank rules by repositories affected, never by raw finding totals: one large repository can dominate a total.');
+  const timed = (corpus.perRepo || []).filter((r) => r.durationMs != null);
+  if (timed.length) {
+    const big = timed.reduce((a, b) => (b.filesScanned > a.filesScanned ? b : a));
+    lines.push('', `Speed (measured in this run on a GitHub-hosted runner): the largest repository, ${big.filesScanned} source files, scanned in ${(big.durationMs / 1000).toFixed(1)} seconds. This is the only speed figure you may cite; do not name the repository.`);
+  } else {
+    lines.push('', 'No speed measurements in this run. Make no claim about scan speed.');
   }
   lines.push('', 'Methodology caveat that MUST be reflected honestly if you cite these numbers:');
   lines.push('  ' + corpus.methodology.note);
+  return lines.join('\n');
+}
+
+function rulesBrief() {
+  const p = path('config', 'rules.json');
+  if (!existsSync(p)) return 'RULE DETECTION DATA MISSING. Do not describe how any individual rule detects.';
+  const r = JSON.parse(readFileSync(p, 'utf8'));
+  const lines = [`HOW EACH RULE DETECTS (asiscan-cli ${r.scannerVersion}). Describe a rule's detection only in these terms:`];
+  for (const x of r.rules) lines.push(`  ${x.id} ${x.title} [${x.severity}] — ${x.detects}.`);
   return lines.join('\n');
 }
 
@@ -77,6 +97,7 @@ function buildPrompt(topic, corpus, retryErrors) {
   const parts = [
     `# Voice guide\n\n${readText('config/voice.md')}`,
     `# ${claimsBrief()}`,
+    `# ${rulesBrief()}`,
     `# Scan data\n\n${corpusBrief(corpus)}`,
     `# Brand\n\nProduct: ${brand.product.name}\nDomain: ${brand.site.origin}\nInstall command: ${brand.product.cliInvocation}\nTagline: ${brand.product.tagline}`,
     `# Required disclaimer sentences (use verbatim when triggered)\n\n- ${claims.requiredDisclaimers.owasp}\n- ${claims.requiredDisclaimers.compliance}`,

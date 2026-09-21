@@ -35,6 +35,9 @@ jobs:
 
       - run: npm ci --no-audit --no-fund
 
+      - name: Sync rule detection metadata
+        run: node scripts/sync-rules.mjs
+
       - name: Scan
         env:
           SCANNER_CMD: ${{ vars.SCANNER_CMD || 'npx --yes asiscan-cli@latest' }}
@@ -44,8 +47,8 @@ jobs:
         run: |
           git config user.name  "asiscan-bot"
           git config user.email "bot@users.noreply.github.com"
-          if ! git diff --quiet -- data/; then
-            git add data/
+          if ! git diff --quiet -- data/ config/rules.json; then
+            git add data/ config/rules.json
             git commit -m "data: refresh corpus scan"
             git push
           else

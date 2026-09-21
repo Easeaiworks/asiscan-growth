@@ -8,7 +8,6 @@
     "Anything in 'unverified' is BLOCKED from publication until it is substantiated.",
     "fact-guard.mjs enforces this. Do not weaken it to get a post out the door."
   ],
-
   "verified": [
     {
       "id": "rules-18",
@@ -36,7 +35,7 @@
       "claim": "Runs entirely offline, no telemetry, no network calls",
       "detail": "One runtime dependency (picocolors). No HTTP client is imported anywhere in the scanner. Source code never leaves the machine.",
       "source": "Product source: package.json dependencies; import inspection of src/",
-      "verifiedOn": "2026-08-14"
+      "verifiedOn": "2026-09-21"
     },
     {
       "id": "formats-4",
@@ -50,28 +49,21 @@
       "claim": "Detects patterns in TypeScript/JavaScript, Python, C# and Go",
       "detail": "Polyglot fixtures assert that ASI01, ASI03 and ASI05 fire identically across .ts, .py, .cs and .go.",
       "source": "Product source: test/fixtures/polyglot-agent/; test/scanner.test.js",
-      "verifiedOn": "2026-08-14"
-    },
-    {
-      "id": "speed",
-      "claim": "Scans a 387-file Python repository in under a second",
-      "detail": "Measured against openai-agents-python on a standard runner.",
-      "source": "Direct measurement, 2026-08-14",
-      "verifiedOn": "2026-08-14"
+      "verifiedOn": "2026-09-21"
     },
     {
       "id": "redteam-30",
       "claim": "30 adversarial red-team probes shipped as JSONL",
       "detail": "Each probe is mapped to an OWASP ASI or LLM ID with a fail_signal, and is designed to be delivered through a real ingestion channel (retrieval, tool result, memory) rather than pasted into a chat box.",
       "source": "Product source: redteam/probes.jsonl",
-      "verifiedOn": "2026-08-14"
+      "verifiedOn": "2026-09-21"
     },
     {
-      "id": "checklist-47",
-      "claim": "47-point manual review checklist",
-      "detail": "Covers the non-source factors static analysis cannot see, mapped to ASI01-ASI10.",
-      "source": "Product source: templates/manual-review-checklist.md",
-      "verifiedOn": "2026-08-14"
+      "id": "checklist-49",
+      "claim": "49-point manual review checklist",
+      "detail": "49 checks, with severity and an evidence column, covering the non-source factors static analysis cannot see, mapped to ASI01-ASI10.",
+      "source": "Product source: templates/manual-review-checklist.md (49 numbered rows, counted 2026-09-21)",
+      "verifiedOn": "2026-09-21"
     },
     {
       "id": "precision-55",
@@ -102,16 +94,20 @@
       "verifiedOn": "2026-08-14"
     }
   ],
-
   "unverified": [
     {
       "id": "precision-75",
       "claim": "75-80% precision after tuning against 15 repositories / ~17,000 files",
       "why": "Nothing in the shipped product substantiates rounds two and three of this progression. The README states 5 repos / ~3,100 files / ~55%. Until a methodology file listing the 15 repositories and the measurement procedure ships with the product, this number is unpublishable and must be removed from the website.",
       "unblockCondition": "Ship docs/precision-methodology.md listing every repository scanned, the file counts, the triage procedure, and the raw counts. Then move this entry to verified and cite that file."
+    },
+    {
+      "id": "speed-387",
+      "claim": "Scans a 387-file Python repository in under a second",
+      "why": "Measured in August on a repository that has since changed; no current repository in the corpus has 387 files. Speed claims now come only from durations measured in the corpus run (data/corpus-findings.json perRepo.durationMs).",
+      "unblockCondition": "None. Use the measured figure the corpus brief supplies."
     }
   ],
-
   "bannedPhrases": [
     "OWASP-certified",
     "OWASP certified",
@@ -158,14 +154,24 @@
     "thrilled to announce",
     "supercharge"
   ],
-
   "requiredDisclaimers": {
     "owasp": "Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.",
     "compliance": "This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation."
   },
-
   "disclaimerTriggers": {
-    "owasp": ["OWASP", "ASI0", "ASI1", "LLM0", "LLM1"],
-    "compliance": ["EU AI Act", "Article 50", "compliance", "SOC 2", "audit"]
+    "owasp": [
+      "OWASP",
+      "ASI0",
+      "ASI1",
+      "LLM0",
+      "LLM1"
+    ],
+    "compliance": [
+      "EU AI Act",
+      "Article 50",
+      "compliance",
+      "SOC 2",
+      "audit"
+    ]
   }
 }
