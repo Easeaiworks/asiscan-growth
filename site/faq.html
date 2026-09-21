@@ -71,15 +71,17 @@
   <h2>Accuracy</h2>
 
   <details><summary>How accurate is it, really?</summary>
-    <p><strong>Roughly 75% precision on real-world code</strong>, meaning about one finding in
-    four is something you'll dismiss. We measured it against fifteen open-source agent
-    frameworks — around 17,000 source files — and publish the number because you should know it.</p>
+    <p><strong>We're re-measuring it, and won't quote a current figure until that's done.</strong>
+    Version 1.5.2 is being measured across a 50-repository corpus of open-source agent code, with
+    every finding in a random sample reviewed by hand. The result, the method and the raw counts
+    will be published here — expect roughly one finding in several to be something you dismiss,
+    which is normal for static analysis.</p>
     <p>It got there in rounds, each one hand-reviewed: untuned it was ~4% precision at 792
     findings; tuning took it to ~55%; expanding the corpus to ten repositories took it to ~62%;
     adding file-level context gating took it to ~69%; and a final pass of targeted fixes took it
     to 75–80%. That last figure was validated against the five repositories carrying the false
-    positives it targeted rather than re-measured across all ten, so treat ~75% as the working
-    number and 80% as the best case.</p>
+    positives it targeted rather than re-measured across all ten, and an independent check on unseen
+    code in September 2026 came in lower — which is why it is being re-measured.</p>
     <p>For context: published benchmarks put untuned commercial SAST at 60–90% false positives,
     dropping to 10–20% once tuned for a stack, and SonarQube at 40–60% of findings requiring
     developer review. A ~25% false-positive rate is the well-tuned commercial band. The

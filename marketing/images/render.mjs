@@ -112,7 +112,7 @@ const images = [
       ${[["calendar.read (primary)", "needed", true], ["calendar.write (all calendars)", "granted", false], ["calendar.delete", "granted", false], ["contacts.read", "granted", false], ["mail.send", "granted", false]]
         .map(([p, s, ok]) => `<div class="perm"><span class="mono">${p}</span><span class="${ok ? "acc" : "red"} mono" style="font-weight:700">${ok ? "✓ " : "✗ "}${s}</span></div>`).join("")}
     </div>
-    <p style="font-size:36px;margin-top:44px;line-height:1.4">This is <span class="acc" style="font-weight:700">excessive agency</span> — OWASP LLM06. Nothing breaks until something does.</p>
+    <p style="font-size:36px;margin-top:44px;line-height:1.4">This is <span class="acc" style="font-weight:700">excessive agency</span> — an OWASP LLM Top 10 risk. Nothing breaks until something does.</p>
     <div class="src">Illustrative permission set</div>
     </div>
     ${foot}`,

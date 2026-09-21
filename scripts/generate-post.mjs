@@ -68,7 +68,7 @@ Hard constraints, enforced by an automated verifier that will reject your output
 2. Never claim or imply OWASP endorsement, certification, or affiliation.
 3. Never claim the tool makes anyone compliant with any regulation. It produces evidence for human assessment. Use "readiness", "evidence", or "assessment".
 4. Never name an individual open-source repository as insecure. Aggregate statistics only. A repository may be named only to illustrate a pattern that is easy to get wrong, framed neutrally.
-5. State the tool's limitations in the body, not in a footnote. It is regex-based, not AST-based. It produces false positives. The measured precision figure is in the verified-facts list — publish it.
+5. State the tool's limitations in the body, not in a footnote. It is regex-based, not AST-based. It produces false positives. Do not state a current precision figure. If precision comes up, say it is being re-measured for the current release against a 50-repository corpus; the only figure you may cite is the historical August-build one in the verified-facts list, and only when clearly labelled as that build.
 6. Include both required disclaimer sentences verbatim, in a short "Notes" section at the end, when the post touches OWASP or compliance topics.
 
 Output format: a single Markdown document beginning with YAML frontmatter containing exactly these keys: title, description, date, slug, tags (a YAML list), and canonical. Nothing before the frontmatter, no commentary after the document.`;

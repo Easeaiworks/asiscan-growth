@@ -76,7 +76,7 @@
     {
       "id": "precision-55",
       "claim": "Roughly 55% precision measured against five open-source agent frameworks (~3,100 source files)",
-      "detail": "This is the number the shipped README states and is the only precision figure currently reproducible from what ships in the product. Publish this one. Do not publish a higher figure until a methodology file with the repo list is shipped.",
+      "detail": "HISTORICAL: measured on the August 2026 build, before the v1.5 false-positive fixes. It may only be cited as the figure for that build (e.g. 'the August build measured roughly 55% precision on five frameworks'), never as current precision. Precision for v1.5.2 is being re-measured across the 50-repository corpus; until that result is added here with a methodology file, say precision is being re-measured and give no current figure.",
       "source": "Product source: README.md, 'Honest limitations' section",
       "verifiedOn": "2026-08-14"
     },
