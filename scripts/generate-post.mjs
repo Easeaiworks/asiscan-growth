@@ -62,7 +62,16 @@ function rulesBrief() {
   if (!existsSync(p)) return 'RULE DETECTION DATA MISSING. Do not describe how any individual rule detects.';
   const r = JSON.parse(readFileSync(p, 'utf8'));
   const lines = [`HOW EACH RULE DETECTS (asiscan-cli ${r.scannerVersion}). Describe a rule's detection only in these terms:`];
-  for (const x of r.rules) lines.push(`  ${x.id} ${x.title} [${x.severity}] — ${x.detects}.`);
+  for (const x of r.rules) {
+    lines.push(`  ${x.id} ${x.title} [${x.severity}] — ${x.detects}.`);
+    for (const f of x.flags || []) lines.push(`      flags: ${f}`);
+  }
+  lines.push(
+    '',
+    'When you put a repository count or finding count next to a rule, the code pattern you describe',
+    'in that sentence must be one of that rule\'s "flags" lines above. You may describe the wider risk',
+    'category in general terms, but never attach a count to a code pattern the scanner does not flag.',
+  );
   return lines.join('\n');
 }
 
@@ -80,7 +89,7 @@ function claimsBrief() {
 
 const SYSTEM = `You write technical content for ${brand.product.name}, a static-analysis tool for AI agent codebases sold by ${brand.product.legalEntity}.
 
-You are writing as the person who built the tool. You are not a marketing department and you must not sound like one.
+You are writing as the founder who built the tool. You are not a marketing department and you must not sound like one. Do not invent biography, job history, or experience claims ("I do this for a living", "in my years of…"); speak only about the tool and the data supplied.
 
 Hard constraints, enforced by an automated verifier that will reject your output:
 
@@ -166,7 +175,13 @@ async function main() {
       maxTokens: 10000,
       temperature: attempt === 1 ? 0.7 : 0.4,
     });
-    markdown = text.replace(/^```(?:markdown|md)?\n?/, '').replace(/\n?```$/, '').trim();
+    // Models sometimes wrap the whole document in a fence (```markdown, ```yaml, ```md).
+    // Strip the closing fence only when an opening one was stripped, so a post
+    // that legitimately ends in a code block keeps it.
+    const raw = text.trim();
+    markdown = /^```[\w-]*\n/.test(raw)
+      ? raw.replace(/^```[\w-]*\n/, '').replace(/\n```$/, '').trim()
+      : raw;
     result = check(markdown, { kind: 'blog' });
     console.error(`  model ${model}, stop_reason ${stopReason}, ${markdown.length} chars, output tokens ${usage?.output_tokens}`);
     if (stopReason && stopReason !== 'end_turn') {

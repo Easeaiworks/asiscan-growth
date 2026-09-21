@@ -12,9 +12,9 @@
     {
       "id": "rules-18",
       "claim": "18 static rules",
-      "detail": "18 rules: ASI01-ASI10 (all ten OWASP Agentic categories), LLM01/02/05/06/07/10, and two EU AI Act Article 50 checks (EUAIA-52, EUAIA-50).",
+      "detail": "18 rules in total: ten ASI rules (ASI01-ASI10, one per OWASP Agentic category), six OWASP LLM Top 10 rules using the 2025 edition's numbering (LLM01, LLM02, LLM05, LLM06, LLM07, LLM10 -- six, not five), and two EU AI Act Article 50 checks (EUAIA-52, EUAIA-50). When naming the LLM IDs, say they are the 2025 edition's numbering, because the 2026 edition renumbered the list.",
       "source": "Product source: src/rules/asi.ts and src/rules/llm.ts; asserted by test/scanner.test.js",
-      "verifiedOn": "2026-08-14"
+      "verifiedOn": "2026-09-21"
     },
     {
       "id": "control-probe",

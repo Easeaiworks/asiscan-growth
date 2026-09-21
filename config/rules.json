@@ -9,7 +9,16 @@
       "severity": "critical",
       "presenceProbes": 6,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Untrusted or dynamic content is interpolated directly into the system prompt. Anything reachable by an attacker in that string becomes an instruction.",
+        "Fetched external content appears to flow into the prompt without an intervening sanitisation or delimiting step.",
+        "The project retrieves external content into model context but shows no evidence of delimiting or marking it as untrusted data (ASI01 primary mitigation).",
+        "Zero-width or invisible Unicode character in source. Invisible to you and to code review, but a token to the model -- the standard carrier for smuggled instructions.",
+        "Unicode bidirectional override character. Source that renders one way and parses another is a Trojan Source construct (CVE-2021-42574).",
+        "Unicode tag characters present -- an invisible ASCII alphabet with no legitimate use in source. Treat as smuggled instruction text until proven otherwise.",
+        "Tool or skill description contains instruction-override language. Descriptions are passed to the model verbatim, so this is a tool-poisoning primitive."
+      ]
     },
     {
       "id": "ASI02",
@@ -17,7 +26,11 @@
       "severity": "critical",
       "presenceProbes": 0,
       "controlProbes": 2,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "Tools are defined but no parameter schema validation is evident. Model-produced arguments should be validated server-side before execution.",
+        "No tool allowlist or per-invocation authorisation policy detected. Agents should hold the minimum tool set required for the current task."
+      ]
     },
     {
       "id": "ASI03",
@@ -25,7 +38,12 @@
       "severity": "critical",
       "presenceProbes": 2,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Hardcoded long-lived credential. Agent credentials must be short-lived, scoped, and injected at runtime.",
+        "A credential or session is configured to never expire.",
+        "Agent performs tool calls but no scoped or short-lived credential exchange is evident -- the agent may be running on a standing token."
+      ]
     },
     {
       "id": "ASI04",
@@ -33,7 +51,12 @@
       "severity": "high",
       "presenceProbes": 2,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Unpinned dependency range. Agentic dependencies should be pinned to exact versions with a committed lockfile.",
+        "MCP server or tool launched at an unpinned version. A compromised upstream release executes immediately with agent privileges.",
+        "MCP servers are configured but no SBOM/AIBOM, provenance verification, or dependency scanning is evident."
+      ]
     },
     {
       "id": "ASI05",
@@ -41,7 +64,12 @@
       "severity": "critical",
       "presenceProbes": 2,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Dynamic evaluation of a non-literal value. If any part of this derives from model output, it is direct RCE.",
+        "Shell command built by string interpolation or concatenation. Model-influenced values in a shell string are a command-injection primitive.",
+        "A code-execution tool is exposed to the agent with no evidence of sandboxing or network egress restriction."
+      ]
     },
     {
       "id": "ASI06",
@@ -49,7 +77,11 @@
       "severity": "high",
       "presenceProbes": 0,
       "controlProbes": 2,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "Agent memory is persisted without an evident per-user or per-tenant scope key. Cross-tenant memory bleed is both a poisoning and a disclosure vector.",
+        "Memory writes show no validation or expiry. Poisoned entries persist indefinitely and influence every later run."
+      ]
     },
     {
       "id": "ASI07",
@@ -57,7 +89,11 @@
       "severity": "high",
       "presenceProbes": 1,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Plaintext HTTP endpoint. Inter-agent traffic must be encrypted and mutually authenticated.",
+        "Multi-agent handoff detected with no evident authentication or message signing between agents."
+      ]
     },
     {
       "id": "ASI08",
@@ -65,7 +101,11 @@
       "severity": "high",
       "presenceProbes": 0,
       "controlProbes": 2,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "Agent execution loop with no evident iteration cap, retry bound, or timeout. An agent that cannot terminate cannot be contained.",
+        "Tool dispatch without evident error handling -- failures will propagate uncontained to callers."
+      ]
     },
     {
       "id": "ASI09",
@@ -73,7 +113,11 @@
       "severity": "high",
       "presenceProbes": 1,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Approval gate is bypassed. Irreversible agent actions require explicit human confirmation of the resolved action.",
+        "Irreversible or high-impact operations are reachable with no evident human-in-the-loop confirmation step."
+      ]
     },
     {
       "id": "ASI10",
@@ -81,7 +125,11 @@
       "severity": "critical",
       "presenceProbes": 0,
       "controlProbes": 2,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "Agent actions are dispatched with no evident audit logging. Rogue behaviour is undetectable and unforensicable without an action log.",
+        "No kill switch or cancellation path is evident for running agents. Containment requires the ability to halt an agent mid-execution."
+      ]
     },
     {
       "id": "LLM01",
@@ -89,7 +137,11 @@
       "severity": "critical",
       "presenceProbes": 1,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Request-derived data is interpolated into a system message -- direct prompt injection into the highest-trust channel.",
+        "Model is invoked with no evident input guardrail, moderation, injection filter, or delimiting of untrusted content."
+      ]
     },
     {
       "id": "LLM02",
@@ -97,7 +149,11 @@
       "severity": "high",
       "presenceProbes": 1,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Full prompt or credential material written to logs without redaction.",
+        "Sensitive personal data categories appear in a codebase that sends data to a model, with no evident redaction or de-identification step."
+      ]
     },
     {
       "id": "LLM05",
@@ -105,7 +161,12 @@
       "severity": "high",
       "presenceProbes": 2,
       "controlProbes": 1,
-      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project"
+      "detects": "both: presence probes flag a dangerous construct directly, and a control probe flags the risky behaviour when no mitigation evidence exists anywhere in the project",
+      "flags": [
+        "Model output rendered as raw HTML. This is a direct XSS sink.",
+        "Model output interpolated into a SQL string. Use parameterised queries.",
+        "Structured model output is parsed without schema validation or error handling."
+      ]
     },
     {
       "id": "LLM06",
@@ -113,7 +174,11 @@
       "severity": "critical",
       "presenceProbes": 2,
       "controlProbes": 0,
-      "detects": "presence only: flags a dangerous construct directly; it does not look for mitigations"
+      "detects": "presence only: flags a dangerous construct directly; it does not look for mitigations",
+      "flags": [
+        "Wildcard or administrative permission granted to an agent.",
+        "Agent operates with an administrative or service-role database identity. Use a least-privilege role with row-level security."
+      ]
     },
     {
       "id": "LLM07",
@@ -121,7 +186,10 @@
       "severity": "medium",
       "presenceProbes": 1,
       "controlProbes": 0,
-      "detects": "presence only: flags a dangerous construct directly; it does not look for mitigations"
+      "detects": "presence only: flags a dangerous construct directly; it does not look for mitigations",
+      "flags": [
+        "The system prompt appears to contain secrets, internal endpoints, or credentials. Treat the system prompt as public."
+      ]
     },
     {
       "id": "LLM10",
@@ -129,7 +197,12 @@
       "severity": "medium",
       "presenceProbes": 0,
       "controlProbes": 3,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "Model invoked with no output token cap.",
+        "No rate limiting or quota evident around model invocation.",
+        "Model calls have no evident timeout or abort signal."
+      ]
     },
     {
       "id": "EUAIA-52",
@@ -137,7 +210,10 @@
       "severity": "high",
       "presenceProbes": 0,
       "controlProbes": 1,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "User-facing conversational UI with no evident AI-interaction disclosure (EU AI Act Art. 50(1), enforceable 2026-08-02)."
+      ]
     },
     {
       "id": "EUAIA-50",
@@ -145,7 +221,10 @@
       "severity": "medium",
       "presenceProbes": 0,
       "controlProbes": 1,
-      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project"
+      "detects": "control only: fires when the risky behaviour is present and no evidence of the standard mitigation exists in the project",
+      "flags": [
+        "Synthetic media generation detected with no evident machine-readable marking (EU AI Act Art. 50(2), compliance date 2026-12-02)."
+      ]
     }
   ]
 }

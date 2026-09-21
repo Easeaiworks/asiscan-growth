@@ -40,6 +40,8 @@ const rules = [...m.ASI_RULES, ...m.LLM_RULES, ...m.EU_AI_ACT_RULES].map((r) => 
     id: r.id, title: r.title, severity: r.severity,
     presenceProbes: p, controlProbes: c,
     detects: DETECTS[p && c ? 'both' : p ? 'presence' : 'control'],
+    // What a finding from this rule actually reports, one line per probe.
+    flags: (r.probes || []).map((pr) => pr.message).filter(Boolean),
   };
 });
 
