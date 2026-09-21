@@ -102,7 +102,16 @@ footer{border-top:1px solid var(--line);padding:32px 0;margin-top:60px;font-size
 footer .wrap{max-width:940px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 `.trim();
 
-function chrome({ title, description, canonical, body, jsonLd }) {
+// Social preview image. A post can ship its own at site/og/blog-<slug>.png;
+// every other page falls back to the site image, so a shared link never shows
+// an empty card (declaring summary_large_image with no image renders broken).
+function ogImageFor(slug) {
+  if (slug && existsSync(path('site', 'og', `blog-${slug}.png`))) return `${ORIGIN}/og/blog-${slug}.png`;
+  return `${ORIGIN}/og/asiscan.png`;
+}
+
+function chrome({ title, description, canonical, body, jsonLd, slug }) {
+  const image = ogImageFor(slug);
   return `<!doctype html>
 <html lang="${brand.site.locale}">
 <head>
@@ -115,10 +124,16 @@ function chrome({ title, description, canonical, body, jsonLd }) {
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${canonical}">
+<meta property="og:image" content="${image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${image}">
 <link rel="alternate" type="application/rss+xml" title="${escapeHtml(brand.product.name)} blog" href="${ORIGIN}${BLOG}/rss.xml">
 <style>${STYLE}</style>
 ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <nav><div class="wrap">
@@ -179,6 +194,7 @@ ${html}
 </div></article>`;
 
   return chrome({
+    slug: post.slug,
     title: `${post.title} · ${brand.product.name}`,
     description: post.description,
     canonical,

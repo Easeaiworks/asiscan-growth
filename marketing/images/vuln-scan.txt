@@ -1,0 +1,305 @@
+
+  ASIScan — OWASP ASI / LLM Top 10 static audit
+  2 files · 2 KB · 18 rules · 15ms
+
+
+   CRITICAL   ASI01  Agent Goal Hijack
+  An attacker redirects the agent's objective using content the agent reads
+  (a web page, a document, a tool result, an email). Because retrieved text
+  is concatenated into the same context window as the operator's
+  instructions, the model cannot reliably tell data from directives.
+
+    agent.ts:13:9
+      Untrusted or dynamic content is interpolated directly into the system
+      prompt. Anything reachable by an attacker in that string becomes an
+      instruction.
+      │ const systemPrompt = `You are an ops assistant. Context: ${retrievedDoc}
+
+
+   CRITICAL   ASI02  Tool Misuse & Exploitation
+  Legitimate tools are bent toward illegitimate outcomes via deceptive input
+  or poisoned tool metadata. A tool that is safe in isolation becomes an
+  attack primitive when its parameters are model-controlled and unvalidated.
+
+    agent.ts:26:5
+      Tools are defined but no parameter schema validation is evident.
+      Model-produced arguments should be validated server-side before
+      execution.
+      │ tools: [
+
+    agent.ts:26:5
+      No tool allowlist or per-invocation authorisation policy detected.
+      Agents should hold the minimum tool set required for the current task.
+      │ tools: [
+
+
+   CRITICAL   ASI03  Identity & Privilege Abuse
+  Agents borrow human credentials or run on long-lived tokens. When such an
+  agent is hijacked, the attacker inherits every permission the token
+  carries, and the audit trail attributes the actions to a human.
+
+    agent.ts:7:29
+      Hardcoded long-lived credential. Agent credentials must be
+      short-lived, scoped, and injected at runtime.
+      │ const openai = new OpenAI({ apiKey: "sk-proj-abcd1234efgh5678ijkl9012mnop" }); // ASI03
+
+    agent.ts:26:5
+      Agent performs tool calls but no scoped or short-lived credential
+      exchange is evident -- the agent may be running on a standing token.
+      │ tools: [
+
+
+   CRITICAL   ASI05  Unexpected Code Execution (RCE)
+  Natural language is converted into running code outside its intended
+  boundary. Code-interpreter tools, dynamic evaluation, and shell tools let
+  a hijacked agent execute arbitrary commands on the host.
+
+    agent.ts:30:18
+      A code-execution tool is exposed to the agent with no evidence of
+      sandboxing or network egress restriction.
+      │ name: "run_command",
+
+    agent.ts:44:5
+      Shell command built by string interpolation or concatenation.
+      Model-influenced values in a shell string are a command-injection
+      primitive.
+      │ exec(`bash -c "${args.cmd}"`, (e, stdout) => {
+
+    agent.ts:55:11
+      Shell command built by string interpolation or concatenation.
+      Model-influenced values in a shell string are a command-injection
+      primitive.
+      │ await exec(`aws s3 rb s3://${name} --force`);
+
+
+   CRITICAL   ASI10  Rogue Agents
+  An agent operates outside policy while appearing legitimate -- continuing
+  to run after its task ends, pursuing objectives no one assigned, or
+  persisting through restarts. Without behavioural baselines there is
+  nothing to compare against, and without a kill switch there is no way to
+  stop it.
+
+    agent.ts:11:23
+      No kill switch or cancellation path is evident for running agents.
+      Containment requires the ability to halt an agent mid-execution.
+      │ export async function runAgent(userInput: string, retrievedDoc: string) {
+
+    agent.ts:26:5
+      Agent actions are dispatched with no evident audit logging. Rogue
+      behaviour is undetectable and unforensicable without an action log.
+      │ tools: [
+
+
+   CRITICAL   LLM01  Prompt Injection
+  User or retrieved input alters the model's behaviour in ways the operator
+  did not intend. Direct injection comes from the user; indirect injection
+  arrives through content the model reads.
+
+    agent.ts:23:35
+      Model is invoked with no evident input guardrail, moderation,
+      injection filter, or delimiting of untrusted content.
+      │ const completion = await openai.chat.completions.create({
+
+
+  HIGH  ASI04  Agentic Supply Chain Vulnerabilities
+  Compromised frameworks, MCP servers, model artifacts, or plugins propagate
+  through every deployment that trusts them. Agentic stacks pull in a long
+  tail of fast-moving dependencies, and MCP servers execute with the agent's
+  privileges.
+
+    package.json:6:5
+      Unpinned dependency range. Agentic dependencies should be pinned to
+      exact versions with a committed lockfile.
+      │ "openai": "latest",
+
+    package.json:7:5
+      Unpinned dependency range. Agentic dependencies should be pinned to
+      exact versions with a committed lockfile.
+      │ "express": "*",
+
+    package.json:8:5
+      Unpinned dependency range. Agentic dependencies should be pinned to
+      exact versions with a committed lockfile.
+      │ "@modelcontextprotocol/sdk": ">=1.0.0"
+
+    package.json:8:7
+      MCP servers are configured but no SBOM/AIBOM, provenance verification,
+      or dependency scanning is evident.
+      │ "@modelcontextprotocol/sdk": ">=1.0.0"
+
+
+  HIGH  ASI06  Memory & Context Poisoning
+  Malicious content planted in session context or long-term memory shapes
+  all future behaviour. Unlike a single hijacked turn, a poisoned memory
+  persists and re-attacks the agent on every subsequent run, often across
+  users.
+
+    agent.ts:9:7
+      Agent memory is persisted without an evident per-user or per-tenant
+      scope key. Cross-tenant memory bleed is both a poisoning and a
+      disclosure vector.
+      │ const memory: Record<string, string[]> = {}; // ASI06: global, unscoped
+
+
+  HIGH  ASI07  Insecure Inter-Agent Communication
+  Unauthenticated agent-to-agent channels let an attacker impersonate an
+  agent, tamper with messages in flight, or replay a previously trusted
+  delegation.
+
+    agent.ts:62:48
+      Plaintext HTTP endpoint. Inter-agent traffic must be encrypted and
+      mutually authenticated.
+      │ const r = await runAgent(goal, await fetch("http://feeds.acme-internal.io/tasks").then((x) => x.text()));
+
+
+  HIGH  ASI08  Cascading Failures
+  One agent's error propagates through connected workflows. Without
+  isolation, a single hijack or malformed output compromises every
+  downstream system, and retry loops amplify the blast radius rather than
+  containing it.
+
+    agent.ts:11:23
+      Agent execution loop with no evident iteration cap, retry bound, or
+      timeout. An agent that cannot terminate cannot be contained.
+      │ export async function runAgent(userInput: string, retrievedDoc: string) {
+
+    agent.ts:26:5
+      Tool dispatch without evident error handling -- failures will
+      propagate uncontained to callers.
+      │ tools: [
+
+
+  HIGH  ASI09  Human-Agent Trust Exploitation
+  The agent manipulates approval by controlling what the human sees at the
+  moment of confirmation. A summary that says 'archive 3 old files' can
+  accompany a call that deletes a bucket. Approval UX built from
+  model-generated prose is a confused-deputy channel.
+
+    agent.ts:53:50
+      Approval gate is bypassed. Irreversible agent actions require explicit
+      human confirmation of the resolved action.
+      │ export async function deleteBucket(name: string, autoApprove = true) {
+
+    agent.ts:53:23
+      Irreversible or high-impact operations are reachable with no evident
+      human-in-the-loop confirmation step.
+      │ export async function deleteBucket(name: string, autoApprove = true) {
+
+    agent.ts:54:7
+      Approval gate is bypassed. Irreversible agent actions require explicit
+      human confirmation of the resolved action.
+      │ if (autoApprove) {
+
+
+  HIGH  LLM02  Sensitive Information Disclosure
+  PII, credentials, or proprietary data leak through model output, logged
+  prompts, or third-party provider retention. Agents widen this surface
+  because they read from internal systems and write to external ones.
+
+    agent.ts:38:3
+      Full prompt or credential material written to logs without redaction.
+      │ console.log("prompt was", messages); // LLM02
+
+
+  MEDIUM  LLM10  Unbounded Consumption
+  Unrestricted inference lets an attacker drive cost, exhaust capacity, or
+  run a model-extraction campaign. Agentic loops multiply this: one request
+  can fan out into hundreds of model calls.
+
+    agent.ts:23:35
+      Model invoked with no output token cap.
+      │ const completion = await openai.chat.completions.create({
+
+    agent.ts:23:35
+      No rate limiting or quota evident around model invocation.
+      │ const completion = await openai.chat.completions.create({
+
+    agent.ts:23:35
+      Model calls have no evident timeout or abort signal.
+      │ const completion = await openai.chat.completions.create({
+
+  Remediation
+
+  ASI01 Agent Goal Hijack
+  Structurally separate retrieved content from instructions: place untrusted
+  text in a dedicated, clearly delimited message or field and instruct the
+  model that it is data, never commands. Re-assert the system objective
+  after any tool result. Constrain the agent to an explicit allowlist of
+  goals and require human confirmation before the objective changes.
+
+  ASI02 Tool Misuse & Exploitation
+  Scope every tool to least privilege. Validate tool parameters against a
+  strict schema server-side -- never trust the model to produce well-formed
+  arguments. Apply runtime policy checks before execution, and treat tool
+  descriptions from third-party servers as untrusted input.
+
+  ASI03 Identity & Privilege Abuse
+  Give each agent its own identity distinct from any user. Issue
+  short-lived, narrowly scoped credentials with automatic expiration;
+  exchange them per task rather than holding a standing token. Never let an
+  agent operate under a human's session credentials.
+
+  ASI05 Unexpected Code Execution (RCE)
+  Execute all model-authored code in a containerised sandbox with
+  deny-by-default network egress, a read-only root filesystem, and a hard
+  timeout. Prefer parameterised APIs over raw shell. Never pass model output
+  to eval, exec, or a shell string.
+
+  ASI10 Rogue Agents
+  Establish behavioural baselines and alert on deviation (unusual tool mix,
+  unusual volume, off-hours activity). Govern agent lifecycle explicitly:
+  registration, expiry, deregistration. Implement and regularly test a kill
+  switch that revokes credentials and halts execution. Log every action to
+  an append-only store.
+
+  LLM01 Prompt Injection
+  Treat all model input as untrusted. Delimit and label external content,
+  constrain output format, and enforce privilege boundaries outside the
+  model -- the model is not a security control. Validate that outputs
+  conform to expectations before acting.
+
+  ASI04 Agentic Supply Chain Vulnerabilities
+  Maintain an AIBOM covering models, prompts, tools, and MCP servers. Pin
+  exact versions and commit a lockfile. Require signed releases and verified
+  provenance for MCP servers. Run SCA policy checks before deployment, not
+  after.
+
+  ASI06 Memory & Context Poisoning
+  Validate and attribute every memory write -- record who wrote it and from
+  what source. Scope memory per user and per task; never share a global
+  memory across tenants. Keep context ephemeral by default, expire
+  aggressively, and make stored memory inspectable and revocable by the
+  operator.
+
+  ASI07 Insecure Inter-Agent Communication
+  Require mutual authentication between agents (mTLS or signed tokens). Sign
+  and integrity-protect every message, including a nonce and timestamp to
+  defeat replay. Maintain an explicit delegation allowlist describing which
+  agent may instruct which.
+
+  ASI08 Cascading Failures
+  Isolate blast radius: separate environments and credentials per agent. Add
+  circuit breakers that trip on behavioural deviation, not just on HTTP
+  errors. Bound retries and total steps. Fail closed -- an agent that cannot
+  verify its state should stop, not proceed.
+
+  ASI09 Human-Agent Trust Exploitation
+  Show the raw, resolved action -- exact command, exact target, exact scope
+  -- not a model-written summary of it. Keep immutable logs of what was
+  displayed alongside what was executed, so divergence is detectable after
+  the fact. Forbid persuasive or urgency framing in confirmation copy.
+  Require re-authentication for irreversible actions.
+
+  LLM02 Sensitive Information Disclosure
+  Redact PII and secrets before they enter the context window and before
+  prompts are logged. Apply output filtering for sensitive patterns. Confirm
+  provider data retention and opt out of training use. Enforce per-user data
+  scoping on retrieval.
+
+  LLM10 Unbounded Consumption
+  Enforce per-user and per-key rate limits, cap max_tokens, set request
+  timeouts, bound agent iterations, and alert on spend anomalies. Apply
+  quotas at the edge, not only inside the agent loop.
+
+   11 critical   ·  12 high  ·  3 medium
+
