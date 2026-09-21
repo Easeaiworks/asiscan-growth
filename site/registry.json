@@ -1,0 +1,14 @@
+{
+  "note": "Public assessment registry. Hashes only - no customer names, scopes or findings.",
+  "updated": "2026-08-17",
+  "entries": [
+    {
+      "id": "P42-URJ6-XNA4",
+      "sha256": "e8dc1598159e40ed0f292478c6cbea6cf7d48d25dcbe286c422728f20f135f0d",
+      "issued_at": "2026-08-17",
+      "expires_at": "2027-08-17",
+      "assessor": "Protocol 42",
+      "status": "valid"
+    }
+  ]
+}

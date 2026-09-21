@@ -15,7 +15,7 @@
  *   node scripts/scan-corpus.mjs --repo owner/x  # single repo
  *
  * Env:
- *   SCANNER_CMD   command that runs the scanner (default: npx --yes asiscan@latest)
+ *   SCANNER_CMD   command that runs the scanner (default: npx --yes asiscan-cli@latest)
  *   SCANNER_PATH  path to a local built CLI, overrides SCANNER_CMD
  *   WORKDIR       clone directory (default: .corpus-cache)
  */
@@ -54,7 +54,7 @@ function scannerCommand(target, outFile) {
   if (process.env.SCANNER_PATH) {
     return ['node', [process.env.SCANNER_PATH, ...scannerArgs(target, outFile)]];
   }
-  const cmd = (process.env.SCANNER_CMD || 'npx --yes asiscan@latest').split(' ');
+  const cmd = (process.env.SCANNER_CMD || 'npx --yes asiscan-cli@latest').split(' ');
   return [cmd[0], [...cmd.slice(1), ...scannerArgs(target, outFile)]];
 }
 
@@ -199,7 +199,7 @@ async function main() {
     perRepo,
     failed,
     methodology: {
-      scanner: process.env.SCANNER_PATH ? 'local build' : (process.env.SCANNER_CMD || 'npx --yes asiscan@latest'),
+      scanner: process.env.SCANNER_PATH ? 'local build' : (process.env.SCANNER_CMD || 'npx --yes asiscan-cli@latest'),
       cloneDepth: 1,
       note:
         'Findings are static-analysis signals, not confirmed vulnerabilities. ' +

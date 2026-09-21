@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Terms of Sale and Licence Agreement — ASIScan</title>
+  <link rel="canonical" href="https://asiscan.dev/terms" />
+<meta name="description" content="Terms of Sale, End User Licence Agreement, Acceptable Use Policy, and Refund Policy for ASIScan by Protocol 42." />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a href="/" class="logo" style="color:var(--text)">asi<span>scan</span></a>
+  <div class="navlinks">
+    <a href="/faq.html">FAQ</a>
+    <a href="/support.html">Support</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/#pricing" class="btn">Pricing</a>
+  </div>
+</div></nav>
+
+<div class="wrap doc">
+  <h1>Terms of Sale and Licence Agreement</h1>
+  <p class="meta">Version 1.0 · Effective 13 August 2026 · Protocol 42</p>
+
+  <div class="note">
+    <p><strong>Read section 9 and section 11 before you buy.</strong> They limit what
+    ASIScan promises and cap what we owe you if something goes wrong. They are the
+    sections that would matter most in a dispute, and we would rather you read them now
+    than discover them later.</p>
+  </div>
+
+  <div class="toc">
+    <ol>
+      <li><a href="#agreement">The agreement and the parties</a></li>
+      <li><a href="#definitions">Definitions</a></li>
+      <li><a href="#licence">Licence grant</a></li>
+      <li><a href="#restrictions">Restrictions</a></li>
+      <li><a href="#aup">Acceptable use — authorised targets only</a></li>
+      <li><a href="#ip">Intellectual property</a></li>
+      <li><a href="#payment">Payment, taxes and refunds</a></li>
+      <li><a href="#support">Updates and support</a></li>
+      <li><a href="#warranty">Disclaimer of warranties</a></li>
+      <li><a href="#nature">Nature of the output — no reliance</a></li>
+      <li><a href="#liability">Limitation of liability</a></li>
+      <li><a href="#indemnity">Indemnification</a></li>
+      <li><a href="#term">Term and termination</a></li>
+      <li><a href="#export">Export control and sanctions</a></li>
+      <li><a href="#thirdparty">Third-party materials and trademarks</a></li>
+      <li><a href="#changes">Changes to these terms</a></li>
+      <li><a href="#law">Governing law and disputes</a></li>
+      <li><a href="#general">General provisions</a></li>
+    </ol>
+  </div>
+
+  <h2 id="agreement">1. The agreement and the parties</h2>
+  <p>These Terms of Sale and Licence Agreement (the <strong>"Agreement"</strong>) are a
+  binding contract between you — the individual or legal entity purchasing or using the
+  Software (<strong>"you"</strong>, <strong>"your"</strong>, or <strong>"Licensee"</strong>) —
+  and <strong>Protocol 42</strong> (<strong>"we"</strong>, <strong>"us"</strong>,
+  <strong>"our"</strong>, or <strong>"Licensor"</strong>), operating from Ontario, Canada.</p>
+  <p>By purchasing, downloading, installing, or using ASIScan, you accept this Agreement in
+  full. If you do not accept it, do not purchase or use the Software.</p>
+  <p>If you are entering into this Agreement on behalf of a company or other legal entity, you
+  represent that you have authority to bind that entity, and "you" refers to that entity.</p>
+
+  <h2 id="definitions">2. Definitions</h2>
+  <ul>
+    <li><strong>"Software"</strong> means ASIScan, including its source code, compiled
+      output, rule definitions, templates, checklists, red-team probe suites, documentation,
+      and any updates we make available to you.</li>
+    <li><strong>"Output"</strong> means any report, finding, score, file, or other result
+      produced by running the Software.</li>
+    <li><strong>"Target System"</strong> means any codebase, repository, application,
+      infrastructure, or system that the Software is run against.</li>
+    <li><strong>"Licence Tier"</strong> means the tier you purchased: Single Project, Team, or
+      Consultancy.</li>
+  </ul>
+
+  <h2 id="licence">3. Licence grant</h2>
+  <p>Subject to your compliance with this Agreement and payment in full, we grant you a
+  perpetual, worldwide, non-exclusive, non-transferable, non-sublicensable licence to use and
+  modify the Software within the scope of your Licence Tier:</p>
+  <table>
+    <tr><th>Tier</th><th>Scope</th></tr>
+    <tr><td><strong>Single Project</strong></td><td>Use within one (1) codebase or repository, by any number of developers employed by the purchasing entity.</td></tr>
+    <tr><td><strong>Team</strong></td><td>Use across unlimited codebases within a single legal entity, by up to twenty-five (25) developers.</td></tr>
+    <tr><td><strong>Consultancy</strong></td><td>Use across unlimited codebases, including in paid client engagements, and the right to deliver Output to third-party clients under your own branding.</td></tr>
+  </table>
+  <p>"Perpetual" means the licence does not expire on a date. It does not mean irrevocable —
+  see section 13.</p>
+
+  <h2 id="restrictions">4. Restrictions</h2>
+  <p>You must not:</p>
+  <ul>
+    <li>Redistribute, resell, sublicense, lease, rent, or publicly republish the Software or
+      any substantial portion of its rule set, templates, or probe suites;</li>
+    <li>Publish the Software to any public package registry, repository, or file-sharing
+      service;</li>
+    <li>Use the Software, or any substantial portion of it, to build, train, or operate a
+      competing security-scanning, auditing, or compliance product offered to third parties;</li>
+    <li>Remove, obscure, or alter any copyright, licence, or attribution notice;</li>
+    <li>Share licence credentials or Software copies with anyone outside the scope of your
+      Licence Tier;</li>
+    <li>Represent the Output as a certification, accreditation, conformity assessment, or
+      attestation issued by us, by OWASP, or by any regulatory body.</li>
+  </ul>
+  <p>Delivering Output to your own clients is permitted only under the Consultancy tier.</p>
+
+  <h2 id="aup">5. Acceptable use — authorised targets only</h2>
+  <div class="note">
+    <p>This section is not boilerplate. Security tooling can be misused, and this clause is
+    what separates your lawful use from ours.</p>
+  </div>
+  <p><strong>You may run the Software only against Target Systems that you own, or for which
+  you hold documented, current, written authorisation from the owner to perform security
+  testing.</strong></p>
+  <p>You are solely responsible for obtaining that authorisation and for retaining evidence of
+  it. You must not use the Software:</p>
+  <ul>
+    <li>Against any system you do not own or lack written authorisation to test;</li>
+    <li>To identify weaknesses in third-party systems for the purpose of exploiting them, or
+      for any unlawful purpose;</li>
+    <li>In violation of any applicable computer-misuse, unauthorised-access, wiretapping,
+      privacy, or data-protection law in any relevant jurisdiction;</li>
+    <li>To process personal data in violation of applicable data-protection law.</li>
+  </ul>
+  <p>Under the Consultancy tier, you must hold written authorisation from each client before
+  running the Software against that client's systems, and you remain responsible for your
+  clients' use of any Output you deliver.</p>
+  <p>Breach of this section terminates your licence immediately and automatically, without
+  notice and without refund.</p>
+
+  <h2 id="ip">6. Intellectual property</h2>
+  <p>The Software is licensed, not sold. We retain all right, title, and interest in and to the
+  Software, including all intellectual property rights. This Agreement transfers no ownership.</p>
+  <p><strong>You own your Output.</strong> Reports the Software generates about your own code
+  are yours to use, keep, and share, subject to section 4.</p>
+  <p>If you send us feedback, bug reports, false-positive reports, or suggested rules, you grant
+  us a perpetual, irrevocable, royalty-free, worldwide licence to use and incorporate that
+  feedback into the Software without obligation or attribution to you. We will not publish your
+  source code or your Output.</p>
+
+  <h2 id="payment">7. Payment, taxes and refunds</h2>
+  <p>Prices are in US dollars unless stated otherwise. Payment is processed by Stripe, Inc.; we
+  do not receive or store your card details. Your purchase is also subject to Stripe's terms.</p>
+  <p>Prices exclude applicable taxes unless stated. You are responsible for any sales tax, VAT,
+  GST, HST, withholding, or duty arising from your purchase, except taxes on our net income.</p>
+
+  <h3>Refund policy</h3>
+  <p>We offer a <strong>30-day refund</strong> from the date of purchase. To request one, email
+  <a href="mailto:hello@protocol42.io">hello@protocol42.io</a> from the address used at
+  purchase, within 30 days. You do not need to justify the request, and we will not require you
+  to prove anything.</p>
+  <p>Refunds are issued to the original payment method, normally within five business days of
+  approval. On refund, your licence terminates and you must delete all copies of the Software.</p>
+  <p>We may decline a refund where we reasonably determine the request is fraudulent, is a
+  repeat request from the same purchaser, or follows conduct that breached section 5.</p>
+  <p>Nothing in this section limits any non-excludable statutory right you may have as a
+  consumer under the laws of your jurisdiction.</p>
+
+  <h2 id="support">8. Updates and support</h2>
+  <p>Your Licence Tier includes updates within the v1.x release line at no additional charge.
+  Major version upgrades (v2 and later) may be chargeable.</p>
+  <p>Support is provided by email on a commercially reasonable-efforts basis. We do not commit
+  to a response time, an uptime level, a defect-resolution timeframe, or a service level of any
+  kind, and no service level agreement forms part of this Agreement.</p>
+  <p>We may discontinue the Software, any feature, or any distribution channel at any time. If we
+  do, your existing licence continues under this Agreement for the copy you hold.</p>
+
+  <h2 id="warranty">9. Disclaimer of warranties</h2>
+  <div class="caps">
+    <p>The software and all output are provided "as is" and "as available", without warranty of
+    any kind, express, implied, or statutory.</p>
+    <p>To the maximum extent permitted by applicable law, we disclaim all warranties, including
+    the implied warranties of merchantability, fitness for a particular purpose,
+    non-infringement, title, accuracy, and any warranties arising from course of dealing or
+    usage of trade.</p>
+    <p>We do not warrant that the software will detect any particular vulnerability, that it
+    will identify all or any security weaknesses present in a target system, that its output
+    will be accurate, complete, or free of false positives or false negatives, that it will
+    operate uninterrupted or error-free, or that defects will be corrected.</p>
+    <p>We do not warrant that use of the software will make any system secure, compliant, or
+    fit for any regulatory, contractual, or certification purpose.</p>
+  </div>
+  <p>In plain terms, and we would rather say it plainly: ASIScan is a static analysis tool.
+  It reads source code. It cannot observe runtime behaviour, infrastructure configuration,
+  network topology, identity policy, or model behaviour at inference time. It is
+  pattern-matching, not proof. Our own published measurements put precision at roughly 75% on
+  real-world code, and we tell you that openly precisely so you do not treat a clean report as
+  a guarantee. <strong>A clean report means "nothing detectable from source." It does not mean
+  secure.</strong></p>
+
+  <h2 id="nature">10. Nature of the output — no reliance</h2>
+  <p>The Output is informational engineering material only. It is expressly <strong>not</strong>:</p>
+  <ul>
+    <li>a security certification, accreditation, or attestation;</li>
+    <li>a conformity assessment, CE marking, or declaration of conformity under the EU
+      Artificial Intelligence Act (Regulation (EU) 2024/1689) or any other regulation;</li>
+    <li>legal, regulatory, compliance, or professional advice;</li>
+    <li>a penetration test, security audit, or assurance engagement performed by a qualified
+      assessor;</li>
+    <li>a substitute for independent professional review.</li>
+  </ul>
+  <p>References in the Software or its documentation to the OWASP Top 10 for Agentic
+  Applications, the OWASP Top 10 for LLM Applications, or the EU AI Act are provided for
+  engineering convenience. They do not establish compliance with those frameworks or any legal
+  obligation. Determining your regulatory obligations, and whether you meet them, requires
+  assessment by qualified professionals engaged by you.</p>
+  <p>You acknowledge that you are not relying on any representation, warranty, or statement
+  not expressly set out in this Agreement, including statements on our website, in marketing
+  material, or in correspondence.</p>
+  <p><strong>You are solely responsible for the security, compliance, and lawful operation of
+  any system you build or operate</strong>, and for all decisions you take on the basis of the
+  Output.</p>
+
+  <h2 id="liability">11. Limitation of liability</h2>
+  <div class="caps">
+    <p>To the maximum extent permitted by applicable law, our total aggregate liability arising
+    out of or relating to this agreement, the software, or the output — whether in contract,
+    tort (including negligence), strict liability, statute, or otherwise — shall not exceed the
+    total amount you actually paid us for the software in the twelve (12) months preceding the
+    event giving rise to the claim.</p>
+    <p>To the maximum extent permitted by applicable law, we shall not be liable for any
+    indirect, incidental, special, consequential, exemplary, or punitive damages, or for any
+    loss of profits, revenue, goodwill, business opportunity, anticipated savings, or data,
+    however caused and under any theory of liability, even if we have been advised of the
+    possibility of such damages.</p>
+    <p>Without limiting the foregoing, we shall not be liable for any security breach, intrusion,
+    data loss, data exfiltration, ransomware event, service outage, regulatory investigation,
+    fine, penalty, third-party claim, or reputational harm affecting you or any third party,
+    including where the software failed to detect the weakness that was exploited, produced a
+    false negative, or produced a false positive that you acted upon.</p>
+  </div>
+  <p>These limitations apply even if a limited remedy fails of its essential purpose, and they
+  reflect an agreed allocation of risk between us that is a fundamental basis of the price
+  charged. The Software would not be offered at this price without them.</p>
+  <p>Some jurisdictions do not allow the exclusion or limitation of certain warranties or
+  liabilities. Where that applies, the exclusions and limitations above apply to the maximum
+  extent permitted, and nothing in this Agreement excludes or limits liability for death or
+  personal injury caused by negligence, for fraud or fraudulent misrepresentation, or for any
+  other liability that cannot lawfully be excluded.</p>
+
+  <h2 id="indemnity">12. Indemnification</h2>
+  <p>You will defend, indemnify, and hold harmless Protocol 42 and its owners, officers,
+  employees, contractors, and agents from and against any claim, demand, action, proceeding,
+  loss, liability, damage, fine, penalty, cost, or expense (including reasonable legal fees)
+  arising out of or relating to:</p>
+  <ul>
+    <li>your use of the Software or the Output;</li>
+    <li>your breach of this Agreement, including section 5 (Acceptable Use);</li>
+    <li>your running the Software against any system without proper authorisation;</li>
+    <li>any Output you deliver to a third party, including under the Consultancy tier;</li>
+    <li>your violation of any applicable law or the rights of any third party.</li>
+  </ul>
+  <p>We will notify you of any such claim and may, at our option and expense, participate in
+  its defence. You will not settle any claim in a way that imposes obligation or admits fault
+  on our part without our prior written consent.</p>
+
+  <h2 id="term">13. Term and termination</h2>
+  <p>This Agreement begins on your purchase date and continues until terminated.</p>
+  <p>You may terminate at any time by ceasing use and deleting all copies of the Software.</p>
+  <p>We may terminate this Agreement immediately on notice if you materially breach it,
+  including any breach of sections 4, 5, or 7. Breach of section 5 terminates the licence
+  automatically without notice.</p>
+  <p>On termination: your licence ends, you must immediately cease all use and delete all copies
+  of the Software, and no refund is due except where termination follows a valid refund request
+  under section 7. Sections 6, 9, 10, 11, 12, 14, 17, and 18 survive termination.</p>
+
+  <h2 id="export">14. Export control and sanctions</h2>
+  <p>The Software may be subject to export control and sanctions laws, including those of
+  Canada, the United States, and the European Union. You represent and warrant that you are
+  not located in, under the control of, or a national or resident of any country subject to a
+  comprehensive trade embargo, and that you are not listed on any government restricted-party,
+  denied-persons, or sanctions list.</p>
+  <p>You will not export, re-export, or transfer the Software in violation of any applicable
+  export control or sanctions law.</p>
+
+  <h2 id="thirdparty">15. Third-party materials and trademarks</h2>
+  <p>The Software may include or depend on third-party open-source components, each governed by
+  its own licence. Those licences apply to those components, and to the extent of any conflict
+  they prevail over this Agreement in respect of those components.</p>
+  <p><strong>OWASP</strong> and the <strong>OWASP Top 10</strong> are trademarks of the OWASP
+  Foundation. ASIScan and Protocol 42 are <strong>not affiliated with, sponsored by,
+  endorsed by, or certified by</strong> the OWASP Foundation. References to OWASP frameworks
+  are nominative and descriptive only.</p>
+  <p>All other trademarks referenced are the property of their respective owners.</p>
+
+  <h2 id="changes">16. Changes to these terms</h2>
+  <p>We may revise this Agreement for future purchases. <strong>The version in effect on the
+  date of your purchase governs your licence</strong>, and we will not retroactively reduce the
+  rights of an existing licensee. Each version is dated and versioned at the top of this page.</p>
+
+  <h2 id="law">17. Governing law and disputes</h2>
+  <p>This Agreement is governed by the laws of the Province of Ontario and the federal laws of
+  Canada applicable therein, without regard to conflict-of-laws principles. The United Nations
+  Convention on Contracts for the International Sale of Goods does not apply.</p>
+  <p>The courts located in Ontario, Canada have exclusive jurisdiction over any dispute arising
+  out of or relating to this Agreement, and you consent to their personal jurisdiction and
+  venue — except that either party may seek injunctive relief in any court of competent
+  jurisdiction to protect its intellectual property or confidential information.</p>
+  <p>Before commencing proceedings, you agree to contact us at
+  <a href="mailto:hello@protocol42.io">hello@protocol42.io</a> and attempt in good faith to
+  resolve the dispute informally for at least thirty (30) days.</p>
+  <p>Any claim must be brought within one (1) year after the cause of action arises, or it is
+  permanently barred, to the extent permitted by applicable law.</p>
+  <p>If you are a consumer resident in a jurisdiction whose law grants you a non-waivable right
+  to bring proceedings locally or under local law, nothing here removes that right.</p>
+
+  <h2 id="general">18. General provisions</h2>
+  <p><strong>Entire agreement.</strong> This Agreement, together with the Privacy Policy, is the
+  entire agreement between us regarding the Software and supersedes all prior discussions,
+  proposals, and representations.</p>
+  <p><strong>Severability.</strong> If any provision is held unenforceable, it will be modified
+  to the minimum extent necessary to make it enforceable, and the remaining provisions continue
+  in full force.</p>
+  <p><strong>No waiver.</strong> Failure to enforce any provision is not a waiver of it.</p>
+  <p><strong>Assignment.</strong> You may not assign this Agreement without our prior written
+  consent, except to a successor in a merger or acquisition of substantially all your assets,
+  on written notice to us. We may assign freely.</p>
+  <p><strong>Force majeure.</strong> Neither party is liable for delay or failure to perform due
+  to causes beyond its reasonable control.</p>
+  <p><strong>Independent parties.</strong> Nothing creates a partnership, joint venture, agency,
+  or employment relationship.</p>
+  <p><strong>Headings and language.</strong> Headings are for convenience only. This Agreement is
+  drafted in English; any translation is for convenience and the English version prevails.</p>
+
+  <h2 id="contact" style="border-top:1px solid var(--line)">Contact</h2>
+  <p>Protocol 42<br />Ontario, Canada<br />
+  <a href="mailto:hello@protocol42.io">hello@protocol42.io</a></p>
+</div>
+
+<footer><div class="wrap">
+  <div>
+    <div class="logo" style="margin-bottom:10px">asi<span>scan</span></div>
+    <p class="disclaimer">
+      ASIScan performs static analysis of source code. Its output does not constitute a
+      security certification, a conformity assessment, or legal advice, and does not establish
+      compliance with the EU AI Act or any other regulation. OWASP is a registered trademark of
+      the OWASP Foundation; this product is not affiliated with or endorsed by OWASP.
+    </p>
+  </div>
+  <div style="text-align:right">
+    <p>© 2026 Protocol 42</p>
+    <div class="footlinks">
+      <a href="/faq.html">FAQ</a><a href="/support.html">Support</a><a href="/verify">Verify a report</a>
+      <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+</div></footer>
+</body>
+</html>

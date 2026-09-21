@@ -87,7 +87,7 @@ Repository → Settings → Secrets and variables → Actions.
 | `SOCIAL_MODE` | `llm` | `template` for deterministic, model-free social copy. |
 | `SOCIAL_TRANSPORT` | auto | `buffer`, `linkedin` or `webhook`. |
 | `BUFFER_MODE` | `queue` | `now` publishes immediately instead of queueing. |
-| `SCANNER_CMD` | `npx --yes asiscan@latest` | Change if the package name differs. |
+| `SCANNER_CMD` | `npx --yes asiscan-cli@latest` | npm refused `asiscan` as too similar to `asi-scan`. | |
 | `PAUSE_PUBLISHING` | unset | Set to `true` to stop everything. |
 | `VERCEL_PROJECT_ID` | — | For the digest. |
 

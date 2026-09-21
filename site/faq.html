@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FAQ — ASIScan</title>
+  <link rel="canonical" href="https://asiscan.dev/faq" />
+<meta name="description" content="Frequently asked questions about ASIScan: coverage, accuracy, languages, licensing, EU AI Act scope, and what the tool does not do." />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a href="/" class="logo" style="color:var(--text)">asi<span>scan</span></a>
+  <div class="navlinks">
+    <a href="/support.html">Support</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/#pricing" class="btn">Pricing</a>
+  </div>
+</div></nav>
+
+<div class="wrap doc">
+  <h1>Frequently asked questions</h1>
+  <p class="meta">Last updated 13 August 2026</p>
+
+  <p class="lead" style="font-size:17px">
+    Written to answer the sceptical questions rather than the flattering ones. If what you need
+    isn't here, <a href="/support.html">email us</a>.
+  </p>
+
+  <h2>What it is</h2>
+
+  <details><summary>What does ASIScan actually do?</summary>
+    <p>It reads the source code of an AI agent application and flags patterns that map to known
+    agentic security risks — the OWASP Top 10 for Agentic Applications (ASI01–ASI10), the OWASP
+    Top 10 for LLM Applications, and EU AI Act Article 50 transparency obligations. It outputs a
+    terminal report, a markdown evidence document, JSON, or SARIF for GitHub code scanning.</p>
+    <p>It also ships the paperwork half: a 47-item manual review checklist, an EU AI Act
+    readiness worksheet, and 30 red-team probes mapped to risk IDs.</p></details>
+
+  <details><summary>Why can't my existing SAST tool do this?</summary>
+    <p>Because it has no concept of a tool call, a system prompt, or agent memory. Semgrep and
+    friends were designed for a threat model that predates agents. Shown an agent that
+    interpolates a retrieved document into its system prompt, a generic scanner sees valid string
+    concatenation and moves on.</p>
+    <p>The risks are also structurally different. Most agentic risk is a <em>missing control</em>,
+    not a forbidden token — code isn't unsafe because it calls <code>exec</code>, it's unsafe
+    because it calls <code>exec</code> on a model-influenced string with no sandbox and no egress
+    policy. ASIScan models that directly.</p></details>
+
+  <details><summary>Isn't this just a pile of regexes?</summary>
+    <p>Partly, and we say so in the README rather than hiding it. The design contribution is the
+    two-probe model. <strong>Presence probes</strong> flag genuinely dangerous constructs.
+    <strong>Control probes</strong> fire only when your code demonstrably performs a risky
+    behaviour <em>and</em> no evidence of the mitigating control appears anywhere in the project.
+    Trigger without control is the finding.</p>
+    <p>Comments never count as evidence of a control. A <code>// TODO: add sandboxing</code>
+    comment must not make a security scanner report you as mitigated — that was a real bug we
+    found in our own tool during testing, and it's the kind that gives a false all-clear exactly
+    when someone has written down that they're worried.</p></details>
+
+  <h2>Accuracy</h2>
+
+  <details><summary>How accurate is it, really?</summary>
+    <p><strong>Roughly 75% precision on real-world code</strong>, meaning about one finding in
+    four is something you'll dismiss. We measured it against fifteen open-source agent
+    frameworks — around 17,000 source files — and publish the number because you should know it.</p>
+    <p>It got there in rounds, each one hand-reviewed: untuned it was ~4% precision at 792
+    findings; tuning took it to ~55%; expanding the corpus to ten repositories took it to ~62%;
+    adding file-level context gating took it to ~69%; and a final pass of targeted fixes took it
+    to 75–80%. That last figure was validated against the five repositories carrying the false
+    positives it targeted rather than re-measured across all ten, so treat ~75% as the working
+    number and 80% as the best case.</p>
+    <p>For context: published benchmarks put untuned commercial SAST at 60–90% false positives,
+    dropping to 10–20% once tuned for a stack, and SonarQube at 40–60% of findings requiring
+    developer review. A ~25% false-positive rate is the well-tuned commercial band. The
+    difference is that ours is measured against named public repositories and reproducible, not
+    asserted in a datasheet. No other scanner in this category publishes its rate at all —
+    that's worth asking them about.</p></details>
+
+  <details><summary>What were the false positives you had to fix?</summary>
+    <p>Worth knowing, because they're the failure modes every regex-based scanner has:</p>
+    <p>We were flagging <code>url.startswith(('http://', 'https://'))</code> — that's
+    scheme-validation code, meaning the scanner was reporting the security control as the
+    vulnerability. 475 findings. We were matching placeholder credentials like
+    <code>api_key='your_vercel_api_key'</code>. We were matching sensitive words inside log
+    <em>strings</em> rather than logged <em>values</em>. We were matching "YOLO" the
+    object-detection model inside recorded test fixtures. And we were flagging JavaScript's
+    <code>regex.exec(text)</code> as process execution.</p>
+    <p>Two more were worse than noisy. We were treating <strong>test files as production
+    code</strong> — <code>config_test.py</code> and <code>test_routes.py</code> are full of
+    deliberately fake secrets and example URLs, and they accounted for roughly two thirds of all
+    findings across a ten-repository corpus. And we were matching
+    <code>xmlns="http://www.w3.org/2000/svg"</code> as a network endpoint: 56 findings in a
+    single icon file.</p>
+    <p>All fixed, all covered by regression tests.</p></details>
+
+  <details><summary>We're not in the EU. Why would we run this?</summary>
+    <p>Because the EU AI Act is the smallest reason to. The OWASP ASI Top 10 describes how agents
+    get attacked, and that threat model doesn't stop at a border — a shell string built from
+    model output is a command-injection primitive in Toronto, Austin and Manchester alike.</p>
+    <p>The commercial reason is more immediate. Enterprise security questionnaires and SOC 2
+    reviews now carry AI-specific sections, and "we reviewed it internally" doesn't clear them.
+    A scan report naming the framework you assessed against, plus a completed manual checklist
+    with an evidence column, is a document you attach and move on. In the US your buyer's
+    procurement team is effectively the regulator; in Canada, PIPEDA already covers automated
+    decisions about people and federal procurement expects a documented algorithmic impact
+    assessment; in the UK, the ICO, FCA and MHRA each expect sector-appropriate evidence with
+    NCSC secure-AI guidance as the de-facto baseline.</p>
+    <p>The EU worksheet is one module in the box. Use it if you sell into the EU, ignore it if
+    you don't — the security case is identical either way.</p></details>
+
+  <details><summary>What happens if it misses something?</summary>
+    <p>It will. A clean report means "nothing detectable from source" — it does not mean secure,
+    and we've written that into the terms rather than burying it.</p>
+    <p>The Software is provided without warranty and our liability is capped at what you paid.
+    See <a href="/terms.html#warranty">sections 9–11 of the Terms</a>. If you need assurance
+    rather than tooling, you need a penetration test by a qualified assessor — a different
+    product at a different price.</p>
+    <p>That said, please report misses. False-negative reports are the most valuable feedback we
+    receive.</p></details>
+
+  <details><summary>Can I suppress a finding I've reviewed?</summary>
+    <p>Yes. Add an inline directive on the line:</p>
+    <p><code>const cmd = build(choice); // asiscan-ignore ASI05 reviewed: choice is an enum</code></p>
+    <p>Works in <code>//</code>, <code>#</code>, and <code>/* */</code> comments. The rule ID and
+    reason aren't parsed, but write them anyway — an unexplained suppression is
+    indistinguishable from someone who got bored.</p>
+    <p>Suppression applies to presence probes only. A control probe asks whether a mitigation
+    exists anywhere in the project, which isn't a question one line can answer.</p></details>
+
+  <h2>Practicalities</h2>
+
+  <details><summary>What languages does it support?</summary>
+    <p>It scans TypeScript, JavaScript, Python, Go, Rust, Java, C#, and PHP, plus JSON, YAML,
+    TOML, shell scripts, and Dockerfiles.</p>
+    <p>Rule coverage is strongest on TypeScript, JavaScript, and Python, where most agent code
+    lives today. A polyglot test fixture asserts that ASI01, ASI03, and ASI05 fire correctly in
+    Python, C#, and Go — that claim is enforced by the test suite rather than asserted in
+    marketing.</p></details>
+
+  <details><summary>Does my source code leave my machine?</summary>
+    <p>No. It runs entirely offline, makes no network calls, and has no telemetry, analytics, or
+    licence phone-home. You can run it on an air-gapped machine.</p>
+    <p>You get the full source, so you can verify this rather than trust it. See the
+    <a href="/privacy.html">Privacy Policy</a>.</p></details>
+
+  <details><summary>What are the requirements?</summary>
+    <p>Node 18 or later. Unzip, <code>npm install &amp;&amp; npm run build</code>, and run. A
+    2,000-file repository scans in a few seconds.</p></details>
+
+  <details><summary>Will it work in CI?</summary>
+    <p>Yes. A GitHub Actions workflow ships with it — PR gate, job-summary report, weekly
+    scheduled re-scan, and SARIF output. Exit codes are configurable via
+    <code>--fail-on</code> so you can gate on critical findings only while you work through a
+    baseline.</p>
+    <p>One caveat worth knowing in advance: uploading SARIF to the GitHub Security tab requires
+    GitHub Advanced Security on private repositories. It's free on public ones. The workflow
+    treats that upload as best-effort and archives the SARIF as a build artifact either way.</p></details>
+
+  <h2>Licensing and compliance</h2>
+
+  <details><summary>Which tier do I need?</summary>
+    <p><strong>Scanner — free.</strong> MIT licensed, on npm. All 18 rules, every output format,
+    the CI gate. Not a trial and not crippled. If you only want to check your own code, stop here.</p>
+    <p><strong>Assessment — $490 once.</strong> One dated, scoped assessment report for one
+    codebase, plus the NIST AI RMF / ISO 42001 crosswalk, the questionnaire answer pack, the
+    47-item manual checklist, the EU AI Act worksheet and the red-team probes.</p>
+    <p><strong>Continuous — $2,400/year.</strong> Everything above, unlimited repositories and
+    re-scans, a re-issued and re-dated report every quarter with a drift diff, and a hosted trust
+    page you can point buyers at. Most teams land here, because a report is stale the moment you
+    merge and reviewers increasingly want evidence dated within the last 6–12 months.</p>
+    <p><strong>Consultancy — $6,000/year.</strong> Everything above, plus the right to run
+    assessments in paid client engagements and deliver white-labelled reports to third parties.
+    If you are handing reports to clients, you need this tier; the others do not permit it.</p>
+    <p>Full terms in <a href="/terms.html#licence">section 3</a>.</p></details>
+
+  <details><summary>Does this make me EU AI Act compliant?</summary>
+    <p><strong>No</strong> — and be suspicious of any tool that claims otherwise.</p>
+    <p>Compliance is a legal determination that requires a documented assessment by qualified
+    professionals. What ASIScan gives you is the engineering-side evidence and a worksheet
+    that gets your lawyer the facts they'll ask for: scope, classification, Article 50 controls,
+    and the ten technical documents auditors request first.</p>
+    <p>Article 50 transparency obligations became enforceable on 2 August 2026. The synthetic
+    content marking obligation was extended to 2 December 2026. Verify current status
+    independently — regulatory dates move, and this page is not legal advice.</p></details>
+
+  <details><summary>Can I run it against systems I don't own?</summary>
+    <p>No. <a href="/terms.html#aup">Section 5 of the Terms</a> permits use only against systems
+    you own or hold documented written authorisation to test. Breach terminates your licence
+    immediately and without refund.</p>
+    <p>This isn't boilerplate — it's the clause that separates lawful use from a computer-misuse
+    offence, and you are responsible for holding the authorisation.</p></details>
+
+  <details><summary>What's the refund policy?</summary>
+    <p>30 days, no justification required. Email
+    <a href="mailto:hello@protocol42.io">hello@protocol42.io</a> from your purchase address
+    and we'll process it to the original payment method, normally within five business days.</p>
+    <p>We'd rather refund you than have you feel stuck with something that didn't help.</p></details>
+
+  <details><summary>Why should I trust a v1.x from someone I have never heard of?</summary>
+    <p>Don't trust it — run it. The test suite ships with the product and reproduces every number
+    on the sales page. Two reference agents, one deliberately unsafe and one properly secured,
+    let you verify sensitivity and specificity yourself in about a minute.</p>
+    <p>Then there's the 30-day refund. And the fact that we publish our precision rate, our
+    false-positive history, and an explicit list of what the tool cannot do — which is not what
+    you'd do if the goal were to oversell it.</p></details>
+
+  <h2>What it does not do</h2>
+
+  <details><summary>The honest limitations, in one place</summary>
+    <p><strong>It reads source, not behaviour.</strong> It cannot see your IAM policy, network
+    topology, runtime configuration, or what your model actually does at inference time.</p>
+    <p><strong>Control probes are project-wide.</strong> If a mitigation exists anywhere, the rule
+    stays quiet — even if it isn't applied on the path that needs it. A clean result is weaker
+    evidence than a dirty one.</p>
+    <p><strong>It's regex-based, not AST-based.</strong> It will miss things a compiler wouldn't,
+    and unusual formatting can fool it.</p>
+    <p><strong>It covers roughly half the ASI Top 10.</strong> The rest is architecture, runtime
+    config, and process. That's exactly why the manual review checklist ships with it — the
+    scanner is not sufficient on its own, and we'd rather say that than let you discover it.</p></details>
+</div>
+
+<footer><div class="wrap">
+  <div>
+    <div class="logo" style="margin-bottom:10px">asi<span>scan</span></div>
+    <p class="disclaimer">
+      ASIScan performs static analysis of source code. Its output does not constitute a
+      security certification, a conformity assessment, or legal advice, and does not establish
+      compliance with the EU AI Act or any other regulation. OWASP is a registered trademark of
+      the OWASP Foundation; this product is not affiliated with or endorsed by OWASP.
+    </p>
+  </div>
+  <div style="text-align:right">
+    <p>© 2026 Protocol 42</p>
+    <div class="footlinks">
+      <a href="/faq.html">FAQ</a><a href="/support.html">Support</a><a href="/verify">Verify a report</a>
+      <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+</div></footer>
+</body>
+</html>

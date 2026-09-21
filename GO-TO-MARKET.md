@@ -175,7 +175,7 @@ weight:
    landing page can never be.
 3. Hacker News is hostile to paywalled dev tools and generous to open ones. You
    get one Show HN. Do not spend it on a closed product.
-4. `npx asiscan .` becomes a marketing channel in itself — it is a shareable
+4. `npx asiscan-cli .` becomes a marketing channel in itself — it is a shareable
    one-liner, which is how dev tools actually spread.
 
 The $899 consultancy tier is your best margin per unit and your least-worked
@@ -292,10 +292,10 @@ infrastructure to produce and refresh it monthly is built and working.
 Publish it *before* the launch post, and lead with it.
 
 **3. Free tier plus a public GitHub repository.** Covered above. It unlocks
-Hacker News, it is a permanent discovery asset, and it makes `npx asiscan .`
+Hacker News, it is a permanent discovery asset, and it makes `npx asiscan-cli .`
 a thing people can paste to each other.
 
-**4. Register the npm package.** `npx asiscan .` in a README, in a talk, in a
+**4. Register the npm package.** `npx asiscan-cli .` in a README, in a talk, in a
 comment thread, is distribution. It cannot be that while the name resolves to
 somebody else's package.
 

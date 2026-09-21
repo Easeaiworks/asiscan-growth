@@ -6,7 +6,7 @@
     "tagline": "Your SAST scanner doesn't know what a tool call is.",
     "shortDescription": "Static analysis for AI agent codebases, mapped to the OWASP Top 10 for Agentic Applications, the OWASP LLM Top 10, and EU AI Act Article 50.",
     "npmPackage": "asiscan",
-    "cliInvocation": "npx asiscan ."
+    "cliInvocation": "npx asiscan-cli ."
   },
   "site": {
     "origin": "https://asiscan.dev",

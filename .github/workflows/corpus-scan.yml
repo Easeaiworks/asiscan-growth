@@ -37,7 +37,7 @@ jobs:
 
       - name: Scan
         env:
-          SCANNER_CMD: ${{ vars.SCANNER_CMD || 'npx --yes asiscan@latest' }}
+          SCANNER_CMD: ${{ vars.SCANNER_CMD || 'npx --yes asiscan-cli@latest' }}
         run: node scripts/scan-corpus.mjs ${{ inputs.limit && format('--limit {0}', inputs.limit) || '' }}
 
       - name: Commit findings

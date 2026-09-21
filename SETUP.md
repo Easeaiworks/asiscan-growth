@@ -39,7 +39,7 @@ Repository → **Settings** → **Secrets and variables** → **Actions**.
 | Name | Value |
 |---|---|
 | `ANTHROPIC_MODEL` | The current Sonnet model ID from <https://docs.claude.com/en/docs/about-claude/models> |
-| `SCANNER_CMD` | `npx --yes asiscan@latest` — only once you have published the package. Until then leave it unset and skip the monthly scan; the corpus data already committed is real and will carry the content for months. |
+| `SCANNER_CMD` | `npx --yes asiscan-cli@latest` — published 2026-09-21 (npm refused the name `asiscan`). |
 
 That is the entire required configuration.
 
@@ -49,8 +49,10 @@ Copy your current landing page in first, so the deploy does not replace the site
 with only a blog:
 
 ```bash
-cp ~/Downloads/agentaudit-complete/site/index.html  ~/Downloads/asiscan-growth/site/
-cp ~/Downloads/agentaudit-complete/site/thanks.html ~/Downloads/asiscan-growth/site/
+# Done 2026-09-21: the live asiscan.dev pages (index, faq, verify, support,
+# terms, privacy, thanks, style.css, registry.json, vercel.json) are already in
+# site/. Do NOT copy from agentaudit-complete -- that is the pre-rename
+# AgentAudit page and would replace the live ASIScan site.
 cd ~/Downloads/asiscan-growth
 git add site && git commit -m "site: bring across the landing page" && git push
 ```

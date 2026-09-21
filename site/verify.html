@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verify an assessment — ASIScan</title>
+  <link rel="canonical" href="https://asiscan.dev/verify" />
+<meta name="description" content="Confirm that an ASIScan assessment report is genuine, unaltered and still current. Verification is independent and reveals nothing about the assessed party." />
+<link rel="stylesheet" href="/style.css" />
+<style>
+  .vbox{border:1px solid var(--line);border-radius:10px;padding:22px;margin:22px 0}
+  .vform{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+  .vform input[type=text]{flex:1;min-width:230px;padding:11px 13px;border:1px solid var(--line);
+    border-radius:7px;font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .res{margin-top:22px;padding:18px 20px;border-radius:9px;border:1px solid var(--line);display:none}
+  .res.show{display:block}
+  .res h3{margin:0 0 10px;font-size:16px}
+  .ok{background:#f2fbf8;border-color:#0d7a6b}
+  .warn{background:#fffaf0;border-color:#f0c36d}
+  .bad{background:#fef3f2;border-color:#b42318}
+  .kv{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+  .kv th{text-align:left;font-weight:600;padding:6px 12px 6px 0;white-space:nowrap;vertical-align:top;color:var(--dim)}
+  .kv td{padding:6px 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-all}
+  .drop{margin-top:16px;border:1.5px dashed var(--line);border-radius:9px;padding:20px;text-align:center;color:var(--dim)}
+  .drop.over{border-color:#0d7a6b;background:#f2fbf8}
+  .hashline{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;word-break:break-all}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a href="/" class="logo" style="color:var(--text)">asi<span>scan</span></a>
+  <div class="navlinks">
+    <a href="/faq.html">FAQ</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/#pricing" class="btn">Pricing</a>
+  </div>
+</div></nav>
+
+<div class="wrap doc">
+  <h1>Verify an assessment</h1>
+  <p class="meta">Independent check · no account needed</p>
+
+  <p class="lead" style="font-size:17px">
+    If someone has handed you an ASIScan assessment report, this page confirms whether it is
+    genuine, unaltered and still current — without you having to take their word for it, or ours.
+  </p>
+
+  <div class="vbox">
+    <strong>Step 1 — enter the report ID</strong>
+    <p class="muted" style="margin:6px 0 0">Printed in the Provenance section of the report, in the form <span class="hashline">P42-XXXX-XXXX</span>.</p>
+    <div class="vform">
+      <input type="text" id="rid" placeholder="P42-XXXX-XXXX" autocomplete="off" spellcheck="false" />
+      <button class="btn" id="go" type="button">Check</button>
+    </div>
+
+    <div class="res" id="res"></div>
+  </div>
+
+  <div class="vbox" id="step2" style="display:none">
+    <strong>Step 2 — confirm the document has not been altered</strong>
+    <p class="muted" style="margin:6px 0 12px">
+      Drop the report file below. It is hashed in your browser and never uploaded — nothing about
+      the document leaves this page.
+    </p>
+    <div class="drop" id="drop">
+      <input type="file" id="file" style="display:none" />
+      <p style="margin:0"><a href="#" id="pick">Choose the report file</a> or drag it here</p>
+    </div>
+    <div class="res" id="hres"></div>
+  </div>
+
+  <h2>What this page does and does not show</h2>
+  <p>
+    The registry stores a cryptographic hash of each countersigned report, its issue and expiry
+    dates, and its status. It does <strong>not</strong> store the name of the assessed company, the
+    scope, or any findings. That is deliberate: a public registry listing customers would itself be
+    a disclosure, and no organisation would consent to appear in one.
+  </p>
+  <p>
+    The hash is enough. It covers the entire document, including the company name printed inside it,
+    so a matching hash proves both that the report is one we issued and that not a single character
+    has been changed since.
+  </p>
+
+  <h2>Reading the result</h2>
+  <table class="kv">
+    <tr><th>Valid</th><td style="font-family:inherit">Issued by Protocol 42 and still within its currency period.</td></tr>
+    <tr><th>Expired</th><td style="font-family:inherit">Genuine, but past its stated currency date. Assessments describe one commit at one moment; reviewers generally expect evidence dated within the last 6–12 months.</td></tr>
+    <tr><th>Revoked</th><td style="font-family:inherit">Withdrawn by Protocol 42 — for example because a material error was found after issue. Do not rely on it.</td></tr>
+    <tr><th>Not found</th><td style="font-family:inherit">No such ID. Either a typo, or the document was not issued by us.</td></tr>
+  </table>
+
+  <h2>Self-assessed reports</h2>
+  <p>
+    ASIScan is open source, and anyone may run it and generate a report about their own code. Those
+    reports are watermarked <em>"Self-assessed — not independently verified"</em> and carry no
+    report ID, because nobody outside the assessed organisation has reviewed them. They are
+    perfectly legitimate as an internal engineering artifact. They are not third-party evidence, and
+    this page will not confirm them as such.
+  </p>
+
+  <p class="muted" style="margin-top:28px">
+    Questions about a specific report — <a href="mailto:hello@protocol42.io">hello@protocol42.io</a>
+  </p>
+</div>
+
+<footer><div class="wrap">
+  <div>
+    <div class="logo" style="margin-bottom:10px">asi<span>scan</span></div>
+    <p class="disclaimer">
+      ASIScan performs static analysis of source code. Its output does not constitute a
+      security certification, a conformity assessment, or legal advice, and does not establish
+      compliance with the EU AI Act or any other regulation. OWASP is a registered trademark of
+      the OWASP Foundation; this product is not affiliated with or endorsed by OWASP.
+    </p>
+  </div>
+  <div style="text-align:right">
+    <p>© 2026 Protocol 42</p>
+    <div class="footlinks">
+      <a href="/faq.html">FAQ</a><a href="/support.html">Support</a><a href="/verify">Verify a report</a>
+      <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+(function () {
+  var res = document.getElementById("res");
+  var hres = document.getElementById("hres");
+  var step2 = document.getElementById("step2");
+  var current = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function show(el, cls, html) {
+    el.className = "res show " + cls;
+    el.innerHTML = html;
+  }
+
+  function normalise(v) {
+    v = v.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (v.indexOf("P42") === 0) v = v.slice(3);
+    return v;
+  }
+
+  function check() {
+    var raw = document.getElementById("rid").value.trim();
+    step2.style.display = "none";
+    hres.className = "res";
+    if (!raw) {
+      show(res, "warn", "<h3>Enter a report ID</h3><p>It looks like <span class='hashline'>P42-XXXX-XXXX</span> and appears in the report's Provenance section.</p>");
+      return;
+    }
+    show(res, "", "<p class='muted'>Checking…</p>");
+
+    fetch("/registry.json", { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("registry unavailable");
+        return r.json();
+      })
+      .then(function (data) {
+        var want = normalise(raw);
+        var hit = (data.entries || []).filter(function (e) {
+          return normalise(e.id) === want;
+        })[0];
+
+        if (!hit) {
+          show(res, "bad",
+            "<h3>Not found</h3><p>No assessment with this ID has been issued by Protocol 42.</p>" +
+            "<p class='muted'>Check for a typo. If the ID is correct as printed, the document was not issued by us — treat it as unverified and contact <a href='mailto:hello@protocol42.io'>hello@protocol42.io</a>.</p>");
+          return;
+        }
+
+        current = hit;
+        var today = new Date().toISOString().slice(0, 10);
+        var expired = hit.expires_at && hit.expires_at < today;
+        var cls = hit.status === "revoked" ? "bad" : expired ? "warn" : "ok";
+        var head =
+          hit.status === "revoked" ? "Revoked" : expired ? "Genuine, but expired" : "Valid";
+        var note =
+          hit.status === "revoked"
+            ? "<p>This assessment has been withdrawn by Protocol 42. Do not rely on it as evidence.</p>"
+            : expired
+            ? "<p>This report is authentic but past its currency date. Ask the issuing party for a current reassessment.</p>"
+            : "<p>This report was issued by Protocol 42 and is within its currency period.</p>";
+
+        show(res, cls,
+          "<h3>" + head + "</h3>" + note +
+          "<table class='kv'>" +
+          "<tr><th>Report ID</th><td>" + esc(hit.id) + "</td></tr>" +
+          "<tr><th>Issued</th><td>" + esc(hit.issued_at) + "</td></tr>" +
+          "<tr><th>Current until</th><td>" + esc(hit.expires_at || "—") + "</td></tr>" +
+          "<tr><th>Assessor</th><td>" + esc(hit.assessor || "Protocol 42") + "</td></tr>" +
+          "</table>" +
+          "<p class='muted' style='margin-top:12px'>This confirms the ID exists. To confirm the document you hold is the one we issued, complete step 2 below.</p>");
+        step2.style.display = "block";
+      })
+      .catch(function () {
+        show(res, "bad", "<h3>Could not reach the registry</h3><p>Try again shortly, or email <a href='mailto:hello@protocol42.io'>hello@protocol42.io</a>.</p>");
+      });
+  }
+
+  document.getElementById("go").addEventListener("click", check);
+  document.getElementById("rid").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") check();
+  });
+
+  function hashFile(f) {
+    if (!current) return;
+    if (!(window.crypto && window.crypto.subtle)) {
+      show(hres, "warn", "<h3>Cannot hash in this browser</h3><p>This check needs a secure context. Email the report to <a href='mailto:hello@protocol42.io'>hello@protocol42.io</a> and we will confirm it.</p>");
+      return;
+    }
+    show(hres, "", "<p class='muted'>Hashing locally…</p>");
+    f.arrayBuffer()
+      .then(function (buf) { return crypto.subtle.digest("SHA-256", buf); })
+      .then(function (d) {
+        var hex = Array.prototype.map
+          .call(new Uint8Array(d), function (b) { return b.toString(16).padStart(2, "0"); })
+          .join("");
+        if (hex === current.sha256) {
+          show(hres, "ok",
+            "<h3>Authentic and unaltered</h3>" +
+            "<p>This file is byte-for-byte the document Protocol 42 registered under " + esc(current.id) + ".</p>" +
+            "<p class='hashline muted'>SHA-256 " + esc(hex) + "</p>");
+        } else {
+          show(hres, "bad",
+            "<h3>Does not match</h3>" +
+            "<p>This file is not the document registered under " + esc(current.id) + ". It has been modified, re-saved, or is a different report.</p>" +
+            "<table class='kv'>" +
+            "<tr><th>Expected</th><td>" + esc(current.sha256) + "</td></tr>" +
+            "<tr><th>This file</th><td>" + esc(hex) + "</td></tr>" +
+            "</table>" +
+            "<p class='muted'>Note that opening and re-saving a report changes it. If you believe this is genuine, ask the sender for the original file.</p>");
+        }
+      })
+      .catch(function () {
+        show(hres, "bad", "<h3>Could not read that file</h3><p>Try again with the original downloaded file.</p>");
+      });
+  }
+
+  var drop = document.getElementById("drop");
+  var file = document.getElementById("file");
+  document.getElementById("pick").addEventListener("click", function (e) {
+    e.preventDefault();
+    file.click();
+  });
+  file.addEventListener("change", function () {
+    if (file.files[0]) hashFile(file.files[0]);
+  });
+  ["dragenter", "dragover"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); });
+  });
+  ["dragleave", "drop"].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); });
+  });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer.files[0]) hashFile(e.dataTransfer.files[0]);
+  });
+
+  // Deep link: /verify?id=P42-XXXX-XXXX
+  var q = new URLSearchParams(location.search).get("id");
+  if (q) {
+    document.getElementById("rid").value = q;
+    check();
+  }
+})();
+</script>
+</body>
+</html>

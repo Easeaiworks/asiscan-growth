@@ -242,7 +242,15 @@ ${items}
 function renderSitemap(posts) {
   const urls = [
     { loc: `${ORIGIN}/`, pri: '1.0' },
+    // Static landing pages live beside the blog in site/. They are listed here
+    // because this builder rewrites sitemap.xml on every publish -- a sitemap
+    // maintained anywhere else is overwritten the first Tuesday it runs.
+    { loc: `${ORIGIN}/faq`, pri: '0.8' },
     { loc: `${ORIGIN}${BLOG}/`, pri: '0.8' },
+    { loc: `${ORIGIN}/verify`, pri: '0.6' },
+    { loc: `${ORIGIN}/support`, pri: '0.5' },
+    { loc: `${ORIGIN}/terms`, pri: '0.3' },
+    { loc: `${ORIGIN}/privacy`, pri: '0.3' },
     ...posts.map((p) => ({ loc: `${ORIGIN}${BLOG}/${p.slug}`, pri: '0.7', lastmod: p.date })),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -267,7 +275,7 @@ function main() {
   writeFileSync(path('site', 'sitemap.xml'), renderSitemap(posts));
   writeFileSync(
     path('site', 'robots.txt'),
-    `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`
+    `User-agent: *\nAllow: /\nDisallow: /thanks\n\nSitemap: ${ORIGIN}/sitemap.xml\n`
   );
 
   // llms.txt — a growing share of this buyer's research starts in a language

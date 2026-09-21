@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ASIScan — OWASP ASI Top 10 scanner for AI agent codebases</title>
+  <link rel="canonical" href="https://asiscan.dev/" />
+<meta name="description" content="Static analysis that audits AI agent codebases against the OWASP Top 10 for Agentic Applications (ASI01–ASI10) and the OWASP LLM Top 10. Answer AI security questionnaires with evidence. CLI, CI gate, SARIF, manual review checklist, plus an EU AI Act Art. 50 worksheet if you need it. ~75% measured precision." />
+<meta property="og:title" content="ASIScan — OWASP ASI Top 10 scanner for AI agents" />
+<meta property="og:description" content="Your SAST scanner doesn't know what a tool call is. This one does." />
+<meta property="og:type" content="website" />
+<style>
+  :root{
+    --bg:#0a0c10; --panel:#11151c; --panel2:#161b24; --line:#232a35;
+    --text:#e6edf3; --dim:#8b96a5; --dimmer:#5f6a78;
+    --acc:#5eead4; --acc2:#2dd4bf; --red:#f87171; --amber:#fbbf24; --blue:#60a5fa;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--acc);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:940px;margin:0 auto;padding:0 24px}
+  .mono{font-family:var(--mono)}
+
+  /* nav */
+  nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,12,16,.88);backdrop-filter:blur(12px);z-index:50}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:-.3px}
+  .logo span{color:var(--acc)}
+  .navlinks{display:flex;gap:24px;align-items:center;font-size:14px}
+  .navlinks a{color:var(--dim)}
+  .navlinks a:hover{color:var(--text);text-decoration:none}
+  .btn{background:var(--acc);color:#04231f;padding:8px 16px;border-radius:6px;font-weight:600;font-size:14px;display:inline-block;border:none;cursor:pointer;transition:.15s}
+  .btn:hover{background:var(--acc2);text-decoration:none;transform:translateY(-1px)}
+  .btn-lg{padding:13px 26px;font-size:15px}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+  .btn-ghost:hover{background:var(--panel2);border-color:var(--dimmer)}
+
+  /* hero */
+  header{padding:76px 0 56px;border-bottom:1px solid var(--line)}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(94,234,212,.08);border:1px solid rgba(94,234,212,.25);color:var(--acc);padding:5px 13px;border-radius:100px;font-size:12.5px;font-family:var(--mono);margin-bottom:24px}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:p 2s infinite}
+  @keyframes p{0%,100%{opacity:1}50%{opacity:.35}}
+  h1{font-size:clamp(32px,5.2vw,50px);line-height:1.12;letter-spacing:-1.4px;font-weight:700;margin-bottom:20px}
+  h1 em{font-style:normal;color:var(--acc)}
+  .sub{font-size:19px;color:var(--dim);max-width:660px;margin-bottom:32px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .microcopy{font-size:13px;color:var(--dimmer);margin-top:16px;font-family:var(--mono)}
+
+  /* terminal */
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:44px 0;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+  .termbar{background:var(--panel2);padding:10px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line)}
+  .tdot{width:11px;height:11px;border-radius:50%}
+  .termtitle{margin-left:10px;font-family:var(--mono);font-size:12px;color:var(--dimmer)}
+  .termbody{padding:18px;font-family:var(--mono);font-size:12.5px;line-height:1.75;overflow-x:auto;white-space:pre}
+  .c-dim{color:var(--dimmer)}
+  .c-red{color:var(--red)}
+  .c-amber{color:var(--amber)}
+  .c-blue{color:var(--blue)}
+  .c-acc{color:var(--acc)}
+  .c-w{color:var(--text)}
+  .crit{background:#7f1d1d;color:#fff;padding:1px 7px;border-radius:3px;font-weight:700}
+
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:29px;letter-spacing:-.7px;margin-bottom:14px;font-weight:700}
+  h3{font-size:17px;margin-bottom:8px;font-weight:650}
+  .lead{color:var(--dim);font-size:16.5px;max-width:680px;margin-bottom:34px}
+  .eyebrow{font-family:var(--mono);font-size:12px;color:var(--acc);text-transform:uppercase;letter-spacing:1.3px;margin-bottom:12px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:22px}
+  .card h3{color:var(--text)}
+  .card p{color:var(--dim);font-size:14.5px}
+  .card .rid{font-family:var(--mono);font-size:11.5px;color:var(--acc);margin-bottom:9px;letter-spacing:.4px}
+
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--dimmer);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.7px}
+  td{color:var(--dim)}
+  td strong{color:var(--text)}
+  .num{font-family:var(--mono);color:var(--text)}
+
+  /* pricing */
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px;margin-top:34px}
+  .price{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:28px;display:flex;flex-direction:column;position:relative}
+  .price.feat{border-color:var(--acc);box-shadow:0 0 0 1px rgba(94,234,212,.2)}
+  .tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--acc);color:#04231f;font-size:11px;font-weight:700;padding:3px 12px;border-radius:100px;font-family:var(--mono);letter-spacing:.4px;white-space:nowrap}
+  .pname{font-family:var(--mono);font-size:13px;color:var(--acc);letter-spacing:.7px;text-transform:uppercase;margin-bottom:10px}
+  .pamt{font-size:40px;font-weight:700;letter-spacing:-1.6px;line-height:1}
+  .pamt small{font-size:14px;color:var(--dimmer);font-weight:400;letter-spacing:0}
+  .pdesc{color:var(--dimmer);font-size:13.5px;margin:10px 0 18px}
+  .price ul{list-style:none;margin-bottom:24px;flex:1}
+  .price li{color:var(--dim);font-size:14px;padding:6px 0 6px 22px;position:relative}
+  .price li:before{content:"→";position:absolute;left:0;color:var(--acc);font-family:var(--mono)}
+  .price .btn{width:100%;text-align:center}
+
+  .warn{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22);border-radius:9px;padding:20px 22px;margin-top:26px}
+  .warn h3{color:var(--amber);font-family:var(--mono);font-size:13px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px}
+  .warn p{color:var(--dim);font-size:14.5px;margin-bottom:9px}
+  .warn p:last-child{margin-bottom:0}
+
+  details{border-bottom:1px solid var(--line);padding:16px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"+";color:var(--acc);font-family:var(--mono);font-size:19px;flex-shrink:0}
+  details[open] summary:after{content:"−"}
+  details p{color:var(--dim);font-size:15px;margin-top:12px}
+
+  footer{padding:44px 0;color:var(--dimmer);font-size:13.5px}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .disclaimer{max-width:560px;font-size:12.5px;line-height:1.6}
+  @media(max-width:640px){.navlinks a:not(.btn){display:none}.termbody{font-size:10.5px}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <div class="logo">asi<span>scan</span></div>
+  <div class="navlinks">
+    <a href="#who">Who it's for</a>
+    <a href="#checks">Checks</a>
+    <a href="#vs">Compare</a>
+    <a href="#proof">Proof</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#pricing" class="btn">Get the assessment</a>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <div class="badge"><span class="dot"></span> OWASP Top 10 for Agentic Applications — ASI01–ASI10</div>
+  <h1>Your SAST scanner doesn't know<br />what a <em>tool call</em> is.</h1>
+  <p class="sub">
+    ASIScan is static analysis built for AI agents. It audits your codebase against the
+    OWASP Top&nbsp;10 for Agentic Applications, the OWASP LLM Top&nbsp;10, and EU AI Act
+    Article&nbsp;50 — then hands you the evidence document you attach when an enterprise
+    customer sends you a security questionnaire asking how you secured your AI features.
+  </p>
+  <div class="cta">
+    <a href="#pricing" class="btn btn-lg">Get the assessment — $490</a>
+    <a href="#proof" class="btn btn-lg btn-ghost">See the measured results</a>
+  </div>
+  <p class="microcopy">Scanner is MIT and free · runs offline · no telemetry · <span style="color:var(--acc)">npx asiscan-cli .</span></p>
+</div></header>
+
+<div class="wrap">
+<div class="term">
+  <div class="termbar">
+    <span class="tdot" style="background:#ff5f57"></span>
+    <span class="tdot" style="background:#febc2e"></span>
+    <span class="tdot" style="background:#28c840"></span>
+    <span class="termtitle">npx asiscan-cli .</span>
+  </div>
+<div class="termbody"><span class="c-w">  ASIScan</span><span class="c-dim"> — OWASP ASI / LLM Top 10 static audit</span>
+<span class="c-dim">  2 files · 2 KB · 18 rules · 9ms</span>
+
+   <span class="crit">CRITICAL</span>  <span class="c-w">ASI01</span>  Agent Goal Hijack
+<span class="c-dim">  An attacker redirects the agent's objective using content the agent
+  reads. Retrieved text shares a context window with your instructions.</span>
+
+    <span class="c-blue">agent.ts:13:9</span>
+      Untrusted content is interpolated directly into the system prompt.
+      Anything reachable by an attacker becomes an instruction.
+<span class="c-dim">      │ const systemPrompt = `You are an ops assistant. Context: ${doc}`</span>
+
+   <span class="crit">CRITICAL</span>  <span class="c-w">ASI05</span>  Unexpected Code Execution (RCE)
+
+    <span class="c-blue">agent.ts:44:5</span>
+      Shell command built by string interpolation. Model-influenced values
+      in a shell string are a command-injection primitive.
+<span class="c-dim">      │ exec(`bash -c "${args.cmd}"`, (e, stdout) => {</span>
+
+   <span class="crit">CRITICAL</span>  <span class="c-w">ASI09</span>  Human-Agent Trust Exploitation
+
+    <span class="c-blue">agent.ts:52:1</span>
+      Irreversible operations reachable with no human-in-the-loop gate.
+<span class="c-dim">      │ export async function deleteBucket(name, autoApprove = true) {</span>
+
+   <span class="c-red">11 critical</span>  ·  <span class="c-amber">12 high</span>  ·  <span class="c-blue">3 medium</span>
+<span class="c-dim">  controls satisfied: none</span></div>
+</div>
+</div>
+
+<section id="who"><div class="wrap">
+  <div class="eyebrow">Two ways people arrive here</div>
+  <h2>Which one is you?</h2>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))">
+    <div class="card" style="padding:26px">
+      <div class="rid">PATH 1 — YOU BUILD THE AGENT</div>
+      <h3 style="font-size:19px;margin-bottom:10px">A questionnaire just landed and the deal is waiting</h3>
+      <p style="margin-bottom:10px">
+        You shipped an agent feature this year. Now an enterprise prospect has sent 312 questions,
+        forty of them about AI, and nobody on your team can answer question 26 — <em>walk us through
+        your kill switch</em> — with anything you could put in writing.
+      </p>
+      <p style="margin-bottom:14px">
+        Run the scanner today, free. Buy the assessment when you need the document. You will have
+        something to attach this week instead of next month.
+      </p>
+      <a href="#pricing" class="btn">See what you get — $490</a>
+    </div>
+    <div class="card" style="padding:26px">
+      <div class="rid">PATH 2 — YOU BUILD AGENTS FOR OTHERS</div>
+      <h3 style="font-size:19px;margin-bottom:10px">Your clients need diligence and you need it repeatable</h3>
+      <p style="margin-bottom:10px">
+        You ship agents for clients and each one eventually asks what you did about security. Doing
+        that assessment by hand, per project, does not scale, and "we reviewed it carefully" is not
+        a deliverable you can invoice.
+      </p>
+      <p style="margin-bottom:14px">
+        White-label the report, deliver it under your own brand, and make the assessment a billable
+        line item on every engagement rather than unpaid reassurance.
+      </p>
+      <a href="#pricing" class="btn btn-ghost">Consultancy tier</a>
+    </div>
+  </div>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:20px">
+    Neither? If you just want to check your own code, the scanner is MIT and free forever —
+    <span class="mono">npx asiscan-cli .</span> — and you never have to talk to us.
+  </p>
+</div></section>
+
+<section id="why"><div class="wrap">
+  <div class="eyebrow">The gap</div>
+  <h2>The frameworks are months old. The tooling isn't there yet.</h2>
+  <p class="lead">
+    OWASP published the Top&nbsp;10 for Agentic Applications in December 2025 and refreshed the
+    GenAI LLM Top&nbsp;10 on 3&nbsp;August&nbsp;2026. Every engineering lead who shipped an agent
+    this year is now expected to show they've assessed against frameworks that are months old —
+    using scanners designed for a threat model that predates agents entirely.
+  </p>
+  <div class="grid">
+    <div class="card">
+      <h3>Semgrep won't catch this</h3>
+      <p>Generic SAST has no concept of a tool call, a system prompt, or agent memory. It sees valid code and moves on.</p>
+    </div>
+    <div class="card">
+      <h3>Neither will a code review</h3>
+      <p>The dangerous patterns look ordinary. A standing admin token and a scoped one are one line apart.</p>
+    </div>
+    <div class="card">
+      <h3>And the questionnaire is already in your inbox</h3>
+      <p>"Describe the security controls applied to your AI/LLM features." There is no standard answer yet. Deals stall in that gap.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="regions"><div class="wrap">
+  <div class="eyebrow">Jurisdictions</div>
+  <h2>This is not an EU compliance tool.</h2>
+  <p class="lead">
+    OWASP is not a jurisdiction. The ASI Top&nbsp;10 describes how agents actually get attacked —
+    prompt injection through retrieved content, a tool with a standing admin token, a shell string
+    built from model output. None of that becomes safe because your company is in Ohio.
+    Here is the reason to run this where you are.
+  </p>
+  <div class="grid">
+    <div class="card">
+      <h3>🇺🇸 United States</h3>
+      <p>
+        Your buyer's procurement team is the regulator. SOC&nbsp;2 and enterprise security
+        questionnaires now carry AI-specific sections, and auditors are asking which framework
+        you assessed your AI features against. "We reviewed it internally" is not an answer that
+        closes a six-figure deal. An ASI Top&nbsp;10 report is.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🇨🇦 Canada</h3>
+      <p>
+        PIPEDA already applies to automated decisions about people, and federal procurement
+        expects a documented algorithmic impact assessment. Most Canadian teams also sell into
+        the US and EU, which means you inherit the strictest questionnaire you receive — usually
+        before you have anything to answer it with.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🇬🇧 United Kingdom</h3>
+      <p>
+        The UK took a regulator-led route rather than a single AI act, so the ICO, FCA and MHRA
+        each expect sector-appropriate evidence. NCSC guidance on secure AI development is the
+        de-facto baseline, and it maps cleanly onto the same controls. UK teams selling into the
+        EU pick up Article&nbsp;50 regardless of where they're incorporated.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🇪🇺 European Union</h3>
+      <p>
+        The sharpest deadline, and the reason this exists: Article&nbsp;50 transparency became
+        enforceable on 2&nbsp;August&nbsp;2026, with synthetic-content marking following on
+        2&nbsp;December&nbsp;2026. The included worksheet covers scope, classification, and the
+        documents an assessor asks for. It is one module of the product, not the whole pitch.
+      </p>
+    </div>
+  </div>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:22px">
+    The security case is the same everywhere. The paperwork differs, so the paperwork ships as a
+    separate worksheet you use only if it applies to you.
+  </p>
+</div></section>
+
+<section id="checks"><div class="wrap">
+  <div class="eyebrow">Coverage</div>
+  <h2>18 rules. All ten ASI risks.</h2>
+  <p class="lead">
+    The interesting part is <em>how</em> it checks. Agentic risk is usually a
+    <strong style="color:var(--text)">missing control</strong>, not a forbidden token. Code isn't unsafe
+    because it calls <code class="mono">exec</code> — it's unsafe because it calls
+    <code class="mono">exec</code> on a model-influenced string with no sandbox and no egress policy.
+  </p>
+  <div class="grid">
+    <div class="card"><div class="rid">ASI01</div><h3>Agent Goal Hijack</h3><p>Retrieved content reaching the system prompt undelimited.</p></div>
+    <div class="card"><div class="rid">ASI02</div><h3>Tool Misuse</h3><p>Unvalidated tool parameters; no allowlist or authorisation policy.</p></div>
+    <div class="card"><div class="rid">ASI03</div><h3>Identity &amp; Privilege Abuse</h3><p>Hardcoded and non-expiring credentials; agents on standing tokens.</p></div>
+    <div class="card"><div class="rid">ASI04</div><h3>Agentic Supply Chain</h3><p>Unpinned MCP servers, missing AIBOM, no provenance verification.</p></div>
+    <div class="card"><div class="rid">ASI05</div><h3>Unexpected Code Execution</h3><p>Shell strings built by interpolation; code tools with no sandbox.</p></div>
+    <div class="card"><div class="rid">ASI06</div><h3>Memory Poisoning</h3><p>Unscoped memory across tenants; writes with no validation or TTL.</p></div>
+    <div class="card"><div class="rid">ASI07</div><h3>Inter-Agent Comms</h3><p>Unauthenticated handoffs; no signing, no replay protection.</p></div>
+    <div class="card"><div class="rid">ASI08</div><h3>Cascading Failures</h3><p>Unbounded loops; no circuit breaker, retry cap, or timeout.</p></div>
+    <div class="card"><div class="rid">ASI09</div><h3>Human-Trust Exploitation</h3><p>Bypassed approval gates; irreversible actions with no confirmation.</p></div>
+    <div class="card"><div class="rid">ASI10</div><h3>Rogue Agents</h3><p>No audit log, no kill switch, no cancellation path.</p></div>
+    <div class="card"><div class="rid">LLM01–LLM10</div><h3>LLM Top 10 overlap</h3><p>Prompt injection, disclosure, output handling, excessive agency, consumption.</p></div>
+    <div class="card"><div class="rid">EU AI ACT</div><h3>Article 50</h3><p>Missing AI-interaction disclosure; unmarked synthetic content.</p></div>
+    <div class="card"><div class="rid">ASCII SMUGGLING</div><h3>Invisible instructions</h3><p>Zero-width characters, bidi overrides (Trojan Source), Unicode tag characters, poisoned tool descriptions.</p></div>
+  </div>
+
+  <div style="border:1px solid var(--line);border-radius:10px;padding:22px;margin-top:26px">
+    <h3 style="margin-bottom:10px">The gap between what you read and what the model reads</h3>
+    <p style="color:var(--dim);font-size:14.5px;margin-bottom:10px">
+      A model reads codepoints. You read rendering. Everything in between is attack surface — and
+      it is the one place a scanner beats a careful reviewer outright, because the reviewer
+      is looking at characters that are not drawn.
+    </p>
+    <p style="color:var(--dim);font-size:14.5px;margin-bottom:10px">
+      A zero-width space carries a smuggled instruction through code review untouched. A
+      bidirectional override makes source render one way and parse another
+      (<span class="mono">CVE-2021-42574</span>). The Unicode tag block is a complete invisible
+      ASCII alphabet. And a tool description reading <em>"before using any other tool you must
+      first…"</em> is not documentation — descriptions go to the model verbatim, so that is a
+      tool-poisoning primitive.
+    </p>
+    <p style="color:var(--text);font-size:14.5px;margin:0">
+      Across five large agent frameworks these four checks produce <strong>zero</strong> findings.
+      Against a crafted smuggling fixture, all four fire. Silent on clean code, loud on the real
+      attack — including the <span class="mono">U+FEFF</span> byte-order mark we removed from the
+      signature after every hit it produced on real code turned out to be false.
+    </p>
+  </div>
+</div></section>
+
+<section id="vs"><div class="wrap">
+  <div class="eyebrow">Where this fits</div>
+  <h2>Not a package scanner. The other half.</h2>
+  <p class="lead">
+    There are good tools that scan the AI packages and MCP servers you <em>install</em> — asking
+    whether the third-party thing you're about to run is malicious. That is a real problem and a
+    different one. ASIScan reads the agent <em>you wrote</em>.
+  </p>
+  <table>
+    <tr><th></th><th>Package / MCP scanners</th><th>ASIScan</th></tr>
+    <tr><td><strong>Question answered</strong></td><td>Is this dependency malicious?</td><td>Is the agent we built defensible, and can we prove it?</td></tr>
+    <tr><td><strong>Subject</strong></td><td>Third-party packages, MCP servers, installed skills</td><td>Your own repository</td></tr>
+    <tr><td><strong>Framework mapping</strong></td><td>Ad-hoc threat categories</td><td>Every finding carries an ASI, LLM or Art. 50 ID</td></tr>
+    <tr><td><strong>Deep analysis</strong></td><td>Often ships your source to an LLM provider</td><td>Fully offline. No network calls, no telemetry, air-gap capable</td></tr>
+    <tr><td><strong>Evidence output</strong></td><td>Findings</td><td>Findings plus a 47-item manual checklist, EU worksheet, 30 red-team probes</td></tr>
+    <tr><td><strong>Licence</strong></td><td>Frequently AGPL — banned outright at many enterprises</td><td>Commercial, perpetual. No copyleft obligation on your codebase</td></tr>
+  </table>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:18px">
+    Run both if you can. They overlap only at ASI04, agentic supply chain — where ASIScan checks
+    that <em>your</em> MCP servers are pinned and provenance-verified, rather than auditing
+    someone else's package for you.
+  </p>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:12px">
+    Two of those rows are worth reading twice if you sell to enterprises. <strong style="color:var(--text)">A
+    tool that uploads your source to a third-party LLM is a question on the very security
+    questionnaire you're trying to answer</strong> — and an AGPL dependency is a procurement
+    conversation you don't want to have.
+  </p>
+</div></section>
+
+<section id="proof"><div class="wrap">
+  <div class="eyebrow">Proof</div>
+  <h2>Measured, not asserted.</h2>
+  <p class="lead">
+    Two reference agents ship in the box — one deliberately unsafe, one properly secured.
+    Every claim here is reproducible with <code class="mono">npm test</code> on your own machine.
+  </p>
+  <table>
+    <tr><th>Fixture</th><th>Findings</th><th>Controls recognised</th></tr>
+    <tr><td><strong>vulnerable-agent</strong><br /><span style="font-size:13px">60 lines, deliberately unsafe</span></td><td class="num">26</td><td class="num">0</td></tr>
+    <tr><td><strong>secure-agent</strong><br /><span style="font-size:13px">reference implementation</span></td><td class="num">0</td><td class="num">5</td></tr>
+  </table>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:18px">
+    A scanner that flags everything is noise. One that flags nothing is decoration.
+    Sensitivity and specificity are both tested, and both are in the test suite.
+  </p>
+
+  <h3 style="margin-top:34px">Then tuned against fifteen real repositories</h3>
+  <p class="lead" style="margin-bottom:18px">
+    Fixtures prove a scanner can fire. They don't prove it's usable. ASIScan was tuned in
+    rounds against fifteen open-source agent frameworks — roughly 17,000 source files — with
+    every surviving finding reviewed by hand.
+  </p>
+  <table>
+    <tr><th>Tuning round</th><th>Findings</th><th>Precision</th></tr>
+    <tr><td>Untuned — 5 repos, ~3,100 files</td><td class="num">792</td><td class="num">~4%</td></tr>
+    <tr><td>Tuned — same 5 repos</td><td class="num">36</td><td class="num">~55%</td></tr>
+    <tr><td>Expanded to 10 repos, ~14,000 files</td><td class="num">89</td><td class="num">~62%</td></tr>
+    <tr><td>+ file-level context gating</td><td class="num">78</td><td class="num">~69%</td></tr>
+    <tr><td><strong>+ targeted fixes (current)</strong></td><td class="num"><strong>49</strong></td><td class="num"><strong>~75–80%</strong></td></tr>
+  </table>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:18px">
+    The last row is labelled the way we'd want it labelled if we were buying: those fixes were
+    validated against the five repositories that carried the false positives they targeted, not
+    re-measured across all ten. Treat <strong style="color:var(--text)">~75% as the working
+    figure</strong> and 80% as the best case.
+  </p>
+  <p style="color:var(--dim);font-size:14.5px;margin-top:14px">
+    Among the false positives removed: flagging <code class="mono">url.startswith(('http://','https://'))</code>
+    — scheme-validation code, i.e. reporting the security control as the vulnerability, 475 findings.
+    Matching <code class="mono">xmlns="http://www.w3.org/2000/svg"</code> as a network endpoint.
+    Matching JavaScript's <code class="mono">regex.exec(text)</code> as process execution. And
+    treating test files as production code — they were two thirds of all findings in round two.
+  </p>
+  <div style="border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-top:22px">
+    <h3 style="margin:0 0 10px">For context, since nobody else gives you any</h3>
+    <p style="color:var(--dim);font-size:14.5px;margin:0 0 10px">
+      Published benchmarks put untuned commercial SAST at <strong style="color:var(--text)">60–90%
+      false positives</strong>, dropping to 10–20% once tuned for a specific stack. SonarQube
+      reports 40–60% of findings requiring developer review.
+    </p>
+    <p style="color:var(--text);font-size:15px;margin:0">
+      A ~20–25% false-positive rate is the well-tuned commercial band. The difference is that this
+      number is measured, published, and reproducible against named public repositories rather than
+      asserted in a datasheet. No other scanner in this category publishes theirs — you should ask
+      them why.
+    </p>
+  </div>
+
+  <div class="warn">
+    <h3>What it does not do</h3>
+    <p>It reads source, not behaviour. It cannot see your IAM policy, network topology, runtime config, or what your model actually does at inference time.</p>
+    <p>Control probes are project-wide: if a mitigation exists anywhere, the rule stays quiet — even if it isn't applied on the path that needs it. A clean result is weaker evidence than a dirty one.</p>
+    <p>It is regex-based, not AST-based. It is not a certification, not a conformity assessment, and not legal advice.</p>
+    <p style="color:var(--text)">The manual review checklist ships with it precisely because the scanner is not sufficient on its own. Anyone selling you an AI compliance scanner without that caveat is selling you a false sense of security.</p>
+  </div>
+</div></section>
+
+<section id="box"><div class="wrap">
+  <div class="eyebrow">Contents</div>
+  <h2>The scanner is half of it.</h2>
+  <p class="lead">
+    Static analysis covers roughly half the ASI Top 10. The rest is architecture, runtime
+    configuration, and process. So the other half of the box is the paperwork you'd otherwise
+    spend a week writing.
+  </p>
+  <table>
+    <tr><th>Component</th><th>What it is</th></tr>
+    <tr><td><strong>CLI scanner</strong></td><td>18 rules, 4 output formats — terminal, markdown, JSON, SARIF 2.1.0</td></tr>
+    <tr><td><strong>GitHub Action</strong></td><td>PR gate, uploads to the GitHub Security tab, weekly scheduled re-scan</td></tr>
+    <tr><td><strong>Manual review checklist</strong></td><td>47 checks with severity and an evidence column, covering what source can't show</td></tr>
+    <tr><td><strong>EU AI Act worksheet</strong></td><td>Scope, classification, Art. 50 controls, and the 10 documents auditors ask for</td></tr>
+    <tr><td><strong>Red-team probe suite</strong></td><td>30 adversarial probes as JSONL, mapped to risk IDs, with pass/fail signals</td></tr>
+    <tr><td><strong>Reference agents</strong></td><td>A vulnerable and a secured implementation, annotated line by line</td></tr>
+    <tr><td><strong>Full TypeScript source</strong></td><td>Readable, commented, and yours to extend with your own rules</td></tr>
+  </table>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <div class="eyebrow">Pricing</div>
+  <h2>The scanner is free. The evidence isn't.</h2>
+  <p class="lead">
+    Rules are a commodity — there are free agent scanners, and ours is one of them, MIT licensed
+    on npm. What nobody hands you is a document a procurement team accepts. That is the part that
+    takes judgement, and that is the part we charge for.
+  </p>
+
+  <div class="prices">
+    <div class="price">
+      <div class="pname">Scanner</div>
+      <div class="pamt">Free</div>
+      <p class="pdesc">MIT licensed. Not a trial, not crippled, no signup.</p>
+      <ul>
+        <li>All 18 rules, ASI + LLM + Art. 50</li>
+        <li>ASCII-smuggling detection</li>
+        <li>Terminal, markdown, JSON, SARIF</li>
+        <li>GitHub Action &amp; CI gate</li>
+        <li>Runs offline. No telemetry</li>
+      </ul>
+      <a href="https://www.npmjs.com/package/asiscan-cli" class="btn btn-ghost">npx asiscan-cli .</a>
+    </div>
+
+    <div class="price">
+      <div class="pname">Assessment</div>
+      <div class="pamt">$490<small> once</small></div>
+      <p class="pdesc">One dated report for one codebase. The thing you attach.</p>
+      <ul>
+        <li>Assessment report (HTML + PDF)</li>
+        <li>NIST AI RMF &amp; ISO 42001 crosswalk</li>
+        <li>Questionnaire answer pack</li>
+        <li>47-item manual review checklist</li>
+        <li>EU AI Act worksheet</li>
+        <li>30 red-team probes</li>
+      </ul>
+      <a href="#" data-stripe="assessment" class="btn">Get the assessment</a>
+    </div>
+
+    <div class="price feat">
+      <div class="tag">MOST TEAMS PICK THIS</div>
+      <div class="pname">Continuous</div>
+      <div class="pamt">$2,400<small>/year</small></div>
+      <p class="pdesc">Because a report is stale the moment you merge.</p>
+      <ul>
+        <li>Everything in Assessment</li>
+        <li>Unlimited repos and re-scans</li>
+        <li>Quarterly re-issued, re-dated report</li>
+        <li>Drift diff against last quarter</li>
+        <li>Hosted trust page you can link buyers to</li>
+        <li>Rule updates as OWASP moves</li>
+      </ul>
+      <a href="#" data-stripe="continuous" class="btn">Start continuous</a>
+    </div>
+
+    <div class="price">
+      <div class="pname">Consultancy</div>
+      <div class="pamt">$6,000<small>/year</small></div>
+      <p class="pdesc">Deliver assessments to your own clients, under your brand.</p>
+      <ul>
+        <li>Everything in Continuous</li>
+        <li>Unlimited client engagements</li>
+        <li>White-label report output</li>
+        <li>Right to deliver reports to third parties</li>
+        <li>Rule authoring guide</li>
+      </ul>
+      <a href="#" data-stripe="consultancy" class="btn">Get consultancy</a>
+    </div>
+  </div>
+
+  <div style="border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin-top:28px">
+    <h3 style="margin-bottom:10px">Why this is cheap</h3>
+    <p style="color:var(--dim);font-size:14.5px;margin-bottom:10px">
+      ISO/IEC 42001 certification runs <strong style="color:var(--text)">$37,500–$85,000 in year
+      one</strong> — GRC platform, external audit, and implementation consulting — and around
+      $115,000 across three years. That is the right tool for a different job, and it takes months.
+    </p>
+    <p style="color:var(--dim);font-size:14.5px;margin-bottom:10px">
+      Meanwhile the thing actually costing you money is the wait. AI questionnaires stretch vendor
+      review from about a week to <strong style="color:var(--text)">four to eight weeks</strong>. For
+      a company with $250K contracts that has been estimated at
+      <strong style="color:var(--text)">$400K–$800K per quarter</strong> in delayed or lost revenue.
+    </p>
+    <p style="color:var(--text);font-size:15px;margin:0">
+      $490 to unblock the review is not a purchase anyone has to think about. Perpetual licence,
+      30-day refund, no justification required.
+    </p>
+  </div>
+
+  <p style="color:var(--dimmer);font-size:13px;margin-top:18px;text-align:center">
+    Payments are processed by Stripe. Your card statement and the checkout page will show
+    <span class="mono">EASE AI / Protocol42</span> — Ease AI Works is the merchant of record for
+    ASIScan.
+  </p>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <div class="eyebrow">FAQ</div>
+  <h2>Questions you should be asking</h2>
+  <details><summary>Isn't this just a pile of regexes?</summary>
+    <p>Partly, and the README says so plainly. The design contribution is the control-probe model: a rule fires only when your code demonstrably performs a risky behaviour <em>and</em> no evidence of the mitigating control appears anywhere in the project. That maps to how the ASI list is actually written — most entries are missing-control findings. It also deliberately excludes comments from counting as evidence, so a <code class="mono">// TODO: add sandboxing</code> can't make the scanner report you as mitigated.</p></details>
+  <details><summary>Will it work on my Python / Go / .NET agent?</summary>
+    <p>It scans TypeScript, JavaScript, Python, Go, Rust, Java, C#, PHP, plus JSON, YAML, TOML, shell, and Dockerfiles. Rule coverage is strongest on TS/JS and Python, where most agent code lives today. Rules are plain objects — extending them for your stack is a small diff, and the guide is included.</p></details>
+  <details><summary>Does my code leave my machine?</summary>
+    <p>No. It runs entirely offline, makes no network calls, and has no telemetry. You can verify that in the source, which you get.</p></details>
+  <details><summary>We're not in the EU. Why would we run this?</summary>
+    <p>Because the EU AI Act is the smallest reason to. The OWASP ASI Top 10 describes how agents get attacked, and that threat model doesn't stop at a border — a shell string built from model output is a command-injection primitive in Toronto, Austin and Manchester alike.</p>
+    <p>The commercial reason is more immediate: enterprise security questionnaires and SOC 2 reviews now include AI-specific sections, and "we reviewed it internally" doesn't clear them. A scan report naming the framework you assessed against, plus a completed manual checklist with an evidence column, is a document you attach and move on. That's revenue protection, not compliance cost. The EU worksheet is one module in the box — use it if you sell into the EU, ignore it if you don't.</p></details>
+  <details><summary>Does this make me EU AI Act compliant?</summary>
+    <p>No, and be suspicious of any tool that claims it does. Compliance is a legal determination requiring a documented human assessment. What this gives you is the engineering-side evidence and the worksheet that gets your lawyer the facts they'll ask for. That's the honest scope.</p></details>
+  <details><summary>Why should I trust a v1.x?</summary>
+    <p>Don't trust it — run it. The test suite is included and reproduces every number on this page. The two reference agents let you verify sensitivity and specificity yourself in about a minute. And there's a 30-day refund if it doesn't earn its keep.</p></details>
+  <details><summary>What if I find a false positive?</summary>
+    <p>Email it. Rules are data, not hardcoded logic — most fixes are a one-line regex change that ships in the next v1.x update, which you get free.</p></details>
+</div></section>
+
+<section style="text-align:center;border-bottom:none">
+  <div class="wrap">
+    <h2>Find out what's in your agent before someone else does.</h2>
+    <p class="lead" style="margin:0 auto 28px">Scan free in under a second. Buy the evidence when a reviewer asks for it.</p>
+    <a href="#pricing" class="btn btn-lg">Get the assessment — $490</a>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div>
+    <div class="logo" style="margin-bottom:10px">asi<span>scan</span></div>
+    <p class="disclaimer">
+      ASIScan performs static analysis of source code. Its output does not constitute a
+      security certification, a conformity assessment, or legal advice, and does not establish
+      compliance with the EU AI Act or any other regulation. OWASP is a registered trademark of
+      the OWASP Foundation; this product is not affiliated with or endorsed by OWASP.
+    </p>
+  </div>
+  <div style="text-align:right">
+    <p>© 2026 ASIScan</p>
+    <p style="margin-top:6px"><a href="mailto:hello@protocol42.io">Support</a> · <a href="#faq">FAQ</a></p>
+  </div>
+</div></footer>
+
+<script>
+  // Live Stripe Payment Links (Easeaiworks account).
+  // Payment links must match the displayed price. A button that charges a
+  // different amount than the page shows is a chargeback and a trust problem,
+  // so unset tiers fall back to email rather than to a stale link.
+  const STRIPE_LINKS = {
+    assessment: "https://buy.stripe.com/eVq6oH5egfqNfk45In1B606",
+    continuous: "https://buy.stripe.com/3cIeVdeOQ7Ylb305In1B607",
+    consultancy: "https://buy.stripe.com/8x214neOQ6Uheg0eeT1B608",
+  };
+  document.querySelectorAll("[data-stripe]").forEach((el) => {
+    const url = STRIPE_LINKS[el.dataset.stripe];
+    if (url && !url.startsWith("REPLACE")) {
+      el.setAttribute("href", url);
+    } else {
+      el.setAttribute(
+        "href",
+        "mailto:hello@protocol42.io?subject=" +
+          encodeURIComponent("ASIScan — " + el.dataset.stripe) +
+          "&body=" +
+          encodeURIComponent(
+            "Please send a payment link for the " + el.dataset.stripe + " tier.",
+          ),
+      );
+    }
+  });
+</script>
+</body>
+</html>

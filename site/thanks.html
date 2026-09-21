@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Your download — ASIScan</title>
+<style>
+  :root{
+    --bg:#0a0c10;--panel:#11151c;--line:#232a35;--text:#e6edf3;
+    --dim:#8b96a5;--dimmer:#5f6a78;--acc:#5eead4;--acc2:#2dd4bf;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.65;
+       display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+  .wrap{max-width:620px;width:100%}
+  a{color:var(--acc)}
+  .logo{font-family:var(--mono);font-weight:600;font-size:15px;margin-bottom:32px}
+  .logo span{color:var(--acc)}
+  .check{width:46px;height:46px;border-radius:50%;background:rgba(94,234,212,.12);
+         border:1px solid rgba(94,234,212,.35);display:flex;align-items:center;
+         justify-content:center;color:var(--acc);font-size:22px;margin-bottom:20px}
+  h1{font-size:30px;letter-spacing:-.9px;margin-bottom:12px}
+  .sub{color:var(--dim);margin-bottom:28px}
+  .btn{background:var(--acc);color:#04231f;padding:14px 26px;border-radius:7px;
+       font-weight:650;font-size:15px;display:inline-block;text-decoration:none;transition:.15s}
+  .btn:hover{background:var(--acc2);transform:translateY(-1px)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:22px;margin-top:30px}
+  .card h2{font-size:13px;font-family:var(--mono);color:var(--acc);text-transform:uppercase;
+           letter-spacing:1.1px;margin-bottom:14px}
+  ol{margin-left:18px;color:var(--dim);font-size:14.5px}
+  ol li{margin-bottom:9px}
+  code{font-family:var(--mono);background:#0d1117;border:1px solid var(--line);
+       padding:2px 6px;border-radius:4px;font-size:13px;color:var(--text)}
+  pre{font-family:var(--mono);background:#0d1117;border:1px solid var(--line);
+      padding:14px;border-radius:7px;font-size:13px;overflow-x:auto;margin-top:10px;color:var(--text)}
+  .foot{margin-top:30px;color:var(--dimmer);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">asi<span>scan</span></div>
+  <div class="check">✓</div>
+  <h1>Payment received. Here's your download.</h1>
+  <p class="sub">A receipt is on its way to your email. This link is yours to keep — bookmark it.</p>
+
+  <a class="btn" id="dl" href="/d/aa-8f3k9x/asiscan-v1.3.0.zip" download>Download ASIScan v1.3.0</a>
+  <p id="dlfail" style="display:none;margin-top:14px;color:var(--dim);font-size:14.5px">
+    That download isn't responding. Email
+    <a href="mailto:hello@protocol42.io">hello@protocol42.io</a> with your Stripe receipt and
+    you'll get the file back directly — usually within a few hours. Sorry for the friction;
+    your purchase is recorded either way.
+  </p>
+  <script>
+    // Fail loudly and helpfully rather than dropping a paying customer on a 404.
+    document.getElementById("dl").addEventListener("click", function (e) {
+      fetch(this.getAttribute("href"), { method: "HEAD" })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .catch(function () {
+          document.getElementById("dlfail").style.display = "block";
+        });
+    });
+  </script>
+
+  <div class="card">
+    <h2>Start here</h2>
+    <ol>
+      <li>Unzip, then <code>npm install &amp;&amp; npm run build</code></li>
+      <li>Run it against your agent: <code>node dist/cli.js /path/to/your/repo</code></li>
+      <li>Verify it works before you trust it — <code>npm test</code> reproduces every number on the sales page, including the vulnerable-vs-secure fixture comparison.</li>
+      <li>Read <code>templates/manual-review-checklist.md</code>. Static analysis covers about half the ASI Top 10; that file covers the rest.</li>
+    </ol>
+    <pre>npm install &amp;&amp; npm run build
+node dist/cli.js . --format markdown --output audit.md</pre>
+  </div>
+
+  <div class="card">
+    <h2>Support</h2>
+    <p style="color:var(--dim);font-size:14.5px">
+      Found a false positive, or a risk it should have caught and didn't? Email it over —
+      rules are data, not hardcoded logic, so most fixes ship in the next v1.x update, which
+      you get free. If it didn't earn its keep, the 30-day refund is real: just ask.
+    </p>
+  </div>
+
+  <p class="foot">
+    Your card statement will show <code>EASE AI / PROTOCOL42</code>. Ease AI Works is the
+    merchant of record for ASIScan.<br /><br />
+    ASIScan performs static analysis of source code. Its output is not a security
+    certification, a conformity assessment, or legal advice.
+  </p>
+</div>
+</body>
+</html>

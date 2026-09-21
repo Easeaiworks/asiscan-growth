@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Support — ASIScan</title>
+  <link rel="canonical" href="https://asiscan.dev/support" />
+<meta name="description" content="Support for ASIScan. Installation help, false-positive reports, licensing questions, and refunds." />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a href="/" class="logo" style="color:var(--text)">asi<span>scan</span></a>
+  <div class="navlinks">
+    <a href="/faq.html">FAQ</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/#pricing" class="btn">Pricing</a>
+  </div>
+</div></nav>
+
+<div class="wrap doc">
+  <h1>Support</h1>
+  <p class="meta">One inbox · hello@protocol42.io</p>
+
+  <p class="lead" style="font-size:17px">
+    ASIScan is built and supported by a small team, which has one advantage worth stating:
+    the person who answers your email is the person who wrote the rule you're asking about.
+  </p>
+
+  <h2>Before you email</h2>
+  <p>Two things resolve most issues faster than we can reply:</p>
+  <ol>
+    <li><strong>Run <code>npm test</code>.</strong> Seventeen tests ship with the Software. If
+      they pass, your install is sound and the problem is likely configuration or a rule
+      question. If they fail, paste the failure into your email — that tells us almost
+      everything.</li>
+    <li><strong>Check the <a href="/faq.html">FAQ</a>.</strong> Installation, language support,
+      licensing scope, and the "why did it flag this?" cases are covered there.</li>
+  </ol>
+
+  <h2>What we can help with</h2>
+  <table>
+    <tr><th>Issue</th><th>What to send</th><th>Typical turnaround</th></tr>
+    <tr>
+      <td><strong>Install or build failure</strong></td>
+      <td>Your Node version (<code>node -v</code>), OS, and the full error output</td>
+      <td>1 business day</td>
+    </tr>
+    <tr>
+      <td><strong>False positive</strong></td>
+      <td>The rule ID (e.g. ASI05) and a <em>redacted</em> snippet of the triggering line</td>
+      <td>2 business days; fix usually in the next v1.x</td>
+    </tr>
+    <tr>
+      <td><strong>False negative</strong> — it missed something real</td>
+      <td>The risk ID and a minimal example of the pattern it should have caught</td>
+      <td>2 business days. These are the most valuable reports we get.</td>
+    </tr>
+    <tr>
+      <td><strong>Licence scope question</strong></td>
+      <td>What you want to do, and how many codebases or developers are involved</td>
+      <td>1 business day</td>
+    </tr>
+    <tr>
+      <td><strong>Refund</strong></td>
+      <td>Email from the address you purchased with, within 30 days. No justification needed.</td>
+      <td>Processed within 5 business days</td>
+    </tr>
+    <tr>
+      <td><strong>Invoice or tax documentation</strong></td>
+      <td>Your Stripe receipt and the business details you need on the invoice</td>
+      <td>2 business days</td>
+    </tr>
+  </table>
+
+  <div class="warn">
+    <h3>Please don't send us your source code</h3>
+    <p>We don't want it, we don't need it, and holding it creates risk for both of us. A rule ID
+    and a redacted one-line snippet is enough to diagnose almost any finding.</p>
+    <p>Never send credentials, API keys, tokens, or customer data. If a finding involves a real
+    secret, rotate it first — then tell us about the pattern, not the value.</p>
+  </div>
+
+  <h2>What support does not cover</h2>
+  <p>Being straight about this so expectations are right from the start:</p>
+  <ul>
+    <li><strong>We don't audit your code for you.</strong> Support covers the tool, not your
+      codebase. Interpreting findings in the context of your architecture is your engineering
+      judgement to exercise.</li>
+    <li><strong>We can't tell you if you're compliant.</strong> Not with the EU AI Act, not with
+      anything else. That's a legal determination requiring a qualified professional, and anyone
+      who tells you a scanner settles it is selling you a false sense of security.</li>
+    <li><strong>No guaranteed response time.</strong> We aim for one to two business days and
+      usually beat it, but there is no SLA and none is promised. See
+      <a href="/terms.html#support">section 8 of the Terms</a>.</li>
+    <li><strong>Custom rule development</strong> isn't included, though we're happy to point you
+      at the right file — rules are plain data objects and most additions are a few lines.</li>
+  </ul>
+
+  <h2>Reporting a security issue in ASIScan itself</h2>
+  <p>If you find a vulnerability in the Software, email
+  <a href="mailto:hello@protocol42.io">hello@protocol42.io</a> with <strong>SECURITY</strong>
+  in the subject line. Please give us a reasonable window to investigate and ship a fix before
+  public disclosure — we will acknowledge within two business days, keep you updated, and credit
+  you in the release notes if you'd like.</p>
+  <p>We won't threaten legal action against anyone who reports a genuine vulnerability in good
+  faith.</p>
+
+  <h2>Updates</h2>
+  <p>Your licence includes all v1.x updates at no charge. Rules move as OWASP publishes and as
+  false-positive reports come in, so updating is worth doing periodically. We'll email licence
+  holders when a release contains a meaningful rule change.</p>
+
+  <h2 style="border-top:1px solid var(--line)">Contact</h2>
+  <p style="font-size:17px"><a href="mailto:hello@protocol42.io">hello@protocol42.io</a></p>
+  <p>Protocol 42 · Ontario, Canada</p>
+</div>
+
+<footer><div class="wrap">
+  <div>
+    <div class="logo" style="margin-bottom:10px">asi<span>scan</span></div>
+    <p class="disclaimer">
+      ASIScan performs static analysis of source code. Its output does not constitute a
+      security certification, a conformity assessment, or legal advice, and does not establish
+      compliance with the EU AI Act or any other regulation. OWASP is a registered trademark of
+      the OWASP Foundation; this product is not affiliated with or endorsed by OWASP.
+    </p>
+  </div>
+  <div style="text-align:right">
+    <p>© 2026 Protocol 42</p>
+    <div class="footlinks">
+      <a href="/faq.html">FAQ</a><a href="/support.html">Support</a><a href="/verify">Verify a report</a>
+      <a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+</div></footer>
+</body>
+</html>
