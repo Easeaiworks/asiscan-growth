@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-21T17:05:45.447Z",
+  "generatedAt": "2026-09-21T18:16:05.837Z",
   "date": "2026-09-21",
   "summary": {
     "reposScanned": 50,
     "reposFailed": 0,
-    "filesScanned": 114907,
-    "totalFindings": 8931,
-    "medianFindingsPerRepo": 9,
+    "filesScanned": 115136,
+    "totalFindings": 894,
+    "medianFindingsPerRepo": 10,
     "reposWithZeroFindings": 3
   },
   "rulePrevalence": [
@@ -28,7 +28,8 @@
         "tooling": 1,
         "mcp": 1,
         "platform": 7
-      }
+      },
+      "topRepoSharePct": 10
     },
     {
       "ruleId": "ASI05",
@@ -36,7 +37,7 @@
       "severity": "critical",
       "framework": "OWASP ASI",
       "reposAffected": 25,
-      "findings": 138,
+      "findings": 140,
       "repoTags": {
         "framework": 8,
         "multi-agent": 1,
@@ -47,7 +48,8 @@
         "platform": 6,
         "application": 2,
         "governance": 1
-      }
+      },
+      "topRepoSharePct": 24
     },
     {
       "ruleId": "ASI07",
@@ -67,7 +69,8 @@
         "platform": 4,
         "application": 1,
         "governance": 1
-      }
+      },
+      "topRepoSharePct": 22
     },
     {
       "ruleId": "ASI04",
@@ -75,7 +78,7 @@
       "severity": "high",
       "framework": "OWASP ASI",
       "reposAffected": 19,
-      "findings": 257,
+      "findings": 258,
       "repoTags": {
         "framework": 2,
         "autonomous": 1,
@@ -88,7 +91,8 @@
         "platform": 5,
         "application": 3,
         "governance": 1
-      }
+      },
+      "topRepoSharePct": 41
     },
     {
       "ruleId": "ASI01",
@@ -96,7 +100,7 @@
       "severity": "critical",
       "framework": "OWASP ASI",
       "reposAffected": 17,
-      "findings": 8119,
+      "findings": 78,
       "repoTags": {
         "framework": 5,
         "multi-agent": 1,
@@ -106,7 +110,8 @@
         "tooling": 1,
         "platform": 4,
         "application": 2
-      }
+      },
+      "topRepoSharePct": 26
     },
     {
       "ruleId": "LLM02",
@@ -121,7 +126,8 @@
         "autonomous": 2,
         "gateway": 1,
         "platform": 2
-      }
+      },
+      "topRepoSharePct": 25
     },
     {
       "ruleId": "EUAIA-52",
@@ -137,7 +143,24 @@
         "code-exec": 1,
         "tooling": 1,
         "platform": 2
-      }
+      },
+      "topRepoSharePct": 10
+    },
+    {
+      "ruleId": "LLM05",
+      "title": "Improper Output Handling",
+      "severity": "high",
+      "framework": "OWASP LLM",
+      "reposAffected": 9,
+      "findings": 16,
+      "repoTags": {
+        "framework": 3,
+        "autonomous": 2,
+        "application": 2,
+        "governance": 1,
+        "code-exec": 1
+      },
+      "topRepoSharePct": 25
     },
     {
       "ruleId": "ASI09",
@@ -153,22 +176,8 @@
         "application": 1,
         "platform": 2,
         "governance": 1
-      }
-    },
-    {
-      "ruleId": "LLM05",
-      "title": "Improper Output Handling",
-      "severity": "high",
-      "framework": "OWASP LLM",
-      "reposAffected": 8,
-      "findings": 15,
-      "repoTags": {
-        "framework": 2,
-        "autonomous": 2,
-        "application": 2,
-        "governance": 1,
-        "code-exec": 1
-      }
+      },
+      "topRepoSharePct": 38
     },
     {
       "ruleId": "LLM01",
@@ -183,7 +192,8 @@
         "autonomous": 2,
         "computer-use": 1,
         "code-exec": 1
-      }
+      },
+      "topRepoSharePct": 13
     },
     {
       "ruleId": "LLM10",
@@ -198,7 +208,8 @@
         "autonomous": 1,
         "code-exec": 2,
         "platform": 1
-      }
+      },
+      "topRepoSharePct": 33
     },
     {
       "ruleId": "ASI02",
@@ -213,7 +224,8 @@
         "autonomous": 2,
         "platform": 1,
         "code-exec": 1
-      }
+      },
+      "topRepoSharePct": 25
     },
     {
       "ruleId": "LLM06",
@@ -228,7 +240,8 @@
         "tooling": 1,
         "governance": 1,
         "platform": 2
-      }
+      },
+      "topRepoSharePct": 67
     },
     {
       "ruleId": "EUAIA-50",
@@ -242,7 +255,8 @@
         "multi-agent": 1,
         "platform": 1,
         "code-exec": 1
-      }
+      },
+      "topRepoSharePct": 25
     },
     {
       "ruleId": "ASI10",
@@ -253,7 +267,8 @@
       "findings": 2,
       "repoTags": {
         "multi-agent": 2
-      }
+      },
+      "topRepoSharePct": 50
     },
     {
       "ruleId": "ASI06",
@@ -264,7 +279,8 @@
       "findings": 1,
       "repoTags": {
         "multi-agent": 1
-      }
+      },
+      "topRepoSharePct": 100
     },
     {
       "ruleId": "ASI08",
@@ -275,7 +291,8 @@
       "findings": 1,
       "repoTags": {
         "multi-agent": 1
-      }
+      },
+      "topRepoSharePct": 100
     },
     {
       "ruleId": "LLM07",
@@ -286,13 +303,14 @@
       "findings": 1,
       "repoTags": {
         "governance": 1
-      }
+      },
+      "topRepoSharePct": 100
     }
   ],
   "byTag": {
     "framework": {
       "repos": 17,
-      "findings": 129
+      "findings": 133
     },
     "multi-agent": {
       "repos": 4,
@@ -304,7 +322,7 @@
     },
     "application": {
       "repos": 4,
-      "findings": 6593
+      "findings": 198
     },
     "code-exec": {
       "repos": 7,
@@ -332,7 +350,7 @@
     },
     "platform": {
       "repos": 7,
-      "findings": 1897
+      "findings": 251
     },
     "governance": {
       "repos": 1,
@@ -345,6 +363,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 285,
+      "durationMs": 794,
       "findings": 5,
       "rulesTriggered": [
         "ASI03",
@@ -357,6 +376,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 1878,
+      "durationMs": 1959,
       "findings": 0,
       "rulesTriggered": []
     },
@@ -365,6 +385,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 361,
+      "durationMs": 1224,
       "findings": 1,
       "rulesTriggered": [
         "LLM10"
@@ -374,7 +395,8 @@
       "slug": "crewAIInc/crewAI",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 985,
+      "filesScanned": 986,
+      "durationMs": 1545,
       "findings": 3,
       "rulesTriggered": [
         "ASI01",
@@ -387,6 +409,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 1039,
+      "durationMs": 1167,
       "findings": 4,
       "rulesTriggered": [
         "ASI05",
@@ -398,6 +421,7 @@
       "tag": "framework",
       "lang": "csharp",
       "filesScanned": 3687,
+      "durationMs": 3793,
       "findings": 24,
       "rulesTriggered": [
         "ASI01",
@@ -411,6 +435,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 31,
+      "durationMs": 182,
       "findings": 4,
       "rulesTriggered": [
         "ASI02",
@@ -424,6 +449,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 484,
+      "durationMs": 2064,
       "findings": 1,
       "rulesTriggered": [
         "ASI03"
@@ -434,6 +460,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 566,
+      "durationMs": 1390,
       "findings": 17,
       "rulesTriggered": [
         "ASI05",
@@ -448,6 +475,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 3545,
+      "durationMs": 4856,
       "findings": 12,
       "rulesTriggered": [
         "ASI01",
@@ -461,6 +489,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 2,
+      "durationMs": 18,
       "findings": 0,
       "rulesTriggered": []
     },
@@ -469,6 +498,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 258,
+      "durationMs": 718,
       "findings": 7,
       "rulesTriggered": [
         "ASI01",
@@ -480,6 +510,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 2779,
+      "durationMs": 2423,
       "findings": 17,
       "rulesTriggered": [
         "ASI03",
@@ -493,6 +524,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 1760,
+      "durationMs": 1059,
       "findings": 2,
       "rulesTriggered": [
         "ASI03",
@@ -504,7 +536,8 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 1361,
-      "findings": 9,
+      "durationMs": 1830,
+      "findings": 11,
       "rulesTriggered": [
         "ASI03",
         "ASI05",
@@ -516,13 +549,15 @@
       "slug": "strands-agents/sdk-python",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 932,
-      "findings": 16,
+      "filesScanned": 1134,
+      "durationMs": 1860,
+      "findings": 18,
       "rulesTriggered": [
         "ASI04",
         "ASI05",
         "ASI07",
-        "EUAIA-52"
+        "EUAIA-52",
+        "LLM05"
       ]
     },
     {
@@ -530,6 +565,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 813,
+      "durationMs": 1469,
       "findings": 7,
       "rulesTriggered": [
         "ASI01",
@@ -543,6 +579,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 8,
+      "durationMs": 25,
       "findings": 6,
       "rulesTriggered": [
         "ASI02",
@@ -558,6 +595,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 39,
+      "durationMs": 29,
       "findings": 9,
       "rulesTriggered": [
         "ASI02",
@@ -574,6 +612,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 584,
+      "durationMs": 709,
       "findings": 28,
       "rulesTriggered": [
         "ASI05",
@@ -588,6 +627,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 255,
+      "durationMs": 494,
       "findings": 9,
       "rulesTriggered": [
         "ASI01",
@@ -600,6 +640,7 @@
       "tag": "autonomous",
       "lang": "python",
       "filesScanned": 403,
+      "durationMs": 483,
       "findings": 17,
       "rulesTriggered": [
         "ASI05",
@@ -613,6 +654,7 @@
       "tag": "autonomous",
       "lang": "python",
       "filesScanned": 3715,
+      "durationMs": 5222,
       "findings": 18,
       "rulesTriggered": [
         "ASI01",
@@ -628,6 +670,7 @@
       "tag": "autonomous",
       "lang": "python",
       "filesScanned": 41,
+      "durationMs": 108,
       "findings": 5,
       "rulesTriggered": [
         "ASI02",
@@ -640,6 +683,7 @@
       "tag": "autonomous",
       "lang": "typescript",
       "filesScanned": 449,
+      "durationMs": 286,
       "findings": 15,
       "rulesTriggered": [
         "ASI01",
@@ -654,6 +698,7 @@
       "tag": "application",
       "lang": "python",
       "filesScanned": 336,
+      "durationMs": 814,
       "findings": 6,
       "rulesTriggered": [
         "ASI03",
@@ -666,6 +711,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 3989,
+      "durationMs": 8911,
       "findings": 32,
       "rulesTriggered": [
         "ASI03",
@@ -679,6 +725,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 138,
+      "durationMs": 219,
       "findings": 1,
       "rulesTriggered": [
         "ASI03"
@@ -689,6 +736,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 1290,
+      "durationMs": 1335,
       "findings": 4,
       "rulesTriggered": [
         "ASI04",
@@ -701,6 +749,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 157,
+      "durationMs": 462,
       "findings": 2,
       "rulesTriggered": [
         "ASI01",
@@ -712,6 +761,7 @@
       "tag": "code-exec",
       "lang": "typescript",
       "filesScanned": 418,
+      "durationMs": 721,
       "findings": 0,
       "rulesTriggered": []
     },
@@ -720,6 +770,7 @@
       "tag": "computer-use",
       "lang": "python",
       "filesScanned": 184,
+      "durationMs": 740,
       "findings": 3,
       "rulesTriggered": [
         "ASI04",
@@ -732,6 +783,7 @@
       "tag": "computer-use",
       "lang": "python",
       "filesScanned": 3090,
+      "durationMs": 5729,
       "findings": 11,
       "rulesTriggered": [
         "ASI03",
@@ -745,6 +797,7 @@
       "tag": "memory",
       "lang": "python",
       "filesScanned": 712,
+      "durationMs": 1488,
       "findings": 21,
       "rulesTriggered": [
         "ASI04"
@@ -754,7 +807,8 @@
       "slug": "BerriAI/litellm",
       "tag": "gateway",
       "lang": "python",
-      "filesScanned": 4759,
+      "filesScanned": 4760,
+      "durationMs": 9250,
       "findings": 54,
       "rulesTriggered": [
         "ASI01",
@@ -771,6 +825,7 @@
       "tag": "tooling",
       "lang": "python",
       "filesScanned": 961,
+      "durationMs": 1375,
       "findings": 29,
       "rulesTriggered": [
         "ASI01",
@@ -786,6 +841,7 @@
       "tag": "mcp",
       "lang": "typescript",
       "filesScanned": 82,
+      "durationMs": 182,
       "findings": 8,
       "rulesTriggered": [
         "ASI03",
@@ -798,7 +854,8 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 8443,
-      "findings": 1293,
+      "durationMs": 10129,
+      "findings": 27,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -810,6 +867,7 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 1768,
+      "durationMs": 2780,
       "findings": 39,
       "rulesTriggered": [
         "ASI03",
@@ -823,7 +881,8 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 1267,
-      "findings": 405,
+      "durationMs": 2417,
+      "findings": 28,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -838,7 +897,8 @@
       "tag": "application",
       "lang": "typescript",
       "filesScanned": 3387,
-      "findings": 261,
+      "durationMs": 5976,
+      "findings": 39,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -851,8 +911,9 @@
       "slug": "lobehub/lobe-chat",
       "tag": "application",
       "lang": "typescript",
-      "filesScanned": 11890,
-      "findings": 6314,
+      "filesScanned": 11882,
+      "durationMs": 20730,
+      "findings": 141,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -867,6 +928,7 @@
       "tag": "platform",
       "lang": "python",
       "filesScanned": 4660,
+      "durationMs": 6210,
       "findings": 20,
       "rulesTriggered": [
         "ASI01",
@@ -882,6 +944,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 225,
+      "durationMs": 211,
       "findings": 3,
       "rulesTriggered": [
         "ASI03",
@@ -894,6 +957,7 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 65,
+      "durationMs": 277,
       "findings": 5,
       "rulesTriggered": [
         "ASI02",
@@ -908,6 +972,7 @@
       "tag": "application",
       "lang": "python",
       "filesScanned": 626,
+      "durationMs": 1191,
       "findings": 12,
       "rulesTriggered": [
         "ASI03",
@@ -919,6 +984,7 @@
       "tag": "governance",
       "lang": "typescript",
       "filesScanned": 1779,
+      "durationMs": 3287,
       "findings": 29,
       "rulesTriggered": [
         "ASI04",
@@ -935,6 +1001,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 23,
+      "durationMs": 43,
       "findings": 8,
       "rulesTriggered": [
         "ASI02",
@@ -949,7 +1016,8 @@
       "slug": "activepieces/activepieces",
       "tag": "platform",
       "lang": "typescript",
-      "filesScanned": 23444,
+      "filesScanned": 23477,
+      "durationMs": 17303,
       "findings": 40,
       "rulesTriggered": [
         "ASI03",
@@ -965,7 +1033,8 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 14954,
-      "findings": 95,
+      "durationMs": 13631,
+      "findings": 92,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -979,6 +1048,7 @@
   ],
   "failed": [],
   "methodology": {
+    "scannerVersion": "1.5.3",
     "scanner": "npx --yes asiscan-cli@latest",
     "cloneDepth": 1,
     "note": "Findings are static-analysis signals, not confirmed vulnerabilities. Framework repositories will legitimately show control-probe findings for application-level controls that are the caller's responsibility. Publish aggregates only; never name individual repositories as insecure."
