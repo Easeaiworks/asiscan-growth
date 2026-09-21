@@ -64,6 +64,15 @@ jobs:
           fi
           exit $code
 
+      - name: Keep the rejected draft for inspection
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rejected-draft
+          path: content/rejected/
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Build site
         if: steps.gen.outputs.skip != 'true' && steps.gen.outputs.published == 'true'
         run: npm run build
@@ -102,7 +111,7 @@ jobs:
               body: [
                 'The content generator produced a draft that failed the fact-guard checks three times, so nothing was published.',
                 '',
-                'The rejected draft and the specific errors are in `content/rejected/` on the runner (not committed).',
+                'The rejected draft and the specific errors are attached to the run as the `rejected-draft` artifact (not committed).',
                 `[Run log](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
                 '',
                 'This usually means one of:',

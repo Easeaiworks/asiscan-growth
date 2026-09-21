@@ -160,14 +160,27 @@ async function main() {
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     console.error(`Generating "${topic.slug}" (attempt ${attempt}/${MAX_ATTEMPTS})…`);
-    const { text, usage } = await complete({
+    const { text, usage, model, stopReason } = await complete({
       system: SYSTEM,
       prompt: buildPrompt(topic, corpus, errors),
-      maxTokens: 6000,
+      maxTokens: 10000,
       temperature: attempt === 1 ? 0.7 : 0.4,
     });
     markdown = text.replace(/^```(?:markdown|md)?\n?/, '').replace(/\n?```$/, '').trim();
     result = check(markdown, { kind: 'blog' });
+    console.error(`  model ${model}, stop_reason ${stopReason}, ${markdown.length} chars, output tokens ${usage?.output_tokens}`);
+    if (stopReason && stopReason !== 'end_turn') {
+      result.ok = false;
+      result.errors.unshift(
+        stopReason === 'max_tokens'
+          ? 'Output was cut off at the token limit. Write a complete post within the target length.'
+          : `Generation stopped early (stop_reason: ${stopReason}). Produce the complete post.`
+      );
+    }
+    if (!result.ok) {
+      // Enough of the draft to diagnose a malformed or truncated response.
+      console.error('  --- draft head ---\n' + markdown.slice(0, 700).replace(/^/gm, '  | ') + '\n  --- draft tail ---\n' + markdown.slice(-300).replace(/^/gm, '  | '));
+    }
 
     if (result.ok) {
       console.error(`Verified clean on attempt ${attempt}. Tokens: ${JSON.stringify(usage)}`);

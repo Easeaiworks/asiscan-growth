@@ -69,7 +69,7 @@ export async function complete({
         .trim();
 
       if (!text) throw new Error('Anthropic API returned no text content.');
-      return { text, usage: json.usage, model: json.model };
+      return { text, usage: json.usage, model: json.model, stopReason: json.stop_reason };
     } catch (err) {
       lastErr = err;
       if (attempt === retries) break;
