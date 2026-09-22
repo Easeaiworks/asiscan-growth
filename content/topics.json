@@ -17,10 +17,15 @@
       "slug": "owasp-top-10-agentic-applications",
       "title": "The OWASP Top 10 for Agentic Applications, explained for engineers",
       "type": "pillar",
-      "status": "pending",
+      "status": "published",
       "words": 1800,
       "keyword": "owasp top 10 for agentic applications",
-      "keywords": ["owasp agentic top 10", "ASI01", "owasp ASI top 10 checklist", "agentic ai security"],
+      "keywords": [
+        "owasp agentic top 10",
+        "ASI01",
+        "owasp ASI top 10 checklist",
+        "agentic ai security"
+      ],
       "brief": "The hub page for the whole cluster. Walk all ten ASI categories at a level an engineer can act on: what each one is, one sentence on what it looks like in code, and a link to the deep-dive page for it. Explain how the agentic list differs from the LLM Top 10 and why a separate list was needed at all — the LLM list is about the model, the agentic list is about what happens when the model can act. Be explicit that this is a reference document, not a certification scheme.",
       "structure": [
         "Why a separate list from the LLM Top 10 exists",
@@ -28,7 +33,8 @@
         "Which of these an ordinary SAST tool can and cannot see",
         "How to run an assessment against the list today",
         "Notes"
-      ]
+      ],
+      "publishedOn": "2026-09-22"
     },
     {
       "slug": "asi05-unexpected-code-execution",
@@ -36,7 +42,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "agent code execution vulnerability",
-      "keywords": ["ASI05", "llm code execution sandbox", "eval llm output"],
+      "keywords": [
+        "ASI05",
+        "llm code execution sandbox",
+        "eval llm output"
+      ],
       "brief": "The most viscerally understandable risk in the list, and therefore the best entry point for the cluster. Show a tool handler that interpolates a model-supplied argument into exec(). Show why the usual defences (input validation on the user prompt) do not help, because the dangerous string arrives from the model, not the user. Cover sandboxing, argument arrays instead of shell strings, and allowlisting. Explain how a static scanner can see this and what it will miss."
     },
     {
@@ -45,7 +55,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "agent goal hijack",
-      "keywords": ["ASI01", "prompt injection vs goal hijack", "indirect prompt injection agents"],
+      "keywords": [
+        "ASI01",
+        "prompt injection vs goal hijack",
+        "indirect prompt injection agents"
+      ],
       "brief": "Draw the distinction carefully — prompt injection is the mechanism, goal hijack is the outcome, and the outcome is worse when the thing being hijacked has tools. Show untrusted retrieved content being concatenated into a system prompt with no delimiting. Show the delimited version. Cover why delimiting alone is insufficient and what else is needed."
     },
     {
@@ -54,7 +68,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "human in the loop ai agent security",
-      "keywords": ["ASI09", "agent approval prompt", "human agent trust"],
+      "keywords": [
+        "ASI09",
+        "agent approval prompt",
+        "human agent trust"
+      ],
       "brief": "The most surprising risk in the list and the strongest single piece of content available. If the model composes the text of the confirmation prompt, the human is approving a description, not an action. Show a confirm() call whose message string comes from the model while the executed action comes from a separate field. Argue that approval UI must be rendered from the structured action, never from model prose. This is the post to write well — it is concrete, unfamiliar, and instantly believable."
     },
     {
@@ -63,7 +81,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "ai agent tool security",
-      "keywords": ["ASI02", "tool call security", "function calling security"],
+      "keywords": [
+        "ASI02",
+        "tool call security",
+        "function calling security"
+      ],
       "brief": "Tools defined with loose schemas, no per-invocation authorisation, and no allowlist. Show a tool whose parameters are typed as string with no constraints, and what an attacker does with that. Cover schema validation, allowlisting, and per-call authorisation distinct from per-session authorisation."
     },
     {
@@ -73,7 +95,11 @@
       "status": "pending",
       "words": 1600,
       "keyword": "eu ai act article 50 developers",
-      "keywords": ["article 50 ai act compliance", "do i need to disclose my chatbot is ai", "eu ai act developer checklist"],
+      "keywords": [
+        "article 50 ai act compliance",
+        "do i need to disclose my chatbot is ai",
+        "eu ai act developer checklist"
+      ],
       "brief": "Article 50 has been in force since 2 August 2026. Most engineering-facing content on it is written by law firms for legal teams. Write the version an engineer needs: the four sub-obligations, which one applies to a chat interface, which applies to generated media, the December 2026 carve-out for pre-existing generative systems, and the machine-readable marking requirement. Correct the common misreading that the Digital Omnibus moved this deadline — it moved Annex III high-risk obligations to December 2027, not Article 50. Be scrupulous about not implying the tool creates compliance."
     },
     {
@@ -82,7 +108,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "ai agent credentials security",
-      "keywords": ["ASI03", "agent identity", "scoped credentials ai agent"],
+      "keywords": [
+        "ASI03",
+        "agent identity",
+        "scoped credentials ai agent"
+      ],
       "brief": "Long-lived tokens handed to an agent process, no per-task credential exchange, no expiry. Cover why the standard human-session model breaks when the actor is a loop. Short-lived scoped credentials, per-task exchange, and why an agent should never hold the same token across two user contexts."
     },
     {
@@ -91,7 +121,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "ai agent memory poisoning",
-      "keywords": ["ASI06", "context poisoning", "vector store poisoning"],
+      "keywords": [
+        "ASI06",
+        "context poisoning",
+        "vector store poisoning"
+      ],
       "brief": "Persistent memory with no tenant scoping, no validation on write, no TTL. Show the multi-tenant leak: user A's injected instruction retrieved into user B's context. Cover scoping keys, write-time validation, and expiry."
     },
     {
@@ -100,7 +134,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "ai agent kill switch",
-      "keywords": ["ASI10", "rogue agent", "agent audit logging"],
+      "keywords": [
+        "ASI10",
+        "rogue agent",
+        "agent audit logging"
+      ],
       "brief": "Two questions almost nothing in the wild answers yes to: is there an audit trail of what the agent did, and is there a way to stop it mid-run. Show an agent loop with no AbortController and no structured action log. Cover what an audit record needs to contain to be useful after an incident."
     },
     {
@@ -109,7 +147,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "agent loop iteration limit",
-      "keywords": ["ASI08", "cascading failure multi agent", "agent runaway cost"],
+      "keywords": [
+        "ASI08",
+        "cascading failure multi agent",
+        "agent runaway cost"
+      ],
       "brief": "Uncapped iteration, unhandled tool errors, and what happens when one failing tool turns into a retry storm across a multi-agent system. Cover iteration caps, circuit breakers, and error containment at the dispatch boundary. Note the cost angle — this is the risk with a monthly invoice attached, which makes it the easiest one to get a finance conversation about."
     },
     {
@@ -118,7 +160,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "mcp server supply chain security",
-      "keywords": ["ASI04", "mcp security", "unpinned dependencies agent"],
+      "keywords": [
+        "ASI04",
+        "mcp security",
+        "unpinned dependencies agent"
+      ],
       "brief": "MCP servers launched with npx and no version pin, dependencies floating on caret ranges, no SBOM. Explain why an agent's supply chain is worse than an application's — the agent fetches and executes capabilities at runtime based on configuration, so the dependency set is not fully known at build time."
     },
     {
@@ -127,7 +173,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "multi agent communication security",
-      "keywords": ["ASI07", "agent to agent security", "A2A protocol security"],
+      "keywords": [
+        "ASI07",
+        "agent to agent security",
+        "A2A protocol security"
+      ],
       "brief": "Handoffs between agents with no authentication, no signing, no transport security. Show a handoff payload that any process on the network can forge. Cover message signing, mTLS, and why 'it's internal' stopped being an argument some time ago."
     },
     {
@@ -136,7 +186,11 @@
       "type": "opinion",
       "status": "pending",
       "keyword": "sast tools ai agents",
-      "keywords": ["semgrep ai agent", "codeql prompt injection", "static analysis for ai agents"],
+      "keywords": [
+        "semgrep ai agent",
+        "codeql prompt injection",
+        "static analysis for ai agents"
+      ],
       "brief": "Take the deliberately-vulnerable reference agent that ships with the product and run general-purpose scanners over it. Report honestly what each one caught and missed. Do not strawman them — they are good tools solving a different problem. The point is that a tool call is not a function call as far as taint analysis is concerned, and that a missing iteration cap is not a vulnerability class any of them model. Be fair; fairness is the credibility."
     },
     {
@@ -146,7 +200,10 @@
       "status": "pending",
       "words": 1600,
       "keyword": "open source ai agent security study",
-      "keywords": ["agent security research", "owasp asi statistics"],
+      "keywords": [
+        "agent security research",
+        "owasp asi statistics"
+      ],
       "brief": "THE FLAGSHIP PIECE. Report the aggregate findings from the corpus scan: how many repositories, how many files, which rules fire most often, and what that suggests about where the ecosystem's blind spots are. Aggregates only, no naming. Be rigorous about what a static finding is and is not — these are signals requiring human triage, not confirmed vulnerabilities, and framework repositories will legitimately show findings for application-level controls that belong to the caller. Publish the precision figure in the same post. The honesty is the differentiator."
     },
     {
@@ -155,7 +212,11 @@
       "type": "opinion",
       "status": "pending",
       "keyword": "security questionnaire ai agent",
-      "keywords": ["soc 2 ai agents", "enterprise ai security questionnaire", "vendor assessment ai"],
+      "keywords": [
+        "soc 2 ai agents",
+        "enterprise ai security questionnaire",
+        "vendor assessment ai"
+      ],
       "brief": "Enterprise buyers have started adding AI-specific rows to vendor questionnaires and most vendors are answering them in prose. Walk through what a defensible answer looks like: a dated assessment against a named framework, a list of what was checked, a list of what was not, and the findings with their disposition. Emphasise that an honest 'we checked these ten categories, here are the four findings and what we did about them' beats a confident 'yes' every single time in a real review."
     },
     {
@@ -164,7 +225,10 @@
       "type": "opinion",
       "status": "pending",
       "keyword": "prompt injection static analysis",
-      "keywords": ["prompt injection in code", "prevent prompt injection rag"],
+      "keywords": [
+        "prompt injection in code",
+        "prevent prompt injection rag"
+      ],
       "brief": "The industry response to prompt injection has been overwhelmingly runtime: guardrails, classifiers, filters at the boundary. Argue that a large share of real exposure is decided at the point where a developer writes the string concatenation, and that this is visible in source before anything is deployed. Not a claim that runtime defences are unnecessary — a claim that the code-level layer is currently unexamined."
     },
     {
@@ -173,7 +237,10 @@
       "type": "opinion",
       "status": "pending",
       "keyword": "static analysis false positive rate",
-      "keywords": ["sast false positives", "security scanner precision"],
+      "keywords": [
+        "sast false positives",
+        "security scanner precision"
+      ],
       "brief": "Build-in-public piece. Explain the measured precision figure, how it was measured, and why publishing it is a commercial decision rather than a confession. Include a real false positive from the scanner's own output, traced to its root cause — the regex that matched a docstring, the missing word boundary. Engineers trust the vendor who shows them a bug in their own tool."
     },
     {
@@ -182,7 +249,10 @@
       "type": "opinion",
       "status": "pending",
       "keyword": "static analysis comment stripping",
-      "keywords": ["security scanner design", "control probe static analysis"],
+      "keywords": [
+        "security scanner design",
+        "control probe static analysis"
+      ],
       "brief": "The design story: rules that look for evidence of a mitigation will happily accept a comment saying the mitigation is planned. Explain the bug, the fix (strip comments before matching control evidence), and the regression test. Short, specific, and the kind of post that gets shared inside engineering teams."
     },
     {
@@ -191,7 +261,10 @@
       "type": "resource",
       "status": "pending",
       "keyword": "ai agent security checklist",
-      "keywords": ["agent launch checklist", "secure ai agent production"],
+      "keywords": [
+        "agent launch checklist",
+        "secure ai agent production"
+      ],
       "brief": "A genuinely useful free artefact: the questions to answer before an agent touches production traffic, grouped by the ten ASI categories, phrased as yes/no questions with the failure mode named. Give it away with no gate. This is the piece that earns links."
     },
     {
@@ -200,7 +273,10 @@
       "type": "resource",
       "status": "pending",
       "keyword": "is my mcp server safe",
-      "keywords": ["mcp security review", "model context protocol security"],
+      "keywords": [
+        "mcp security review",
+        "model context protocol security"
+      ],
       "brief": "MCP servers are the most casually-installed executable dependency in the current stack. Practical review procedure: pin the version, read the tool descriptions as an attack surface, check what filesystem and network access it requests, check whether tool descriptions can be changed server-side after installation."
     },
     {
@@ -209,7 +285,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "excessive agency llm",
-      "keywords": ["LLM06", "least privilege ai agent", "agent database permissions"],
+      "keywords": [
+        "LLM06",
+        "least privilege ai agent",
+        "agent database permissions"
+      ],
       "brief": "Wildcard scopes, admin API keys, GRANT ALL, service-role database keys handed to an agent because scoping them was fiddly. Show what least privilege looks like for a process whose next action is decided by a language model."
     },
     {
@@ -218,7 +298,11 @@
       "type": "risk",
       "status": "pending",
       "keyword": "llm unbounded consumption",
-      "keywords": ["LLM10", "ai cost attack", "denial of wallet"],
+      "keywords": [
+        "LLM10",
+        "ai cost attack",
+        "denial of wallet"
+      ],
       "brief": "Denial of wallet as a security risk rather than an ops problem. Model calls with no token ceiling, no timeout, no per-user rate limit, in a loop. Cover the three controls and where each belongs."
     },
     {
@@ -227,7 +311,10 @@
       "type": "resource",
       "status": "pending",
       "keyword": "ai agent ci security gate",
-      "keywords": ["sarif github code scanning", "security gate pull request"],
+      "keywords": [
+        "sarif github code scanning",
+        "security gate pull request"
+      ],
       "brief": "Practical piece on wiring a scanner into pull requests: severity thresholds, why failing the build on every finding trains people to ignore it, SARIF upload to the code-scanning tab, and scanning only changed paths on PRs with a full scan weekly."
     },
     {
@@ -236,7 +323,10 @@
       "type": "opinion",
       "status": "pending",
       "keyword": "startup ai security no security team",
-      "keywords": ["small team ai security", "solo developer security"],
+      "keywords": [
+        "small team ai security",
+        "solo developer security"
+      ],
       "brief": "Most teams shipping agents have no AppSec function and will not hire one. What the highest-value hour of work looks like for them, ordered by risk reduced per hour spent. Honest about what a scanner does and does not replace."
     },
     {
@@ -245,7 +335,10 @@
       "type": "resource",
       "status": "pending",
       "keyword": "triage static analysis findings",
-      "keywords": ["false positive triage", "security finding disposition"],
+      "keywords": [
+        "false positive triage",
+        "security finding disposition"
+      ],
       "brief": "A short methodology: reproduce the reasoning, decide whether the trigger is real, decide whether the mitigation genuinely exists elsewhere, record the disposition. Emphasise that a recorded, reasoned dismissal is a valid and auditable outcome, and is what a reviewer actually wants to see."
     },
     {
@@ -254,7 +347,10 @@
       "type": "corpus",
       "status": "pending",
       "keyword": "agent security trends",
-      "keywords": ["owasp asi updates", "ai security news roundup"],
+      "keywords": [
+        "owasp asi updates",
+        "ai security news roundup"
+      ],
       "brief": "Recurring quarterly piece. Compare the current corpus scan against the previous one from data/corpus-history.json: which rules became more or less prevalent, what that suggests. Only report a movement if the underlying counts support it — if the change is within a couple of repositories, say the data does not support a conclusion."
     }
   ]

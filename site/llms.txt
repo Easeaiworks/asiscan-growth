@@ -9,6 +9,7 @@ This produces evidence for human assessment. It does not establish compliance wi
 
 ## Articles
 
+- [The OWASP Top 10 for Agentic Applications, explained for engineers](https://asiscan.dev/blog/owasp-top-10-agentic-applications): The OWASP Top 10 for Agentic Applications, walked category by category: what each one looks like in code and what static analysis can and can't see.
 - [ASI09: the approval dialog your agent wrote for itself](https://asiscan.dev/blog/asi09-human-agent-trust-exploitation): If a model composes the text of your confirmation prompt, the human is approving a description, not an action. How that gap opens and how to close it.
 
 ## Product

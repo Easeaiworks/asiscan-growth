@@ -7,6 +7,13 @@
     <description>Static analysis for AI agent codebases, mapped to the OWASP Top 10 for Agentic Applications, the OWASP LLM Top 10, and EU AI Act Article 50.</description>
     <language>en</language>
     <item>
+      <title>The OWASP Top 10 for Agentic Applications, explained for engineers</title>
+      <link>https://asiscan.dev/blog/owasp-top-10-agentic-applications</link>
+      <guid isPermaLink="true">https://asiscan.dev/blog/owasp-top-10-agentic-applications</guid>
+      <description>The OWASP Top 10 for Agentic Applications, walked category by category: what each one looks like in code and what static analysis can and can&#39;t see.</description>
+      <pubDate>Tue, 22 Sep 2026 13:00:00 GMT</pubDate>
+    </item>
+    <item>
       <title>ASI09: the approval dialog your agent wrote for itself</title>
       <link>https://asiscan.dev/blog/asi09-human-agent-trust-exploitation</link>
       <guid isPermaLink="true">https://asiscan.dev/blog/asi09-human-agent-trust-exploitation</guid>

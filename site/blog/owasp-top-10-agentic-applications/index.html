@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The OWASP Top 10 for Agentic Applications, explained for engineers · ASIScan</title>
+<meta name="description" content="The OWASP Top 10 for Agentic Applications, walked category by category: what each one looks like in code and what static analysis can and can&#39;t see.">
+<link rel="canonical" href="https://asiscan.dev/blog/owasp-top-10-agentic-applications">
+<meta property="og:title" content="The OWASP Top 10 for Agentic Applications, explained for engineers · ASIScan">
+<meta property="og:description" content="The OWASP Top 10 for Agentic Applications, walked category by category: what each one looks like in code and what static analysis can and can&#39;t see.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://asiscan.dev/blog/owasp-top-10-agentic-applications">
+<meta property="og:image" content="https://asiscan.dev/og/asiscan.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://asiscan.dev/og/asiscan.png">
+<link rel="alternate" type="application/rss+xml" title="ASIScan blog" href="https://asiscan.dev/blog/rss.xml">
+<style>:root{--bg:#0a0c10;--panel:#11151c;--panel2:#161b24;--line:#232a35;--text:#e6edf3;--dim:#8b96a5;--dimmer:#5f6a78;--acc:#5eead4;--acc2:#2dd4bf;--red:#f87171;--amber:#fbbf24;--mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:720px;margin:0 auto;padding:0 24px}
+nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,12,16,.9);backdrop-filter:blur(12px);z-index:50}
+nav .wrap{max-width:940px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:-.3px;color:var(--text)}
+.logo span{color:var(--acc)}
+.navlinks{display:flex;gap:22px;align-items:center;font-size:14px}
+.navlinks a{color:var(--dim)}.navlinks a:hover{color:var(--text);text-decoration:none}
+.btn{background:var(--acc);color:#04231f;padding:8px 16px;border-radius:6px;font-weight:600;font-size:14px;display:inline-block}
+.btn:hover{background:var(--acc2);text-decoration:none}
+article{padding:56px 0 40px}
+h1{font-size:clamp(28px,4.4vw,40px);line-height:1.15;letter-spacing:-1px;font-weight:700;margin-bottom:16px}
+h2{font-size:24px;letter-spacing:-.4px;margin:44px 0 14px;padding-top:8px}
+h3{font-size:18px;margin:30px 0 10px;color:var(--text)}
+p{margin:0 0 18px}
+ul,ol{margin:0 0 18px 22px}li{margin-bottom:8px}
+blockquote{border-left:3px solid var(--line);padding-left:18px;color:var(--dim);margin:0 0 18px}
+code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1.5px 5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;overflow-x:auto;margin:0 0 22px}
+pre code{background:none;border:none;padding:0;font-size:12.5px;line-height:1.65}
+table{width:100%;border-collapse:collapse;margin:0 0 22px;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+th{background:var(--panel2);font-weight:600}
+hr{border:none;border-top:1px solid var(--line);margin:36px 0}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--dimmer);margin-bottom:34px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.tag{font-family:var(--mono);font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:100px;padding:3px 10px}
+.cta-box{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:22px;margin:44px 0 0}
+.cta-box p{margin:0 0 14px;color:var(--dim);font-size:15px}
+.cta-box code{font-size:13px}
+.notes{border-top:1px solid var(--line);margin-top:44px;padding-top:20px;font-size:13.5px;color:var(--dimmer)}
+.notes p{margin-bottom:10px}
+.post-list{list-style:none;margin:0;padding:0}
+.post-list li{border-bottom:1px solid var(--line);padding:22px 0;margin:0}
+.post-list h2{font-size:20px;margin:0 0 6px;letter-spacing:-.3px}
+.post-list h2 a{color:var(--text)}
+.post-list h2 a:hover{color:var(--acc);text-decoration:none}
+.post-list p{color:var(--dim);font-size:15px;margin:0 0 8px}
+.post-list .meta{margin:0;font-size:12px}
+footer{border-top:1px solid var(--line);padding:32px 0;margin-top:60px;font-size:13px;color:var(--dimmer)}
+footer .wrap{max-width:940px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"The OWASP Top 10 for Agentic Applications, explained for engineers","description":"The OWASP Top 10 for Agentic Applications, walked category by category: what each one looks like in code and what static analysis can and can't see.","datePublished":"2026-09-22","dateModified":"2026-09-22","author":{"@type":"Person","name":"Adam Berube"},"publisher":{"@type":"Organization","name":"Protocol 42"},"mainEntityOfPage":"https://asiscan.dev/blog/owasp-top-10-agentic-applications"}</script>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="https://asiscan.dev/">ASIScan<span>.dev</span></a>
+  <div class="navlinks">
+    <a href="/blog/">Blog</a>
+    <a href="https://asiscan.dev/#how">How it works</a>
+    <a href="https://asiscan.dev/#pricing">Pricing</a>
+    <a class="btn" href="https://asiscan.dev/#pricing">Get ASIScan</a>
+  </div>
+</div></nav>
+<article><div class="wrap">
+<h1>The OWASP Top 10 for Agentic Applications, explained for engineers</h1>
+<div class="meta">2026-09-22 · Adam Berube, Director, Protocol 42</div>
+<div class="tags"><span class="tag">owasp</span><span class="tag">agentic-ai</span><span class="tag">ai-security</span><span class="tag">asi-top-10</span></div>
+<p>The OWASP GenAI Security Project&#39;s Agentic Security Initiative published the Top 10 for Agentic Applications in December 2025, after more than a year of work from 100+ contributors. That&#39;s a separate document from the OWASP LLM Top 10, which has existed for a while and covers a different problem. If you already run LLM01 through LLM10 against your codebase, you have not covered agentic risk. You&#39;ve covered model risk. This is the list for what happens once the model can act.</p>
+<p>I built ASIScan against both lists plus two EU AI Act Article 50 checks — 18 rules in total. This post is the reference page for the ten agentic categories: what each one is, what it looks like in a codebase, and where a scanner can and can&#39;t see it. It is not a certification scheme. Nobody &quot;passes&quot; the OWASP Agentic Top 10. It&#39;s a list of failure modes, and the useful thing to do with it is check your own code against each one.</p>
+<h2>Why a separate list from the LLM Top 10</h2>
+<p>The LLM Top 10 is about the model as a component: does it leak training data, can it be jailbroken, does it hallucinate output that gets trusted downstream. Those questions matter whether the model sits behind a chatbot widget or an autonomous pipeline.</p>
+<p>The agentic list is about consequence. Once a model&#39;s output triggers a tool call, a database write, a shell command, or a handoff to another agent, the attack surface stops being &quot;what can I make the model say&quot; and becomes &quot;what can I make the model do.&quot; A prompt injection that used to produce an embarrassing chat transcript now produces a wire transfer, a deleted repository, or a credential exfiltrated over a tool call. Same injection. Completely different blast radius, because there&#39;s an agent loop attached to the output.</p>
+<p>That&#39;s the gap the LLM list was never built to cover, and it&#39;s why the Agentic Security Initiative built a new one instead of bolting more items onto the old one.</p>
+<h2>The ten categories</h2>
+<h3>ASI01 — Agent Goal Hijack</h3>
+<p>The agent&#39;s actual objective gets overridden by content it wasn&#39;t supposed to treat as instructions — a webpage, a retrieved document, a tool result. In code, the tell is untrusted or dynamic content interpolated directly into a system prompt, or fetched external content flowing into context with no delimiting step marking it as untrusted. In our scan of 50 open-source agent repositories, 17/50 (34%) showed at least one ASI01 finding. Full detail: <a href="https://asiscan.dev/blog/asi01-agent-goal-hijack">ASI01 deep dive</a>.</p>
+<h3>ASI02 — Tool Misuse &amp; Exploitation</h3>
+<p>The agent has tools, and nothing checks whether the arguments the model produced for those tools are sane. The tell: tool definitions with no parameter schema validation, or no allowlist restricting which tools are reachable in a given context. 7/50 repositories (14%) showed this. <a href="https://asiscan.dev/blog/asi02-tool-misuse">ASI02 deep dive</a>.</p>
+<h3>ASI03 — Identity &amp; Privilege Abuse</h3>
+<p>The agent runs on a credential that&#39;s too broad or too long-lived for what it&#39;s doing. The tell: a hardcoded long-lived credential, a session configured to never expire, or an agent making tool calls with no evidence of scoped, short-lived credential exchange — it may be running on a standing token indefinitely. This was the most widespread category in our scan: 35/50 repositories (70%). <a href="https://asiscan.dev/blog/asi03-identity-privilege-abuse">ASI03 deep dive</a>.</p>
+<h3>ASI04 — Agentic Supply Chain Vulnerabilities</h3>
+<p>Agent frameworks pull in a lot of moving parts — MCP servers, tool packages, plugin registries — and agentic supply chain risk is what happens when one of those isn&#39;t pinned. The tell: an unpinned dependency range, or an MCP server launched at an unpinned version, where a compromised upstream release executes immediately with the agent&#39;s own privileges. 19/50 repositories (38%). <a href="https://asiscan.dev/blog/asi04-supply-chain">ASI04 deep dive</a>.</p>
+<h3>ASI05 — Unexpected Code Execution</h3>
+<p>The model&#39;s output reaches an execution sink. The tell: dynamic evaluation of a non-literal value, a shell command built by string concatenation where part of the string can be model-influenced, or a code-execution tool exposed to the agent with no sandboxing or network egress restriction. Half the corpus — 25/50 repositories (50%) — showed at least one instance. This is the category with the most direct line from &quot;the model said something&quot; to &quot;the machine did something.&quot; <a href="https://asiscan.dev/blog/asi05-unexpected-code-execution">ASI05 deep dive</a>.</p>
+<h3>ASI06 — Memory &amp; Context Poisoning</h3>
+<p>Agent memory persists across sessions, and if it isn&#39;t scoped or validated, one poisoned entry keeps influencing every later run — potentially across tenants. The tell: memory persisted with no per-user or per-tenant scope key, or memory writes with no validation or expiry. This showed up in 1/50 repositories in our scan, concentrated in a single codebase, so treat that as a low base rate rather than a rare category — it&#39;s the kind of thing that&#39;s invisible until someone looks for it specifically. <a href="https://asiscan.dev/blog/asi06-memory-poisoning">ASI06 deep dive</a>.</p>
+<h3>ASI07 — Insecure Inter-Agent Communication</h3>
+<p>Multi-agent systems talk to each other, and that channel needs the same scrutiny as any other network boundary. The tell: a plaintext HTTP endpoint between agents, or a multi-agent handoff with no authentication or message signing. 20/50 repositories (40%). <a href="https://asiscan.dev/blog/asi07-inter-agent-communication">ASI07 deep dive</a>.</p>
+<h3>ASI08 — Cascading Failures</h3>
+<p>An agent loop with no way to stop propagates its own failure to everything downstream of it. The tell: an execution loop with no evident iteration cap, retry bound, or timeout, or tool dispatch with no error handling. We saw this in 1/50 repositories, again concentrated in a single codebase — but an agent that can&#39;t terminate is a design flaw worth checking for regardless of how rare it looks in a sample. <a href="https://asiscan.dev/blog/asi08-cascading-failures">ASI08 deep dive</a>.</p>
+<h3>ASI09 — Human-Agent Trust Exploitation</h3>
+<p>Irreversible actions ship without a human actually confirming them, or the confirmation step exists but can be routed around. The tell: an approval gate that gets bypassed, or a high-impact operation reachable with no human-in-the-loop step evident anywhere in the path. 8/50 repositories (16%). <a href="https://asiscan.dev/blog/asi09-trust-exploitation">ASI09 deep dive</a>.</p>
+<h3>ASI10 — Rogue Agents</h3>
+<p>An agent operating outside its intended bounds, with nobody able to see it happening or stop it. The tell: agent actions dispatched with no audit logging, or no kill switch or cancellation path for a running agent. We found this in 2/50 repositories, again concentrated in one — but note what it means when it&#39;s present: no log, no way to halt, no way to know. <a href="https://asiscan.dev/blog/asi10-rogue-agents">ASI10 deep dive</a>.</p>
+<h2>What an ordinary SAST tool can and can&#39;t see</h2>
+<p>A traditional SAST tool built for web application code is very good at data-flow analysis: taint tracking from an HTTP request parameter to a SQL query, for instance. That machinery doesn&#39;t disappear when the codebase happens to contain an agent. Direct injection patterns — request data going straight into a system message, a shell string built by concatenation — are visible to any tool that reads code carefully.</p>
+<p>What a conventional SAST tool doesn&#39;t have is a concept of &quot;tool call,&quot; &quot;system prompt,&quot; &quot;MCP server,&quot; or &quot;agent loop.&quot; It has no notion that a function decorated <code>@tool</code> and handed to a model is a different risk category from a function called directly by your own code. It has no idea what a missing iteration cap looks like, because &quot;this loop never had a cap&quot; isn&#39;t a data-flow bug — it&#39;s an absent control. Most of the OWASP Agentic categories are absence problems, not presence problems: the risk isn&#39;t that a dangerous construct exists, it&#39;s that the mitigation for a known-risky pattern doesn&#39;t.</p>
+<p>That&#39;s the design behind most of ASIScan&#39;s rules: a control probe fires when a risk trigger is present <em>and</em> no evidence of the standard mitigation exists anywhere in the project — not just a keyword match on <code>eval()</code>. Comments are stripped before that mitigation check runs, so a <code>// TODO: add sandboxing</code> comment can&#39;t satisfy the probe and mark the project as covered. That&#39;s a deliberate design decision, and it&#39;s covered by a regression test, because it&#39;s exactly the kind of thing that quietly breaks a scanner over time.</p>
+<p>None of that makes ASIScan an AST-based tool. It&#39;s regex-based. It will miss things a real data-flow engine would catch, and it will flag things that turn out to be fine on inspection — a framework repository, for instance, will legitimately show control-probe findings for controls that are actually the calling application&#39;s responsibility to implement, not the framework&#39;s. We measured roughly 55% precision on the August 2026 build, against five open-source agent frameworks (~3,100 source files). That number describes that build, not the current release — precision for the current version is being re-measured against a larger, 50-repository corpus, and I&#39;m not going to publish a number for it until that methodology is documented alongside the result.</p>
+<h2>How to run an assessment against the list today</h2>
+<p>Static analysis covers part of this list, not all of it. Some of the ten categories — approval-gate design, kill-switch reachability, whether your incident response plan actually works — are process and architecture questions that no scanner, regex or AST, can answer from source code alone. That&#39;s why the checklist exists separately from the scanner: 49 manual review points with severity and an evidence column, mapped to ASI01 through ASI10, covering exactly the non-source factors static analysis can&#39;t see.</p>
+<p>For what static analysis can cover, ASIScan runs all 18 rules — the ten ASI categories, six OWASP LLM Top 10 rules using the 2025 edition&#39;s numbering, and the two Article 50 checks — against TypeScript/JavaScript, Python, C#, and Go, entirely offline. No telemetry, no network calls, nothing leaves the machine. It outputs to terminal, Markdown, JSON, or SARIF 2.1.0, which uploads straight into the GitHub code-scanning tab if that&#39;s where your team already looks.</p>
+<p>There&#39;s also a set of 30 adversarial red-team probes shipped as JSONL, each mapped to an ASI or LLM ID with a defined fail signal, built to be delivered through a real ingestion channel — retrieval, a tool result, memory — rather than typed into a chat box. Static analysis tells you what the code allows. The probes tell you what actually happens when you try it.</p>
+<p>Put together — the 18 static rules, the 30 probes, the 49-point checklist — you get an evidence package for a human reviewer to work from. That&#39;s the ceiling. It&#39;s evidence for assessment, not a determination that the system is safe, and not compliance with anything.</p>
+<h2>Notes</h2>
+<p>Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</p>
+<p>This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation.</p>
+<p>Run <code>npx asiscan-cli .</code> against your own agent codebase and see which of these ten categories show up first.</p>
+
+<div class="cta-box">
+  <p>ASIScan audits an AI agent codebase against all ten OWASP Agentic categories, the LLM Top 10 and EU AI Act Article 50, and writes the evidence document.</p>
+  <p><code>npx asiscan-cli .</code></p>
+  <a class="btn" href="https://asiscan.dev/#pricing">See what it checks</a>
+</div>
+<div class="notes">
+  <p>Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</p>
+  <p>This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation.</p>
+</div>
+</div></article>
+<footer><div class="wrap">
+  <div>&copy; 2026 Protocol 42 · Ontario, Canada</div>
+  <div>Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</div>
+</div></footer>
+</body>
+</html>

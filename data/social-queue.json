@@ -1,0 +1,11 @@
+[
+  {
+    "id": "owasp-top-10-agentic-applications-2026-09-22",
+    "slug": "owasp-top-10-agentic-applications",
+    "url": "https://asiscan.dev/blog/owasp-top-10-agentic-applications",
+    "text": "35 of the 50 open-source AI agent repos I scan hit ASI03 — identity and privilege abuse. Not a rare edge case. A default outcome of how agent frameworks wire up credentials.\n\nThe OWASP GenAI Security Project's Agentic Security Initiative published the Top 10 for Agentic Applications in December 2025, built from over a year of work by 100+ contributors. It's a separate document from the OWASP LLM Top 10, and the distinction matters: the LLM list covers model risk, this one covers what happens once the model can act. Running LLM01 through LLM10 against your codebase does not mean you've covered agentic risk.\n\nI wrote up each ASI category with what it actually looks like in code, plus where static analysis can catch it and where it genuinely can't. If you're building or reviewing agent codebases, worth the ten minutes.\n\nhttps://asiscan.dev/blog/owasp-top-10-agentic-applications\n\n#AIsecurity #AgenticAI #StaticAnalysis",
+    "composedOn": "2026-09-22",
+    "mode": "llm",
+    "status": "queued"
+  }
+]
