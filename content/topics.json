@@ -40,14 +40,15 @@
       "slug": "asi05-unexpected-code-execution",
       "title": "ASI05: when your agent builds a shell command out of model output",
       "type": "risk",
-      "status": "pending",
+      "status": "published",
       "keyword": "agent code execution vulnerability",
       "keywords": [
         "ASI05",
         "llm code execution sandbox",
         "eval llm output"
       ],
-      "brief": "The most viscerally understandable risk in the list, and therefore the best entry point for the cluster. Show a tool handler that interpolates a model-supplied argument into exec(). Show why the usual defences (input validation on the user prompt) do not help, because the dangerous string arrives from the model, not the user. Cover sandboxing, argument arrays instead of shell strings, and allowlisting. Explain how a static scanner can see this and what it will miss."
+      "brief": "The most viscerally understandable risk in the list, and therefore the best entry point for the cluster. Show a tool handler that interpolates a model-supplied argument into exec(). Show why the usual defences (input validation on the user prompt) do not help, because the dangerous string arrives from the model, not the user. Cover sandboxing, argument arrays instead of shell strings, and allowlisting. Explain how a static scanner can see this and what it will miss.",
+      "publishedOn": "2026-09-29"
     },
     {
       "slug": "asi01-agent-goal-hijack",

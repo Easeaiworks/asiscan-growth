@@ -7,6 +7,13 @@
     <description>Static analysis for AI agent codebases, mapped to the OWASP Top 10 for Agentic Applications, the OWASP LLM Top 10, and EU AI Act Article 50.</description>
     <language>en</language>
     <item>
+      <title>ASI05: when your agent builds a shell command out of model output</title>
+      <link>https://asiscan.dev/blog/asi05-unexpected-code-execution</link>
+      <guid isPermaLink="true">https://asiscan.dev/blog/asi05-unexpected-code-execution</guid>
+      <description>A real exec() call built from model output, why input validation misses it, the fix, and how ASIScan&#39;s rules catch it.</description>
+      <pubDate>Tue, 29 Sep 2026 13:00:00 GMT</pubDate>
+    </item>
+    <item>
       <title>The OWASP Top 10 for Agentic Applications, explained for engineers</title>
       <link>https://asiscan.dev/blog/owasp-top-10-agentic-applications</link>
       <guid isPermaLink="true">https://asiscan.dev/blog/owasp-top-10-agentic-applications</guid>

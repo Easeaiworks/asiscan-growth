@@ -9,6 +9,7 @@ This produces evidence for human assessment. It does not establish compliance wi
 
 ## Articles
 
+- [ASI05: when your agent builds a shell command out of model output](https://asiscan.dev/blog/asi05-unexpected-code-execution): A real exec() call built from model output, why input validation misses it, the fix, and how ASIScan's rules catch it.
 - [The OWASP Top 10 for Agentic Applications, explained for engineers](https://asiscan.dev/blog/owasp-top-10-agentic-applications): The OWASP Top 10 for Agentic Applications, walked category by category: what each one looks like in code and what static analysis can and can't see.
 - [ASI09: the approval dialog your agent wrote for itself](https://asiscan.dev/blog/asi09-human-agent-trust-exploitation): If a model composes the text of your confirmation prompt, the human is approving a description, not an action. How that gap opens and how to close it.
 

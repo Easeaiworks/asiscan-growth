@@ -7,5 +7,14 @@
     "composedOn": "2026-09-22",
     "mode": "llm",
     "status": "queued"
+  },
+  {
+    "id": "asi05-unexpected-code-execution-2026-09-29",
+    "slug": "asi05-unexpected-code-execution",
+    "url": "https://asiscan.dev/blog/asi05-unexpected-code-execution",
+    "text": "Twenty-five of the fifty open-source AI agent repositories in our scan corpus had an ASI05 finding: unexpected code execution. Half.\n\nNot half doing something exotic. Half doing the same three or four things, over and over: taking model output and passing it straight into exec(), eval(), or a shell command. Input validation doesn't catch it because the input isn't the problem — the model's output is, and by the time it reaches the exec() call it looks like ordinary program data.\n\nWe wrote up a real example: the exact shell command construction, why a reviewer would scan past it, and the fix that closes it without breaking the agent's ability to actually do things. ASIScan's rules for this pattern are also in the post, including what they flag and why.\n\nIf you're building or reviewing agent code that touches subprocess, exec, or shell commands, this one's worth ten minutes.\n\nhttps://asiscan.dev/blog/asi05-unexpected-code-execution\n\n#AIsecurity #AgentSecurity #StaticAnalysis",
+    "composedOn": "2026-09-29",
+    "mode": "llm",
+    "status": "queued"
   }
 ]
