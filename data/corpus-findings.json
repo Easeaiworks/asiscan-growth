@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-21T18:16:05.837Z",
-  "date": "2026-09-21",
+  "generatedAt": "2026-10-01T12:26:37.335Z",
+  "date": "2026-10-01",
   "summary": {
     "reposScanned": 50,
     "reposFailed": 0,
-    "filesScanned": 115136,
-    "totalFindings": 894,
+    "filesScanned": 119968,
+    "totalFindings": 936,
     "medianFindingsPerRepo": 10,
     "reposWithZeroFindings": 3
   },
@@ -16,7 +16,7 @@
       "severity": "critical",
       "framework": "OWASP ASI",
       "reposAffected": 35,
-      "findings": 173,
+      "findings": 194,
       "repoTags": {
         "framework": 9,
         "multi-agent": 3,
@@ -29,7 +29,7 @@
         "mcp": 1,
         "platform": 7
       },
-      "topRepoSharePct": 10
+      "topRepoSharePct": 12
     },
     {
       "ruleId": "ASI05",
@@ -37,7 +37,7 @@
       "severity": "critical",
       "framework": "OWASP ASI",
       "reposAffected": 25,
-      "findings": 140,
+      "findings": 149,
       "repoTags": {
         "framework": 8,
         "multi-agent": 1,
@@ -52,12 +52,32 @@
       "topRepoSharePct": 24
     },
     {
+      "ruleId": "ASI01",
+      "title": "Agent Goal Hijack",
+      "severity": "critical",
+      "framework": "OWASP ASI",
+      "reposAffected": 20,
+      "findings": 85,
+      "repoTags": {
+        "framework": 6,
+        "multi-agent": 1,
+        "autonomous": 2,
+        "code-exec": 1,
+        "computer-use": 1,
+        "gateway": 1,
+        "tooling": 1,
+        "platform": 5,
+        "application": 2
+      },
+      "topRepoSharePct": 24
+    },
+    {
       "ruleId": "ASI07",
       "title": "Insecure Inter-Agent Communication",
       "severity": "high",
       "framework": "OWASP ASI",
       "reposAffected": 20,
-      "findings": 64,
+      "findings": 71,
       "repoTags": {
         "framework": 6,
         "multi-agent": 3,
@@ -70,7 +90,7 @@
         "application": 1,
         "governance": 1
       },
-      "topRepoSharePct": 22
+      "topRepoSharePct": 20
     },
     {
       "ruleId": "ASI04",
@@ -78,7 +98,7 @@
       "severity": "high",
       "framework": "OWASP ASI",
       "reposAffected": 19,
-      "findings": 258,
+      "findings": 264,
       "repoTags": {
         "framework": 2,
         "autonomous": 1,
@@ -95,56 +115,19 @@
       "topRepoSharePct": 41
     },
     {
-      "ruleId": "ASI01",
-      "title": "Agent Goal Hijack",
-      "severity": "critical",
-      "framework": "OWASP ASI",
-      "reposAffected": 17,
-      "findings": 78,
-      "repoTags": {
-        "framework": 5,
-        "multi-agent": 1,
-        "autonomous": 2,
-        "code-exec": 1,
-        "gateway": 1,
-        "tooling": 1,
-        "platform": 4,
-        "application": 2
-      },
-      "topRepoSharePct": 26
-    },
-    {
       "ruleId": "LLM02",
       "title": "Sensitive Information Disclosure",
       "severity": "high",
       "framework": "OWASP LLM",
-      "reposAffected": 10,
-      "findings": 48,
+      "reposAffected": 9,
+      "findings": 47,
       "repoTags": {
         "framework": 4,
         "multi-agent": 1,
         "autonomous": 2,
-        "gateway": 1,
         "platform": 2
       },
-      "topRepoSharePct": 25
-    },
-    {
-      "ruleId": "EUAIA-52",
-      "title": "Article 50 - Disclosure that the user is interacting with an AI system",
-      "severity": "high",
-      "framework": "EU AI Act Art. 50",
-      "reposAffected": 10,
-      "findings": 10,
-      "repoTags": {
-        "framework": 4,
-        "multi-agent": 1,
-        "application": 1,
-        "code-exec": 1,
-        "tooling": 1,
-        "platform": 2
-      },
-      "topRepoSharePct": 10
+      "topRepoSharePct": 26
     },
     {
       "ruleId": "LLM05",
@@ -152,7 +135,7 @@
       "severity": "high",
       "framework": "OWASP LLM",
       "reposAffected": 9,
-      "findings": 16,
+      "findings": 13,
       "repoTags": {
         "framework": 3,
         "autonomous": 2,
@@ -160,7 +143,23 @@
         "governance": 1,
         "code-exec": 1
       },
-      "topRepoSharePct": 25
+      "topRepoSharePct": 23
+    },
+    {
+      "ruleId": "EUAIA-52",
+      "title": "Article 50 - Disclosure that the user is interacting with an AI system",
+      "severity": "high",
+      "framework": "EU AI Act Art. 50",
+      "reposAffected": 9,
+      "findings": 9,
+      "repoTags": {
+        "framework": 4,
+        "multi-agent": 1,
+        "code-exec": 1,
+        "tooling": 1,
+        "platform": 2
+      },
+      "topRepoSharePct": 11
     },
     {
       "ruleId": "ASI09",
@@ -232,16 +231,15 @@
       "title": "Excessive Agency",
       "severity": "critical",
       "framework": "OWASP LLM",
-      "reposAffected": 6,
-      "findings": 36,
+      "reposAffected": 5,
+      "findings": 33,
       "repoTags": {
         "framework": 1,
         "gateway": 1,
-        "tooling": 1,
         "governance": 1,
         "platform": 2
       },
-      "topRepoSharePct": 67
+      "topRepoSharePct": 73
     },
     {
       "ruleId": "EUAIA-50",
@@ -310,7 +308,7 @@
   "byTag": {
     "framework": {
       "repos": 17,
-      "findings": 133
+      "findings": 142
     },
     "multi-agent": {
       "repos": 4,
@@ -322,15 +320,15 @@
     },
     "application": {
       "repos": 4,
-      "findings": 198
+      "findings": 200
     },
     "code-exec": {
       "repos": 7,
-      "findings": 50
+      "findings": 59
     },
     "computer-use": {
       "repos": 2,
-      "findings": 14
+      "findings": 16
     },
     "memory": {
       "repos": 1,
@@ -338,11 +336,11 @@
     },
     "gateway": {
       "repos": 1,
-      "findings": 54
+      "findings": 73
     },
     "tooling": {
       "repos": 1,
-      "findings": 29
+      "findings": 25
     },
     "mcp": {
       "repos": 1,
@@ -350,7 +348,7 @@
     },
     "platform": {
       "repos": 7,
-      "findings": 251
+      "findings": 256
     },
     "governance": {
       "repos": 1,
@@ -362,8 +360,8 @@
       "slug": "langchain-ai/langgraph",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 285,
-      "durationMs": 794,
+      "filesScanned": 286,
+      "durationMs": 827,
       "findings": 5,
       "rulesTriggered": [
         "ASI03",
@@ -375,8 +373,8 @@
       "slug": "langchain-ai/langchain",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 1878,
-      "durationMs": 1959,
+      "filesScanned": 1879,
+      "durationMs": 1931,
       "findings": 0,
       "rulesTriggered": []
     },
@@ -384,8 +382,8 @@
       "slug": "openai/openai-agents-python",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 361,
-      "durationMs": 1224,
+      "filesScanned": 373,
+      "durationMs": 1282,
       "findings": 1,
       "rulesTriggered": [
         "LLM10"
@@ -395,8 +393,8 @@
       "slug": "crewAIInc/crewAI",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 986,
-      "durationMs": 1545,
+      "filesScanned": 989,
+      "durationMs": 1608,
       "findings": 3,
       "rulesTriggered": [
         "ASI01",
@@ -420,8 +418,8 @@
       "slug": "microsoft/semantic-kernel",
       "tag": "framework",
       "lang": "csharp",
-      "filesScanned": 3687,
-      "durationMs": 3793,
+      "filesScanned": 3688,
+      "durationMs": 3751,
       "findings": 24,
       "rulesTriggered": [
         "ASI01",
@@ -435,7 +433,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 31,
-      "durationMs": 182,
+      "durationMs": 248,
       "findings": 4,
       "rulesTriggered": [
         "ASI02",
@@ -448,10 +446,11 @@
       "slug": "pydantic/pydantic-ai",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 484,
-      "durationMs": 2064,
-      "findings": 1,
+      "filesScanned": 880,
+      "durationMs": 2814,
+      "findings": 4,
       "rulesTriggered": [
+        "ASI01",
         "ASI03"
       ]
     },
@@ -460,7 +459,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 566,
-      "durationMs": 1390,
+      "durationMs": 1407,
       "findings": 17,
       "rulesTriggered": [
         "ASI05",
@@ -474,9 +473,9 @@
       "slug": "agno-agi/agno",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 3545,
-      "durationMs": 4856,
-      "findings": 12,
+      "filesScanned": 3600,
+      "durationMs": 5065,
+      "findings": 16,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -489,7 +488,7 @@
       "tag": "framework",
       "lang": "python",
       "filesScanned": 2,
-      "durationMs": 18,
+      "durationMs": 17,
       "findings": 0,
       "rulesTriggered": []
     },
@@ -497,8 +496,8 @@
       "slug": "stanfordnlp/dspy",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 258,
-      "durationMs": 718,
+      "filesScanned": 267,
+      "durationMs": 751,
       "findings": 7,
       "rulesTriggered": [
         "ASI01",
@@ -509,8 +508,8 @@
       "slug": "run-llama/llama_index",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 2779,
-      "durationMs": 2423,
+      "filesScanned": 2780,
+      "durationMs": 2447,
       "findings": 17,
       "rulesTriggered": [
         "ASI03",
@@ -523,8 +522,8 @@
       "slug": "deepset-ai/haystack",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 1760,
-      "durationMs": 1059,
+      "filesScanned": 1810,
+      "durationMs": 1103,
       "findings": 2,
       "rulesTriggered": [
         "ASI03",
@@ -535,8 +534,8 @@
       "slug": "google/adk-python",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 1361,
-      "durationMs": 1830,
+      "filesScanned": 1401,
+      "durationMs": 1974,
       "findings": 11,
       "rulesTriggered": [
         "ASI03",
@@ -549,9 +548,9 @@
       "slug": "strands-agents/sdk-python",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 1134,
-      "durationMs": 1860,
-      "findings": 18,
+      "filesScanned": 1171,
+      "durationMs": 2026,
+      "findings": 20,
       "rulesTriggered": [
         "ASI04",
         "ASI05",
@@ -564,8 +563,8 @@
       "slug": "livekit/agents",
       "tag": "framework",
       "lang": "python",
-      "filesScanned": 813,
-      "durationMs": 1469,
+      "filesScanned": 816,
+      "durationMs": 1555,
       "findings": 7,
       "rulesTriggered": [
         "ASI01",
@@ -579,7 +578,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 8,
-      "durationMs": 25,
+      "durationMs": 24,
       "findings": 6,
       "rulesTriggered": [
         "ASI02",
@@ -595,7 +594,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 39,
-      "durationMs": 29,
+      "durationMs": 30,
       "findings": 9,
       "rulesTriggered": [
         "ASI02",
@@ -612,7 +611,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 584,
-      "durationMs": 709,
+      "durationMs": 716,
       "findings": 28,
       "rulesTriggered": [
         "ASI05",
@@ -627,7 +626,7 @@
       "tag": "multi-agent",
       "lang": "python",
       "filesScanned": 255,
-      "durationMs": 494,
+      "durationMs": 498,
       "findings": 9,
       "rulesTriggered": [
         "ASI01",
@@ -640,7 +639,7 @@
       "tag": "autonomous",
       "lang": "python",
       "filesScanned": 403,
-      "durationMs": 483,
+      "durationMs": 487,
       "findings": 17,
       "rulesTriggered": [
         "ASI05",
@@ -653,8 +652,8 @@
       "slug": "Significant-Gravitas/AutoGPT",
       "tag": "autonomous",
       "lang": "python",
-      "filesScanned": 3715,
-      "durationMs": 5222,
+      "filesScanned": 3958,
+      "durationMs": 5515,
       "findings": 18,
       "rulesTriggered": [
         "ASI01",
@@ -670,7 +669,7 @@
       "tag": "autonomous",
       "lang": "python",
       "filesScanned": 41,
-      "durationMs": 108,
+      "durationMs": 109,
       "findings": 5,
       "rulesTriggered": [
         "ASI02",
@@ -683,7 +682,7 @@
       "tag": "autonomous",
       "lang": "typescript",
       "filesScanned": 449,
-      "durationMs": 286,
+      "durationMs": 300,
       "findings": 15,
       "rulesTriggered": [
         "ASI01",
@@ -697,12 +696,11 @@
       "slug": "assafelovic/gpt-researcher",
       "tag": "application",
       "lang": "python",
-      "filesScanned": 336,
-      "durationMs": 814,
-      "findings": 6,
+      "filesScanned": 356,
+      "durationMs": 854,
+      "findings": 2,
       "rulesTriggered": [
         "ASI03",
-        "EUAIA-52",
         "LLM05"
       ]
     },
@@ -710,9 +708,9 @@
       "slug": "OpenInterpreter/open-interpreter",
       "tag": "code-exec",
       "lang": "python",
-      "filesScanned": 3989,
-      "durationMs": 8911,
-      "findings": 32,
+      "filesScanned": 4482,
+      "durationMs": 9787,
+      "findings": 41,
       "rulesTriggered": [
         "ASI03",
         "ASI05",
@@ -725,7 +723,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 138,
-      "durationMs": 219,
+      "durationMs": 216,
       "findings": 1,
       "rulesTriggered": [
         "ASI03"
@@ -735,8 +733,8 @@
       "slug": "All-Hands-AI/OpenHands",
       "tag": "code-exec",
       "lang": "python",
-      "filesScanned": 1290,
-      "durationMs": 1335,
+      "filesScanned": 1337,
+      "durationMs": 1386,
       "findings": 4,
       "rulesTriggered": [
         "ASI04",
@@ -749,7 +747,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 157,
-      "durationMs": 462,
+      "durationMs": 481,
       "findings": 2,
       "rulesTriggered": [
         "ASI01",
@@ -760,8 +758,8 @@
       "slug": "e2b-dev/E2B",
       "tag": "code-exec",
       "lang": "typescript",
-      "filesScanned": 418,
-      "durationMs": 721,
+      "filesScanned": 420,
+      "durationMs": 754,
       "findings": 0,
       "rulesTriggered": []
     },
@@ -770,7 +768,7 @@
       "tag": "computer-use",
       "lang": "python",
       "filesScanned": 184,
-      "durationMs": 740,
+      "durationMs": 741,
       "findings": 3,
       "rulesTriggered": [
         "ASI04",
@@ -782,10 +780,11 @@
       "slug": "Skyvern-AI/skyvern",
       "tag": "computer-use",
       "lang": "python",
-      "filesScanned": 3090,
-      "durationMs": 5729,
-      "findings": 11,
+      "filesScanned": 3183,
+      "durationMs": 6125,
+      "findings": 13,
       "rulesTriggered": [
+        "ASI01",
         "ASI03",
         "ASI04",
         "ASI05",
@@ -796,8 +795,8 @@
       "slug": "mem0ai/mem0",
       "tag": "memory",
       "lang": "python",
-      "filesScanned": 712,
-      "durationMs": 1488,
+      "filesScanned": 720,
+      "durationMs": 1501,
       "findings": 21,
       "rulesTriggered": [
         "ASI04"
@@ -807,16 +806,15 @@
       "slug": "BerriAI/litellm",
       "tag": "gateway",
       "lang": "python",
-      "filesScanned": 4760,
-      "durationMs": 9250,
-      "findings": 54,
+      "filesScanned": 5331,
+      "durationMs": 10208,
+      "findings": 73,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
         "ASI04",
         "ASI05",
         "ASI07",
-        "LLM02",
         "LLM06"
       ]
     },
@@ -824,16 +822,15 @@
       "slug": "ComposioHQ/composio",
       "tag": "tooling",
       "lang": "python",
-      "filesScanned": 961,
-      "durationMs": 1375,
-      "findings": 29,
+      "filesScanned": 967,
+      "durationMs": 1382,
+      "findings": 25,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
         "ASI04",
         "ASI07",
-        "EUAIA-52",
-        "LLM06"
+        "EUAIA-52"
       ]
     },
     {
@@ -841,7 +838,7 @@
       "tag": "mcp",
       "lang": "typescript",
       "filesScanned": 82,
-      "durationMs": 182,
+      "durationMs": 193,
       "findings": 8,
       "rulesTriggered": [
         "ASI03",
@@ -853,9 +850,9 @@
       "slug": "langgenius/dify",
       "tag": "platform",
       "lang": "typescript",
-      "filesScanned": 8443,
-      "durationMs": 10129,
-      "findings": 27,
+      "filesScanned": 8333,
+      "durationMs": 10074,
+      "findings": 26,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -867,7 +864,7 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 1768,
-      "durationMs": 2780,
+      "durationMs": 2828,
       "findings": 39,
       "rulesTriggered": [
         "ASI03",
@@ -880,8 +877,8 @@
       "slug": "Mintplex-Labs/anything-llm",
       "tag": "platform",
       "lang": "typescript",
-      "filesScanned": 1267,
-      "durationMs": 2417,
+      "filesScanned": 1277,
+      "durationMs": 2466,
       "findings": 28,
       "rulesTriggered": [
         "ASI01",
@@ -896,8 +893,8 @@
       "slug": "danny-avila/LibreChat",
       "tag": "application",
       "lang": "typescript",
-      "filesScanned": 3387,
-      "durationMs": 5976,
+      "filesScanned": 3441,
+      "durationMs": 6087,
       "findings": 39,
       "rulesTriggered": [
         "ASI01",
@@ -911,9 +908,9 @@
       "slug": "lobehub/lobe-chat",
       "tag": "application",
       "lang": "typescript",
-      "filesScanned": 11882,
-      "durationMs": 20730,
-      "findings": 141,
+      "filesScanned": 12447,
+      "durationMs": 21719,
+      "findings": 147,
       "rulesTriggered": [
         "ASI01",
         "ASI03",
@@ -927,8 +924,8 @@
       "slug": "onyx-dot-app/onyx",
       "tag": "platform",
       "lang": "python",
-      "filesScanned": 4660,
-      "durationMs": 6210,
+      "filesScanned": 4846,
+      "durationMs": 6589,
       "findings": 20,
       "rulesTriggered": [
         "ASI01",
@@ -944,7 +941,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 225,
-      "durationMs": 211,
+      "durationMs": 212,
       "findings": 3,
       "rulesTriggered": [
         "ASI03",
@@ -957,7 +954,7 @@
       "tag": "platform",
       "lang": "typescript",
       "filesScanned": 65,
-      "durationMs": 277,
+      "durationMs": 279,
       "findings": 5,
       "rulesTriggered": [
         "ASI02",
@@ -972,7 +969,7 @@
       "tag": "application",
       "lang": "python",
       "filesScanned": 626,
-      "durationMs": 1191,
+      "durationMs": 1197,
       "findings": 12,
       "rulesTriggered": [
         "ASI03",
@@ -983,8 +980,8 @@
       "slug": "microsoft/agent-governance-toolkit",
       "tag": "governance",
       "lang": "typescript",
-      "filesScanned": 1779,
-      "durationMs": 3287,
+      "filesScanned": 1819,
+      "durationMs": 3388,
       "findings": 29,
       "rulesTriggered": [
         "ASI04",
@@ -1001,7 +998,7 @@
       "tag": "code-exec",
       "lang": "python",
       "filesScanned": 23,
-      "durationMs": 43,
+      "durationMs": 44,
       "findings": 8,
       "rulesTriggered": [
         "ASI02",
@@ -1016,10 +1013,11 @@
       "slug": "activepieces/activepieces",
       "tag": "platform",
       "lang": "typescript",
-      "filesScanned": 23477,
-      "durationMs": 17303,
-      "findings": 40,
+      "filesScanned": 25136,
+      "durationMs": 18391,
+      "findings": 42,
       "rulesTriggered": [
+        "ASI01",
         "ASI03",
         "ASI04",
         "ASI05",
@@ -1032,9 +1030,9 @@
       "slug": "n8n-io/n8n",
       "tag": "platform",
       "lang": "typescript",
-      "filesScanned": 14954,
-      "durationMs": 13631,
-      "findings": 92,
+      "filesScanned": 15290,
+      "durationMs": 14081,
+      "findings": 96,
       "rulesTriggered": [
         "ASI01",
         "ASI03",

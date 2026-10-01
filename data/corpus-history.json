@@ -82,5 +82,33 @@
         "reposAffected": 17
       }
     ]
+  },
+  {
+    "date": "2026-10-01",
+    "reposScanned": 50,
+    "filesScanned": 119968,
+    "totalFindings": 936,
+    "top": [
+      {
+        "ruleId": "ASI03",
+        "reposAffected": 35
+      },
+      {
+        "ruleId": "ASI05",
+        "reposAffected": 25
+      },
+      {
+        "ruleId": "ASI01",
+        "reposAffected": 20
+      },
+      {
+        "ruleId": "ASI07",
+        "reposAffected": 20
+      },
+      {
+        "ruleId": "ASI04",
+        "reposAffected": 19
+      }
+    ]
   }
 ]
